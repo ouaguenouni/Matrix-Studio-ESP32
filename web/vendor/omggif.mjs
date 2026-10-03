@@ -511,7 +511,7 @@ function GifReader(buf) {
         no_eof = false;
         break;
 
-      case 0x00:  // Tolerate NUL padding between blocks (Crystal shiny Magmar).
+      case 0x00:  // Tolerate NUL padding between blocks.
         break;
 
       default:

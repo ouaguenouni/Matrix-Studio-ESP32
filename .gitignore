@@ -3,7 +3,3 @@
 __pycache__/
 *.pyc
 .DS_Store
-data/crystal.bin
-data/crystal.json
-data/crystal.json.gz
-assets/cries/cries.bin

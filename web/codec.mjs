@@ -36,7 +36,7 @@ export function imagePlacement(iw, ih, mode, w = 64, h = 32) {
 }
 
 export function opaqueBounds(rgba,width,height) {
-  if(rgba.length!==width*height*4)throw new Error('Unexpected sprite dimensions');
+  if(rgba.length!==width*height*4)throw new Error('Unexpected image dimensions');
   let left=width,top=height,right=-1,bottom=-1;
   for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(rgba[(y*width+x)*4+3]) {
     left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);

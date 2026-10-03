@@ -8,11 +8,3 @@ subprocess.check_call([
     env.subst("$PYTHONEXE"),
     str(Path(env.subst("$PROJECT_DIR")) / "tools" / "build_ui.py"),
 ])
-subprocess.check_call([
-    env.subst("$PYTHONEXE"),
-    str(Path(env.subst("$PROJECT_DIR")) / "tools" / "prepare_crystal.py"),
-])
-subprocess.check_call([
-    env.subst("$PYTHONEXE"),
-    str(Path(env.subst("$PROJECT_DIR")) / "tools" / "prepare_cries.py"),
-])

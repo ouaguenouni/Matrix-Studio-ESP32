@@ -7,10 +7,6 @@
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#182a29;background:#f4f5ee;font-size:15px;--green:#176b57;--border:#d8dfd6}
 *{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:30px 22px 55px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:34px}.logo{display:flex;gap:12px;align-items:center}.mark{font-size:24px;letter-spacing:2px;color:var(--green)}h1{font-size:23px;letter-spacing:-.8px;margin:0}h2{font-size:18px;margin:0 0 15px}p{line-height:1.6}.muted{color:#657470;font-size:13px}.badge{padding:8px 12px;border:1px solid var(--border);border-radius:30px;font-size:12px;background:#fff}.lead{font-size:36px;letter-spacing:-1.5px;font-weight:600;margin:0 0 7px}.sub{margin:0 0 28px;color:#657470}.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:22px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}.preview{background:#0a1110;border-radius:12px;padding:18px;margin:18px 0;color:#95ada4}.preview canvas{display:block;width:100%;height:auto;aspect-ratio:2;background:#000;image-rendering:pixelated;touch-action:none;cursor:crosshair}.caps{text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:#64756c;display:flex;justify-content:space-between;gap:10px}label{display:block;font-size:13px;font-weight:600;margin:15px 0 6px}input:not([type=color]):not([type=range]),textarea,select{font:inherit;width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:#182a29}textarea{resize:vertical;min-height:88px}input[type=color]{width:100%;height:41px;border:1px solid var(--border);border-radius:8px;padding:4px;background:#fff}input[type=range]{width:100%;accent-color:var(--green)}button{font:inherit;cursor:pointer;border:1px solid var(--border);border-radius:9px;padding:10px 14px;background:#fff;color:#182a29;font-weight:600}button:hover{background:#edf4ee}button:disabled{opacity:.55;cursor:wait}.primary{background:var(--green);color:#fff;border-color:var(--green)}.primary:hover{background:#105642}.wide{width:100%}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}.tab{flex:1;font-size:13px;padding:8px}.tab[aria-selected=true]{background:#e8f2eb;color:#125944;border-color:#91b5a5}.pane[hidden]{display:none}.message{min-height:24px;font-size:13px;line-height:1.5;margin-top:12px}.error{color:#a33028}.success{color:var(--green)}.connection{margin-top:22px}summary{cursor:pointer;font-size:15px;font-weight:600}details[open] summary{margin-bottom:15px}a{color:var(--green);overflow-wrap:anywhere}footer{font-size:12px;color:#657470;margin-top:25px}.hint{background:#f0f5ef;border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.5}.selected{background:#e8f2eb!important;border-color:#91b5a5!important}small{font-size:12px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e6a558;outline-offset:2px}@media(max-width:730px){main{padding:22px 15px}.layout{grid-template-columns:1fr}.lead{font-size:29px}header{margin-bottom:25px}.card{padding:18px}.preview{padding:10px}}
 </style>
-<style>
-.tabs{flex-wrap:wrap}.tab{min-width:48px}.gif-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.gallery-tile{min-width:0;padding:8px 4px;font-size:11px;line-height:1.4}.gallery-tile img{display:block;margin:0 auto 5px;width:56px;height:56px;image-rendering:pixelated;object-fit:contain}.gallery-tile[aria-pressed=true]{background:#e8f2eb;border-color:#91b5a5}.gallery-tile span{display:block;overflow-wrap:anywhere}.gallery-pages{font-size:12px;text-align:center}.gif-gallery .muted{grid-column:1/-1}
-@media(max-width:730px){.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
-</style>
 </head>
 <body><main>
 <header><div class="logo"><span class="mark" aria-hidden="true">▦</span><h1>Matrix Studio</h1></div><span class="badge" id="connectionBadge">Connecting…</span></header>
@@ -26,7 +22,7 @@
 <p class="muted">Brightness changes apply directly to the panel.</p>
 </section>
 <section class="card" aria-label="Canvas tools">
-<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-pokemon" aria-controls="pane-pokemon" aria-selected="false" data-tab="pokemon">Pokémon</button><button class="tab" role="tab" id="tab-gallery" aria-controls="pane-gallery" aria-selected="false" data-tab="gallery">GIFs</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
+<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
 <div class="pane" id="pane-text" role="tabpanel" aria-labelledby="tab-text">
 <label for="text">Message</label><textarea id="text" maxlength="500">Hello!</textarea>
 <div class="row"><div><label for="textColor">Text colour</label><input id="textColor" type="color" value="#ffffff"></div><div><label for="background">Background</label><input id="background" type="color" value="#000000"></div></div>
@@ -46,35 +42,6 @@
 <button id="pattern" class="wide">Preview a colour test</button>
 <button id="purplePattern" class="wide" style="margin-top:10px">Preview a purple test</button>
 </div>
-<div class="pane" id="pane-pokemon" role="tabpanel" aria-labelledby="tab-pokemon" hidden>
-<form id="pokemonSearchForm">
-<label for="pokemonQuery">Pokémon name or number</label><input id="pokemonQuery" type="search" value="haunter" placeholder="Haunter or 93" maxlength="60">
-<button id="pokemonLoad" class="wide" style="margin-top:10px" type="submit">Load sprite</button>
-</form>
-<label for="pokemonScope">Catalogue</label><select id="pokemonScope"><option value="all">All Pokémon and forms</option><option value="gen1">First generation (1–151)</option></select>
-<label for="pokemonResults">Matching Pokémon</label><select id="pokemonResults" size="5" aria-label="Matching Pokémon"></select>
-<p id="pokemonStatus" class="muted" role="status" aria-live="polite">Search the online sprite catalogue.</p>
-<div class="row"><button id="pokemonPrevious">Previous</button><button id="pokemonNext">Next</button></div>
-<label for="pokemonInterval">Seconds per sprite</label><input id="pokemonInterval" type="number" value="5" min="2" max="60">
-<button id="pokemonCycle" class="wide" style="margin-top:12px">Start cycling on panel</button>
-<p class="muted">Cycles the selected catalogue in Pokédex order. Keep this page open and visible; stopping leaves the last sprite on the panel.</p>
-<p class="muted">Internet is needed to load new sprites. <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">Sprites and catalogue from PokéAPI</a>.</p>
-</div>
-<div class="pane" id="pane-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
-<p class="muted">Pokémon Crystal · 552 animated sprites stored on your ESP32.</p>
-<label for="gifQuery">Search GIFs by name or number</label><input type="search" id="gifQuery" placeholder="Haunter or 93" maxlength="60">
-<div class="row"><div><label for="gifVariant">Colours</label><select id="gifVariant"><option value="normal">Normal</option><option value="shiny">Shiny</option><option value="both">Normal and shiny</option></select></div><div><label for="gifRegion">Pokémon</label><select id="gifRegion"><option value="all">All Crystal sprites</option><option value="kanto">Kanto (1–151)</option><option value="johto">Johto (152–251)</option><option value="unown">Unown forms</option></select></div></div>
-<p id="gifStatus" class="muted" role="status" aria-live="polite">Loading the GIF gallery…</p>
-<div id="gifGallery" class="gif-gallery" aria-label="Crystal GIF gallery"></div>
-<div class="row"><button id="gifPreviousPage">Previous page</button><span id="gifPage" class="gallery-pages"></span><button id="gifNextPage">Next page</button></div>
-<button id="gifPlay" class="wide" style="margin-top:16px" disabled>Play GIF on panel</button>
-<label for="gifCries"><input id="gifCries" type="checkbox" checked style="width:auto"> Play matching Pokémon cries on JBL</label>
-<p id="gifCryStatus" class="muted" role="status">Matching cries play once when each Pokémon appears. Connect your JBL below; its volume slider controls cries too.</p>
-<label for="gifInterval">Seconds per Pokémon</label><input id="gifInterval" type="number" min="2" max="60" value="5">
-<button id="gifCycle" class="wide" style="margin-top:12px">Cycle GIF gallery on panel</button>
-<p class="muted">Cycling uses every matching sprite across all pages. Keep this page open and visible. Stop leaves the last frame on the panel.</p>
-<p class="muted">GIFs downloaded from <a href="https://bluemoonfalls.com/pages/general/crystal-gif-archive" target="_blank" rel="noopener noreferrer">Blue Moon Falls</a>. Original Pokémon artwork © Nintendo / Game Freak.</p>
-</div>
 <div class="pane" id="pane-draw" role="tabpanel" aria-labelledby="tab-draw" hidden>
 <p>Draw directly on the preview with your finger or mouse.</p><label for="brush">Brush colour</label><input id="brush" type="color" value="#ffb267">
 <div class="row" style="margin-top:18px"><button id="pencil" class="selected">Pencil</button><button id="eraser">Eraser</button></div>
@@ -82,17 +49,6 @@
 </div>
 </section>
 </div>
-<details class="card connection" id="speakerDetails"><summary>Bluetooth speaker · JBL Go 4</summary>
-<p class="muted">Turn on your JBL Go 4 and press its Bluetooth button to enter pairing mode. Scan, select the speaker, then connect.</p>
-<p class="hint" id="speakerStatus" role="status" aria-live="polite">Bluetooth is off until you scan for a speaker.</p>
-<button id="speakerScan" class="wide">Scan for speakers</button>
-<label for="speakerDevice">Available speakers</label><select id="speakerDevice"><option value="">Scan to find your JBL Go 4</option></select>
-<div class="row" style="margin-top:12px"><button id="speakerConnect" class="primary" disabled>Connect speaker</button><button id="speakerDisconnect" disabled>Disconnect</button></div>
-<label for="speakerVolume">Speaker audio volume <span id="speakerVolumeValue" class="muted">25%</span></label><input id="speakerVolume" type="range" min="0" max="100" value="25">
-<button id="speakerTest" class="wide" style="margin-top:12px" disabled>Play a 2-second test sound</button>
-<p class="muted">The ESP32 plays matching cries during GIF playback. This volume controls cries and the test sound; you can also adjust volume on the JBL.</p>
-<div class="message" id="speakerMessage" role="status" aria-live="polite"></div>
-</details>
 <details class="card connection" id="wifiDetails"><summary>Wi-Fi connection</summary>
 <p id="networkInfo" class="hint">Checking the ESP32…</p>
 <form id="wifiForm"><div class="row"><div><label for="ssid">Home Wi-Fi name (2.4 GHz)</label><input id="ssid" name="ssid" maxlength="32" autocomplete="off" required></div><div><label for="wifiPassword">Wi-Fi password</label><input id="wifiPassword" name="password" type="password" minlength="8" maxlength="63" autocomplete="new-password" required></div></div>
@@ -139,101 +95,12 @@ function imagePlacement(iw, ih, mode, w = 64, h = 32) {
 }
 
 function opaqueBounds(rgba,width,height) {
-  if(rgba.length!==width*height*4)throw new Error('Unexpected sprite dimensions');
+  if(rgba.length!==width*height*4)throw new Error('Unexpected image dimensions');
   let left=width,top=height,right=-1,bottom=-1;
   for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(rgba[(y*width+x)*4+3]) {
     left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
   }
   return right<0 ? null : {x:left,y:top,w:right-left+1,h:bottom-top+1};
-}
-
-function pokemonQuery(value) {
-  const query=String(value).trim().toLowerCase().replace(/^#/, '');
-  if (/^\d+$/.test(query) && Number(query)>0) return String(Number(query));
-  if (/^[a-z][a-z0-9-]*$/.test(query)) return query;
-  throw new Error('Enter a Pokémon name or Pokédex number, such as Haunter or 93.');
-}
-
-function pokemonEntries(data) {
-  const entries=new Map();
-  for (const item of data.results || []) {
-    const match=/^https:\/\/pokeapi\.co\/api\/v2\/pokemon\/(\d+)\/$/.exec(item.url || '');
-    if (match && /^[a-z][a-z0-9-]*$/.test(item.name))
-      entries.set(Number(match[1]), {id:Number(match[1]),name:item.name});
-  }
-  if (!entries.size) throw new Error('The Pokémon catalogue is empty. Try again.');
-  return [...entries.values()].sort((a,b)=>a.id-b.id);
-}
-
-function filterPokemon(entries, scope, search='') {
-  const query=search.trim().toLowerCase().replace(/^#/, '');
-  return entries.filter(entry=>(scope!=='gen1' || entry.id<=151) &&
-    (!query || (/^\d+$/.test(query) ? entry.id===Number(query) : entry.name.includes(query))));
-}
-
-function createPokemonClient(fetcher=fetch, decode=null) {
-  const imageCache=new Map(), detailsCache=new Map();
-  let cataloguePromise=null;
-  const prefix='matrix-pokemon-v1:', cacheAge=7*24*60*60*1000;
-  function readCache(key) {
-    try {
-      const saved=JSON.parse(localStorage.getItem(prefix+key));
-      return saved && Date.now()-saved.at<cacheAge ? saved.data : null;
-    } catch { return null; }
-  }
-  function writeCache(key,data) {
-    try { localStorage.setItem(prefix+key,JSON.stringify({at:Date.now(),data})); } catch {}
-  }
-  async function getJSON(key,url,project=value=>value) {
-    const cached=readCache(key);if(cached)return cached;
-    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),12000);
-    try {
-      const response=await fetcher(url,{signal:controller.signal,cache:'force-cache',credentials:'omit'});
-      if(response.status===404)throw new Error('No Pokémon found with that name or number.');
-      if(!response.ok)throw new Error('Pokémon service unavailable. Try again later.');
-      const data=project(await response.json());writeCache(key,data);return data;
-    } catch(error) {
-      if(error.name==='AbortError')throw new Error('Pokémon download timed out. Check your internet connection.');
-      throw error;
-    } finally {clearTimeout(timer);}
-  }
-  async function defaultDecode(url) {
-    return new Promise((resolve,reject)=>{
-      const image=new Image(),timer=setTimeout(()=>{image.src='';reject(new Error('Sprite download timed out.'));},12000);
-      image.crossOrigin='anonymous';
-      image.onload=()=>{clearTimeout(timer);resolve(image);};
-      image.onerror=()=>{clearTimeout(timer);reject(new Error('Could not download the sprite. Check your internet connection.'));};
-      image.src=url;
-    });
-  }
-  return {
-    catalogue() {
-      if(!cataloguePromise)cataloguePromise=getJSON('catalogue','https://pokeapi.co/api/v2/pokemon?limit=10000')
-        .then(pokemonEntries).catch(error=>{cataloguePromise=null;throw error;});
-      return cataloguePromise;
-    },
-    async load(value) {
-      const query=pokemonQuery(value);
-      let data=detailsCache.get(query);
-      if(!data) {
-        data=await getJSON('pokemon:'+query,'https://pokeapi.co/api/v2/pokemon/'+query,
-          value=>({id:value.id,name:value.name,sprites:{front_default:value.sprites?.front_default || null}}));
-        if(!Number.isInteger(data.id)||data.id<=0||!/^[a-z][a-z0-9-]*$/.test(data.name))
-          throw new Error('Invalid Pokémon response. Try again.');
-        detailsCache.set(query,data);detailsCache.set(String(data.id),data);detailsCache.set(data.name,data);
-      }
-      const url=data.sprites?.front_default;
-      if(!url) {const error=new Error('No front sprite is available for '+data.name+'.');error.code='NO_SPRITE';throw error;}
-      if(!url.startsWith('https://raw.githubusercontent.com/PokeAPI/sprites/'))throw new Error('Unsupported sprite source.');
-      let image=imageCache.get(url);
-      if(!image) {
-        image=await (decode || defaultDecode)(url);
-        imageCache.set(url,image);
-        if(imageCache.size>32)imageCache.delete(imageCache.keys().next().value);
-      }
-      return {id:data.id,name:data.name,image};
-    }
-  };
 }
 
 // (c) Dean McNamee <dean@gmail.com>, 2013.
@@ -749,7 +616,7 @@ function GifReader(buf) {
         no_eof = false;
         break;
 
-      case 0x00:  // Tolerate NUL padding between blocks (Crystal shiny Magmar).
+      case 0x00:  // Tolerate NUL padding between blocks.
         break;
 
       default:
@@ -1098,13 +965,6 @@ function decodeGIF(buffer) {
   }
   return {width,height,frames,bounds:bounds||{x:0,y:0,w:width,h:height}};
 }
-
-function filterCrystal(entries,query='',variant='normal',region='all') {
-  const search=query.trim().toLowerCase().replace(/^#/,'');
-  return entries.filter(entry=>(variant==='both'||entry.variant===variant)&&
-    (region==='all'||(region==='kanto'&&entry.id<=151)||(region==='johto'&&entry.id>151)||(region==='unown'&&entry.id===201))&&
-    (!search||(/^\d+$/.test(search)?entry.id===Number(search):entry.name.includes(search))));
-}
 const $ = id => document.getElementById(id);
 const canvas = $('canvas'), ctx = canvas.getContext('2d', {willReadFrequently:true});
 const textMask = document.createElement('canvas'); textMask.width=64; textMask.height=32;
@@ -1112,9 +972,6 @@ const textCtx = textMask.getContext('2d', {willReadFrequently:true});
 let tab = 'text', loadedImage = null, imageGeneration = 0, erasing = false, drawing = false;
 let scrolling = false, scrollOffset = 64, streamTimer = null, busy = false, streamGeneration = 0;
 let lastStatus = null, initialized = false, wifiWasEdited = false, statusRefreshing = false;
-const pokemonClient=createPokemonClient();
-let pokemonCatalog=[],pokemonCurrent=null,pokemonCycling=false,pokemonTimer=null,pokemonGeneration=0,pokemonLoading=false;
-let pokemonPool=[],pokemonCursor=0;
 function message(text, error = false) { $('message').textContent = text; $('message').className = 'message ' + (error ? 'error' : 'success'); }
 let deviceRequests=Promise.resolve();
 function withDeviceRequest(work) {
@@ -1167,103 +1024,8 @@ function setTab(next) {
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===next)));
   document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!==`pane-${next}`);
   if(next==='text')renderText(); else if(next==='image')renderImage();
-  else if(next==='pokemon') {
-    if(pokemonCurrent)renderPokemon();
-    loadPokemonCatalog().catch(error=>message(error.message,true));
-  }
-  else if(next==='gallery') {
-    gifCurrent=galleryGif;if(gifCurrent)renderGifFrame();else background();
-    loadGifCatalogue().catch(error=>message(error.message,true));
-  }
 }
-function updateSendButton() { $('send').disabled=busy||pokemonLoading||gifLoading; }
-function stopPokemonCycle() {
-  pokemonCycling=false;pokemonGeneration++;clearTimeout(pokemonTimer);pokemonLoading=false;
-  $('pokemonCycle').textContent='Start cycling on panel';$('pokemonLoad').disabled=false;updateSendButton();
-}
-function pokemonLabel(pokemon) { return '#'+pokemon.id+' · '+pokemon.name.split('-').map(word=>word[0].toUpperCase()+word.slice(1)).join(' '); }
-function refreshPokemonResults() {
-  const matches=filterPokemon(pokemonCatalog,$('pokemonScope').value,$('pokemonQuery').value);
-  $('pokemonResults').replaceChildren();
-  for(const pokemon of matches.slice(0,100)) {
-    const option=document.createElement('option');option.value=String(pokemon.id);option.textContent=pokemonLabel(pokemon);
-    option.selected=pokemonCurrent?.id===pokemon.id;$('pokemonResults').append(option);
-  }
-  $('pokemonStatus').textContent=pokemonCatalog.length
-    ? `${pokemonCatalog.length} catalogue entries loaded; ${matches.length} matches${matches.length>100?' (first 100 shown)':''}.`
-    : 'Loading Pokémon catalogue…';
-}
-async function loadPokemonCatalog() {
-  if(!pokemonCatalog.length)pokemonCatalog=await pokemonClient.catalogue();
-  refreshPokemonResults();return pokemonCatalog;
-}
-function renderPokemon() {
-  if(!pokemonCurrent)return;
-  const image=pokemonCurrent.image,source=document.createElement('canvas');
-  source.width=image.naturalWidth||image.width;source.height=image.naturalHeight||image.height;
-  const sourceCtx=source.getContext('2d',{willReadFrequently:true});sourceCtx.drawImage(image,0,0);
-  const bounds=opaqueBounds(sourceCtx.getImageData(0,0,source.width,source.height).data,source.width,source.height);
-  if(!bounds)throw new Error('This sprite is empty. Choose another Pokémon.');
-  const scale=Math.min(64/bounds.w,32/bounds.h),w=Math.max(1,Math.floor(bounds.w*scale)),h=Math.max(1,Math.floor(bounds.h*scale));
-  background();ctx.imageSmoothingEnabled=false;
-  ctx.drawImage(image,bounds.x,bounds.y,bounds.w,bounds.h,Math.floor((64-w)/2),Math.floor((32-h)/2),w,h);
-  $('pokemonStatus').textContent=pokemonLabel(pokemonCurrent)+' ready.';
-}
-async function previewPokemon(query) {
-  stopScroll();const generation=++pokemonGeneration;pokemonLoading=true;$('pokemonLoad').disabled=true;updateSendButton();
-  try {
-    const pokemon=await pokemonClient.load(query);
-    if(generation!==pokemonGeneration||tab!=='pokemon')return;
-    pokemonCurrent=pokemon;renderPokemon();message('Sprite ready. Choose “Send to display”.');
-  } catch(error) {if(generation===pokemonGeneration)message(error.message,true);}
-  finally {if(generation===pokemonGeneration){pokemonLoading=false;$('pokemonLoad').disabled=false;updateSendButton();}}
-}
-$('pokemonSearchForm').onsubmit=event=>{event.preventDefault();previewPokemon($('pokemonQuery').value);};
-$('pokemonQuery').oninput=()=>{stopScroll();refreshPokemonResults();};
-$('pokemonScope').onchange=()=>{stopScroll();refreshPokemonResults();};
-$('pokemonResults').onchange=()=>previewPokemon($('pokemonResults').value);
-async function stepPokemon(direction) {
-  stopScroll();const generation=pokemonGeneration;
-  try {
-    await loadPokemonCatalog();if(generation!==pokemonGeneration||tab!=='pokemon')return;
-    const pool=filterPokemon(pokemonCatalog,$('pokemonScope').value),current=pool.findIndex(pokemon=>pokemon.id===pokemonCurrent?.id);
-    if(!pool.length)throw new Error('No Pokémon in this catalogue.');
-    const index=current<0?(direction>0?0:pool.length-1):(current+direction+pool.length)%pool.length;
-    $('pokemonQuery').value=pool[index].name;refreshPokemonResults();previewPokemon(pool[index].id);
-  } catch(error){if(generation===pokemonGeneration)message(error.message,true);}
-}
-$('pokemonPrevious').onclick=()=>stepPokemon(-1);$('pokemonNext').onclick=()=>stepPokemon(1);
-async function pokemonTick(generation,skipped=0) {
-  if(!pokemonCycling||generation!==pokemonGeneration)return;
-  try {
-    pokemonLoading=true;updateSendButton();
-    const pokemon=await pokemonClient.load(pokemonPool[pokemonCursor].id);
-    if(!pokemonCycling||generation!==pokemonGeneration)return;
-    pokemonCurrent=pokemon;renderPokemon();pokemonLoading=false;updateSendButton();
-    const sent=await sendCanvas();if(!pokemonCycling||generation!==pokemonGeneration)return;
-    if(sent){message('Cycling: '+pokemonLabel(pokemon)+'.');pokemonCursor=(pokemonCursor+1)%pokemonPool.length;}
-    const seconds=Math.max(2,Math.min(60,Number($('pokemonInterval').value)||5));
-    pokemonTimer=setTimeout(()=>pokemonTick(generation),sent?seconds*1000:200);
-  } catch(error) {
-    if(generation!==pokemonGeneration)return;
-    if(error.code==='NO_SPRITE'&&skipped+1<pokemonPool.length) {
-      pokemonCursor=(pokemonCursor+1)%pokemonPool.length;
-      pokemonTimer=setTimeout(()=>pokemonTick(generation,skipped+1),200);
-    } else {stopPokemonCycle();message(error.message,true);}
-  }
-}
-$('pokemonCycle').onclick=async()=>{
-  if(pokemonCycling){stopScroll();message('Cycling stopped. The last sprite remains on the panel.');return;}
-  stopScroll();const generation=++pokemonGeneration;
-  try {
-    if(document.hidden)throw new Error('Keep this page visible to cycle sprites.');
-    await loadPokemonCatalog();if(generation!==pokemonGeneration||tab!=='pokemon')return;
-    pokemonPool=filterPokemon(pokemonCatalog,$('pokemonScope').value);
-    if(!pokemonPool.length)throw new Error('No Pokémon in this catalogue.');
-    pokemonCursor=Math.max(0,pokemonPool.findIndex(pokemon=>pokemon.id===pokemonCurrent?.id));
-    pokemonCycling=true;$('pokemonCycle').textContent='Stop cycling';pokemonTick(generation);
-  } catch(error){if(generation===pokemonGeneration){stopPokemonCycle();message(error.message,true);}}
-};
+function updateSendButton() { $('send').disabled=busy||gifLoading; }
 document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>setTab(button.dataset.tab));
 ['text','fontSize','font','textColor','background','align','sharpText'].forEach(id=>$(id).addEventListener('input',()=>{stopScroll();renderText();}));
 ['fit','smoothing'].forEach(id=>$(id).onchange=renderImage);
@@ -1320,28 +1082,19 @@ canvas.onpointermove=event=>{if(drawing)paint(event);};
 canvas.onpointerup=canvas.onpointercancel=()=>drawing=false;
 $('pencil').onclick=()=>{erasing=false;$('pencil').classList.add('selected');$('eraser').classList.remove('selected');};
 $('eraser').onclick=()=>{erasing=true;$('eraser').classList.add('selected');$('pencil').classList.remove('selected');};
-async function sendCanvas(cryId=0,generation=null){
+async function sendCanvas(){
   if(busy)return false;
   busy=true;updateSendButton();
   try{
-    if(cryId)await gifCryStop;
-    if(generation!==null&&generation!==gifGeneration)return false;
     const pixels=rgbaTo565(ctx.getImageData(0,0,64,32).data);
     const form=new FormData();form.append('frame',new Blob([pixels],{type:'application/octet-stream'}),'frame.rgb565');
-    if(cryId)form.append('cry',String(cryId));
-    const uploading=request('/api/frame',{method:'POST',body:form});
-    if(cryId){gifCryOwned=true;gifCryUpload=uploading;}
-    const result=await uploading;
-    if(cryId){
-      if(gifCryUpload===uploading)gifCryUpload=null;
-      if((generation===null||generation===gifGeneration)&&$('gifCries').checked)cryNotice(result.cry);
-    }
+    await request('/api/frame',{method:'POST',body:form});
     return true;
   }finally{busy=false;updateSendButton();}
 }
 $('send').onclick=async()=>{stopScroll();try{if(await sendCanvas())message('Sent to your display.');}catch(e){message(e.message,true);}};
 $('clear').onclick=()=>{stopScroll();background();message('Preview cleared. Send it to clear the panel.');};
-function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';stopGifPlayback();stopPokemonCycle();}
+function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';stopGifPlayback();}
 async function streamTick(generation){
   if(!scrolling||generation!==streamGeneration)return;
   const started=performance.now();
@@ -1356,7 +1109,7 @@ async function streamTick(generation){
 $('scroll').onclick=()=>{if(scrolling){stopScroll();message('Scrolling stopped. The last frame remains on the panel.');return;}
   if(!$('text').value.trim()){message('Enter a message first.',true);return;}
   scrolling=true;scrollOffset=64;$('scroll').textContent='Stop scrolling';message('Streaming. Keep this page open and visible.');streamTick(++streamGeneration);};
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&(scrolling||pokemonCycling||pokemonLoading||gifRunning||gifLoading)){stopScroll();message('Playback paused because this page was hidden.');}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&(scrolling||gifRunning||gifLoading)){stopScroll();message('Playback paused because this page was hidden.');}});
 $('brightness').oninput=()=>$('brightnessValue').textContent=Math.round(Number($('brightness').value)/255*100)+'%';
 $('brightness').onchange=async()=>{try{await request('/api/brightness',{method:'POST',body:new URLSearchParams({value:$('brightness').value})});message('Brightness updated.');}catch(e){message(e.message,true);}};
 $('ssid').oninput=()=>wifiWasEdited=true;
@@ -1388,299 +1141,93 @@ async function refreshStatus(){
   }catch(e){$('connectionBadge').textContent='ESP32 unreachable';}
   finally{statusRefreshing=false;}
 }
-let gifEntries=[],gifMatches=[],gifPageIndex=0,gifCataloguePromise=null;
-let gifCurrent=null,imageGif=null,galleryGif=null,gifFrameIndex=0;
-let gifGeneration=0,gifTimer=null,gifRunning=false,gifPanelPlaying=false,gifLoading=false,gifCycling=false;
-let gifPool=[],gifPoolIndex=0,gifSwitchAt=0;
-let gifCryPending=false,gifCryOwned=false,gifCryUpload=null,gifCryStop=Promise.resolve();
-const gifCache=new Map(),gifScratch=document.createElement('canvas');
-let gifThumbnailGeneration=0;
-const gifThumbnailUrls=new Map();
-const gifScratchCtx=gifScratch.getContext('2d');
+let gifCurrent = null, imageGif = null, gifFrameIndex = 0;
+let gifGeneration = 0, gifTimer = null, gifRunning = false, gifPanelPlaying = false, gifLoading = false;
+const gifScratch = document.createElement('canvas');
+const gifScratchCtx = gifScratch.getContext('2d');
 
-function gifLabel(entry) {
-  return '#'+entry.id+' · '+entry.name.split('-').map(word=>word[0].toUpperCase()+word.slice(1)).join(' ')+
-    (entry.variant==='shiny'?' · Shiny':'');
-}
 function updateGifButtons() {
-  $('gifPlay').disabled=!galleryGif||gifLoading;
-  $('gifPlay').textContent=gifPanelPlaying&&gifCurrent?.owner==='gallery'?'Stop GIF playback':'Play GIF on panel';
-  $('imageGifPlay').disabled=gifLoading;
-  $('imageGifPlay').textContent=gifPanelPlaying&&gifCurrent?.owner==='image'?'Stop GIF playback':'Play GIF on panel';
-  $('gifCycle').textContent=gifCycling?'Stop cycling GIFs':'Cycle GIF gallery on panel';
-  document.querySelectorAll('.gallery-tile').forEach(button=>
-    button.setAttribute('aria-pressed',String(button.dataset.key===galleryGif?.entry.key)));
+  $('imageGifPlay').disabled = gifLoading;
+  $('imageGifPlay').textContent = gifPanelPlaying && gifCurrent?.owner === 'image'
+    ? 'Stop GIF playback' : 'Play GIF on panel';
   updateSendButton();
 }
+
 function stopGifPlayback() {
-  stopGifCry();
-  gifGeneration++;clearTimeout(gifTimer);gifRunning=false;gifPanelPlaying=false;gifCycling=false;gifLoading=false;
-  $('gifCryStatus').textContent=$('gifCries').checked?'Matching cries play once when each Pokémon appears.':'Pokémon cries muted.';
+  gifGeneration++;
+  clearTimeout(gifTimer);
+  gifRunning = false;
+  gifPanelPlaying = false;
+  gifLoading = false;
   updateGifButtons();
 }
-function stopGifCry() {
-  if(!gifCryOwned)return;
-  gifCryOwned=false;const pending=gifCryUpload;
-  // Wait for a pending first frame before stopping its sound. New playback
-  // waits for this stop, so a slow old upload cannot start a stale cry later.
-  gifCryStop=gifCryStop.then(()=>pending?.catch(()=>{}))
-    .then(()=>request('/api/speaker/cry/stop',{method:'POST'})).catch(()=>{});
-}
-function cryNotice(result) {
-  $('gifCryStatus').textContent=result==='queued'?'Matching cry sent to your JBL.':
-    result==='disconnected'?'GIF playing silently. Connect your JBL below to hear Pokémon cries.':
-    'Matching cries play once when each Pokémon appears.';
-}
-$('gifCries').onchange=()=>{
-  if(!$('gifCries').checked){stopGifCry();gifCryPending=false;}
-  $('gifCryStatus').textContent=$('gifCries').checked?
-    'Matching cries play when playback starts or the next Pokémon appears.':'Pokémon cries muted.';
-};
-async function loadGifCatalogue() {
-  if(!gifCataloguePromise)gifCataloguePromise=(async()=>{
-    const data=await request('/sprites/crystal.json');
-    if(!Array.isArray(data.entries)||!data.entries.length)throw new Error('The GIF gallery is empty.');
-    for(const entry of data.entries) {
-      if(!Number.isInteger(entry.id)||!/^[a-z0-9-]+$/.test(entry.name)||
-        !/^\/sprites\/crystal\/(normal|shiny)\/\d+(-[a-z])?\.gif$/.test(entry.url))
-        throw new Error('Invalid GIF catalogue. Upload the gallery again.');
-    }
-    gifEntries=data.entries;return gifEntries;
-  })().catch(error=>{gifCataloguePromise=null;throw error;});
-  await gifCataloguePromise;if(tab==='gallery')refreshGifGallery();return gifEntries;
-}
-function refreshGifGallery() {
-  const thumbnails=[],generation=++gifThumbnailGeneration;
-  gifMatches=filterCrystal(gifEntries,$('gifQuery').value,$('gifVariant').value,$('gifRegion').value);
-  const pages=Math.max(1,Math.ceil(gifMatches.length/24));gifPageIndex=Math.min(gifPageIndex,pages-1);
-  $('gifGallery').replaceChildren();
-  for(const entry of gifMatches.slice(gifPageIndex*24,(gifPageIndex+1)*24)) {
-    const button=document.createElement('button');button.className='gallery-tile';
-    button.dataset.key=entry.key;
-    button.setAttribute('aria-label','Load '+gifLabel(entry));
-    button.setAttribute('aria-pressed',String(galleryGif?.entry.key===entry.key));
-    const image=document.createElement('img');image.alt='';image.width=image.height=56;
-    thumbnails.push({image,url:entry.url});
-    const label=document.createElement('span');label.textContent=gifLabel(entry);
-    button.append(image,label);button.onclick=()=>previewGalleryGif(entry);$('gifGallery').append(button);
-  }
-  if(!gifMatches.length) {
-    const empty=document.createElement('p');empty.className='muted';empty.textContent=gifEntries.length?'No matching GIFs.':'Loading the GIF gallery…';
-    $('gifGallery').append(empty);
-  }
-  $('gifStatus').textContent=gifEntries.length?`${gifMatches.length} matching GIFs · ${gifEntries.length} downloaded sprites.`:'Loading the GIF gallery…';
-  $('gifPage').textContent=`${gifPageIndex+1} / ${pages}`;
-  $('gifPreviousPage').disabled=gifPageIndex===0;$('gifNextPage').disabled=gifPageIndex>=pages-1;
-  loadGifThumbnails(thumbnails,generation);
-}
-async function loadGifThumbnails(thumbnails,generation) {
-  // Browser image loaders otherwise open six simultaneous TCP connections.
-  // Share one request lane with frames/status to keep the ESP32's RAM bounded.
-  for(const {image,url} of thumbnails) {
-    if(generation!==gifThumbnailGeneration)return;
-    try {
-      let blobUrl=gifThumbnailUrls.get(url);
-      if(!blobUrl) {
-        const blob=await withDeviceRequest(async()=>{
-          if(generation!==gifThumbnailGeneration)return null;
-          const response=await fetch(url,{cache:'force-cache',signal:AbortSignal.timeout(8000)});
-          if(!response.ok)throw new Error('Thumbnail unavailable');
-          return response.blob();
-        });
-        if(!blob)return;
-        blobUrl=URL.createObjectURL(blob);gifThumbnailUrls.set(url,blobUrl);
-        if(gifThumbnailUrls.size>48) {
-          const oldest=gifThumbnailUrls.keys().next().value;
-          URL.revokeObjectURL(gifThumbnailUrls.get(oldest));gifThumbnailUrls.delete(oldest);
-        }
-      }
-      if(generation!==gifThumbnailGeneration)return;
-      image.src=blobUrl;
-    }catch(_) { /* A failed thumbnail leaves its labelled button usable. */ }
-  }
-}
-async function loadGalleryGif(entry) {
-  let pending=gifCache.get(entry.url);
-  if(!pending) {
-    pending=withDeviceRequest(async()=>{
-      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
-      try {
-        const response=await fetch(entry.url,{signal:controller.signal,cache:'force-cache',credentials:'omit'});
-        if(!response.ok)throw new Error('Could not load this GIF from the ESP32.');
-        const bytes=await response.arrayBuffer();if(bytes.byteLength>20*1024*1024)throw new Error('GIF is too large.');
-        return decodeGIF(bytes);
-      }catch(error) {
-        if(error.name==='AbortError')throw new Error('GIF download timed out. Check the ESP32 connection.');
-        throw error;
-      }finally {clearTimeout(timer);}
-    });
-    gifCache.set(entry.url,pending);
-    if(gifCache.size>8)gifCache.delete(gifCache.keys().next().value);
-    pending.catch(()=>{if(gifCache.get(entry.url)===pending)gifCache.delete(entry.url);});
-  }
-  return {animation:await pending,entry,owner:'gallery',name:gifLabel(entry)};
-}
-function renderGifFrame() {
-  if(!gifCurrent)return;
-  const animation=gifCurrent.animation,frame=animation.frames[gifFrameIndex%animation.frames.length];
-  gifScratch.width=animation.width;gifScratch.height=animation.height;
-  gifScratchCtx.putImageData(new ImageData(frame.rgba,animation.width,animation.height),0,0);
-  background();
-  if(gifCurrent.owner==='gallery') {
-    const b=animation.bounds,scale=Math.min(64/b.w,32/b.h),w=Math.max(1,Math.floor(b.w*scale)),h=Math.max(1,Math.floor(b.h*scale));
-    ctx.imageSmoothingEnabled=false;
-    ctx.drawImage(gifScratch,b.x,b.y,b.w,b.h,Math.floor((64-w)/2),Math.floor((32-h)/2),w,h);
-  }else {
-    ctx.imageSmoothingEnabled=$('smoothing').value==='smooth';
-    const p=imagePlacement(animation.width,animation.height,$('fit').value);
-    ctx.drawImage(gifScratch,p.x,p.y,p.w,p.h);
-  }
-}
-function startGifPreview() {
-  gifRunning=true;gifPanelPlaying=false;gifCryPending=false;gifFrameIndex=0;updateGifButtons();gifTick(gifGeneration);
-}
-async function previewGalleryGif(entry) {
-  stopScroll();const generation=gifGeneration;gifLoading=true;updateGifButtons();
-  message('Loading '+gifLabel(entry)+'…');
-  try {
-    const loaded=await loadGalleryGif(entry);
-    if(generation!==gifGeneration||tab!=='gallery')return;
-    gifCurrent=galleryGif=loaded;gifLoading=false;refreshGifGallery();startGifPreview();
-    message(loaded.name+' ready. Choose “Play GIF on panel”.');
-  }catch(error){if(generation===gifGeneration)message(error.message,true);}
-  finally{if(generation===gifGeneration){gifLoading=false;updateGifButtons();}}
-}
-async function gifTick(generation) {
-  if(!gifRunning||generation!==gifGeneration)return;
-  const started=performance.now();
-  try {
-    if(gifCycling&&performance.now()>=gifSwitchAt) {
-      gifPoolIndex=(gifPoolIndex+1)%gifPool.length;gifLoading=true;updateGifButtons();
-      const loaded=await loadGalleryGif(gifPool[gifPoolIndex]);
-      if(generation!==gifGeneration)return;
-      gifCurrent=galleryGif=loaded;gifFrameIndex=0;gifLoading=false;gifCryPending=true;
-      gifSwitchAt=performance.now()+Math.max(2,Math.min(60,Number($('gifInterval').value)||5))*1000;
-      updateGifButtons();
-    }
-    renderGifFrame();
-    let sent=true;
-    if(gifPanelPlaying) {
-      const cry=gifCryPending&&gifCurrent.owner==='gallery'&&$('gifCries').checked?gifCurrent.entry.id:0;
-      sent=await sendCanvas(cry,generation);
-      if(sent&&generation===gifGeneration)gifCryPending=false;
-    }
-    if(!gifRunning||generation!==gifGeneration)return;
-    const delay=gifCurrent.animation.frames[gifFrameIndex%gifCurrent.animation.frames.length].delay;
-    if(sent) {
-      if(gifPanelPlaying)message((gifCycling?'Cycling GIF: ':'Playing GIF: ')+gifCurrent.name+'.');
-      gifFrameIndex=(gifFrameIndex+1)%gifCurrent.animation.frames.length;
-    }
-    gifTimer=setTimeout(()=>gifTick(generation),sent?Math.max(0,Math.max(40,delay)-(performance.now()-started)):40);
-  }catch(error){if(generation===gifGeneration){stopGifPlayback();message(error.message,true);}}
-}
-function playCurrentGif(owner) {
-  if(gifPanelPlaying){stopScroll();message('GIF playback stopped. The last frame remains on the panel.');return;}
-  stopScroll();gifCurrent=owner==='gallery'?galleryGif:imageGif;
-  if(!gifCurrent){message('Choose a GIF first.',true);return;}
-  if(document.hidden){message('Keep this page visible during GIF playback.',true);return;}
-  gifRunning=gifPanelPlaying=true;gifCryPending=true;gifFrameIndex=0;updateGifButtons();gifTick(gifGeneration);
-}
-$('gifPlay').onclick=()=>playCurrentGif('gallery');$('imageGifPlay').onclick=()=>playCurrentGif('image');
-$('gifCycle').onclick=async()=>{
-  if(gifCycling){stopScroll();message('GIF cycling stopped. The last frame remains on the panel.');return;}
-  stopScroll();const generation=gifGeneration;
-  try {
-    if(document.hidden)throw new Error('Keep this page visible during GIF playback.');
-    await loadGifCatalogue();if(generation!==gifGeneration||tab!=='gallery')return;
-    gifPool=filterCrystal(gifEntries,$('gifQuery').value,$('gifVariant').value,$('gifRegion').value);
-    if(!gifPool.length)throw new Error('No matching GIFs to cycle. Clear or change the search.');
-    gifPoolIndex=Math.max(0,gifPool.findIndex(entry=>entry.key===galleryGif?.entry.key));gifLoading=true;updateGifButtons();
-    const loaded=await loadGalleryGif(gifPool[gifPoolIndex]);if(generation!==gifGeneration)return;
-    gifCurrent=galleryGif=loaded;gifLoading=false;gifFrameIndex=0;gifCryPending=true;gifRunning=gifPanelPlaying=gifCycling=true;
-    gifSwitchAt=performance.now()+Math.max(2,Math.min(60,Number($('gifInterval').value)||5))*1000;
-    updateGifButtons();gifTick(generation);
-  }catch(error){if(generation===gifGeneration){stopGifPlayback();message(error.message,true);}}
-};
-['gifQuery','gifVariant','gifRegion'].forEach(id=>$(id).addEventListener(id==='gifQuery'?'input':'change',()=>{
-  stopScroll();gifPageIndex=0;refreshGifGallery();
-}));
-$('gifPreviousPage').onclick=()=>{gifPageIndex=Math.max(0,gifPageIndex-1);refreshGifGallery();};
-$('gifNextPage').onclick=()=>{gifPageIndex++;refreshGifGallery();};
 
-let speakerState=null,speakerBusy=false,speakerRefreshing=false,speakerTimer=null;
-function speakerMessage(text,error=false) {
-  $('speakerMessage').textContent=text;$('speakerMessage').className='message '+(error?'error':'success');
+function renderGifFrame() {
+  if (!gifCurrent) return;
+  const animation = gifCurrent.animation;
+  const frame = animation.frames[gifFrameIndex % animation.frames.length];
+  gifScratch.width = animation.width;
+  gifScratch.height = animation.height;
+  gifScratchCtx.putImageData(new ImageData(frame.rgba, animation.width, animation.height), 0, 0);
+  background();
+  ctx.imageSmoothingEnabled = $('smoothing').value === 'smooth';
+  const placement = imagePlacement(animation.width, animation.height, $('fit').value);
+  ctx.drawImage(gifScratch, placement.x, placement.y, placement.w, placement.h);
 }
-function updateSpeakerControls() {
-  const state=speakerState?.state||'off',connected=!!speakerState?.connected;
-  const changing=['initializing','scanning','connecting','disconnecting'].includes(state);
-  $('speakerScan').disabled=speakerBusy||changing||connected;
-  $('speakerScan').textContent=state==='scanning'?'Scanning…':state==='initializing'?'Starting Bluetooth…':'Scan for speakers';
-  $('speakerDevice').disabled=speakerBusy||connected||['connecting','disconnecting'].includes(state);
-  $('speakerConnect').disabled=speakerBusy||connected||['initializing','connecting','disconnecting'].includes(state)||!$('speakerDevice').value;
-  $('speakerDisconnect').disabled=speakerBusy||!(['scanning','connecting','connected'].includes(state));
-  $('speakerTest').disabled=speakerBusy||!connected||!!speakerState?.testing||!!speakerState?.playing||state==='disconnecting';
-  $('speakerTest').textContent=speakerState?.testing?'Playing test sound…':'Play a 2-second test sound';
+
+function startGifPreview() {
+  gifRunning = true;
+  gifPanelPlaying = false;
+  gifFrameIndex = 0;
+  updateGifButtons();
+  gifTick(gifGeneration);
 }
-function renderSpeakerStatus(data) {
-  speakerState=data;
-  const labels={off:'Bluetooth is off. Scan to find your JBL Go 4.',initializing:'Starting ESP32 Bluetooth…',
-    scanning:'Scanning for speakers… Keep the JBL in pairing mode (about 13 seconds).',
-    connecting:'Connecting to '+(data.name||'the speaker')+'…',
-    connected:'Connected to '+(data.name||'the speaker')+'.'+(data.cryId?' Playing Pokémon cry #'+data.cryId+'.':''),disconnecting:'Disconnecting…',
-    idle:'Not connected. Scan and select your JBL Go 4.',error:'Bluetooth could not start.'};
-  $('speakerStatus').textContent=data.message||labels[data.state]||'Bluetooth status unavailable.';
-  $('speakerStatus').className='hint'+(data.message?' error':'');
-  const previous=$('speakerDevice').value;
-  const devices=[...(data.devices||[])].sort((a,b)=>Number(!/jbl/i.test(a.name))-Number(!/jbl/i.test(b.name))||b.rssi-a.rssi);
-  $('speakerDevice').replaceChildren();
-  const placeholder=document.createElement('option');placeholder.value='';
-  placeholder.textContent=devices.length?'Choose a speaker':data.state==='scanning'?'Searching…':'No speakers found — press JBL’s Bluetooth button and scan';
-  $('speakerDevice').append(placeholder);
-  for(const device of devices) {
-    const option=document.createElement('option');option.value=device.address;
-    option.textContent=device.name+' · '+device.address;
-    $('speakerDevice').append(option);
-  }
-  if(devices.some(device=>device.address===previous))$('speakerDevice').value=previous;
-  else if(data.connected&&devices.some(device=>device.address===data.address))$('speakerDevice').value=data.address;
-  if(!$('speakerDevice').value) {
-    const jbl=devices.find(device=>/^jbl go 4$/i.test(device.name));if(jbl)$('speakerDevice').value=jbl.address;
-  }
-  // Don't overwrite a slider while the user is changing it.
-  if(document.activeElement!==$('speakerVolume')&&Number.isInteger(data.volume)) {
-    $('speakerVolume').value=data.volume;$('speakerVolumeValue').textContent=data.volume+'%';
-  }
-  updateSpeakerControls();
-}
-async function refreshSpeakerStatus() {
-  if(speakerRefreshing||!$('speakerDetails').open||document.hidden)return;
-  speakerRefreshing=true;
-  try {renderSpeakerStatus(await request('/api/speaker'));}
-  catch(error){speakerMessage(error.message,true);}
-  finally{speakerRefreshing=false;}
-}
-async function speakerAction(action,body=null) {
-  if(speakerBusy)return;speakerBusy=true;updateSpeakerControls();
+
+async function gifTick(generation) {
+  if (!gifRunning || generation !== gifGeneration) return;
+  const started = performance.now();
   try {
-    const result=await request('/api/speaker/'+action,{method:'POST',...(body?{body:new URLSearchParams(body)}:{})});
-    speakerMessage(result.message||(action==='volume'?'Speaker audio volume updated.':'Speaker updated.'));
-    await refreshSpeakerStatus();
-  }catch(error){speakerMessage(error.message,true);}
-  finally{speakerBusy=false;updateSpeakerControls();}
+    renderGifFrame();
+    let sent = true;
+    if (gifPanelPlaying) sent = await sendCanvas();
+    if (!gifRunning || generation !== gifGeneration) return;
+    const delay = gifCurrent.animation.frames[gifFrameIndex % gifCurrent.animation.frames.length].delay;
+    if (sent) {
+      if (gifPanelPlaying) message('Playing GIF: ' + gifCurrent.name + '.');
+      gifFrameIndex = (gifFrameIndex + 1) % gifCurrent.animation.frames.length;
+    }
+    gifTimer = setTimeout(() => gifTick(generation), sent ? Math.max(0, Math.max(40, delay) - (performance.now() - started)) : 40);
+  } catch (error) {
+    if (generation === gifGeneration) {
+      stopGifPlayback();
+      message(error.message, true);
+    }
+  }
 }
-$('speakerScan').onclick=()=>speakerAction('scan');
-$('speakerDevice').onchange=updateSpeakerControls;
-$('speakerConnect').onclick=()=>speakerAction('connect',{address:$('speakerDevice').value});
-$('speakerDisconnect').onclick=()=>speakerAction('disconnect');
-$('speakerTest').onclick=()=>speakerAction('test');
-$('speakerVolume').oninput=()=>$('speakerVolumeValue').textContent=$('speakerVolume').value+'%';
-$('speakerVolume').onchange=()=>speakerAction('volume',{value:$('speakerVolume').value});
-$('speakerDetails').ontoggle=()=>{
-  clearInterval(speakerTimer);speakerTimer=null;
-  if($('speakerDetails').open){refreshSpeakerStatus();speakerTimer=setInterval(refreshSpeakerStatus,1500);}
-};
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshSpeakerStatus();});
+
+function playCurrentGif() {
+  if (gifPanelPlaying) {
+    stopScroll();
+    message('GIF playback stopped. The last frame remains on the panel.');
+    return;
+  }
+  stopScroll();
+  gifCurrent = imageGif;
+  if (!gifCurrent) {
+    message('Choose a GIF first.', true);
+    return;
+  }
+  if (document.hidden) {
+    message('Keep this page visible during GIF playback.', true);
+    return;
+  }
+  gifRunning = gifPanelPlaying = true;
+  gifFrameIndex = 0;
+  updateGifButtons();
+  gifTick(gifGeneration);
+}
+
+$('imageGifPlay').onclick = () => playCurrentGif();
 
 renderText();refreshStatus();setInterval(refreshStatus,4000);
 </script></body></html>

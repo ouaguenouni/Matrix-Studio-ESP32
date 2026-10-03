@@ -41,10 +41,3 @@ export function decodeGIF(buffer) {
   }
   return {width,height,frames,bounds:bounds||{x:0,y:0,w:width,h:height}};
 }
-
-export function filterCrystal(entries,query='',variant='normal',region='all') {
-  const search=query.trim().toLowerCase().replace(/^#/,'');
-  return entries.filter(entry=>(variant==='both'||entry.variant===variant)&&
-    (region==='all'||(region==='kanto'&&entry.id<=151)||(region==='johto'&&entry.id>151)||(region==='unown'&&entry.id===201))&&
-    (!search||(/^\d+$/.test(search)?entry.id===Number(search):entry.name.includes(search))));
-}
