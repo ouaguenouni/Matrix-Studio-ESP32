@@ -181,6 +181,20 @@ Run `node tests/codec_test.mjs` and compile/run `tests/frame_protocol_test.cpp` 
 a standard C++ compiler. `tests/browser_test.cjs` runs the real browser interface
 against simulated endpoints using Playwright. These do not replace hardware testing.
 
+The panel runs at six-bit colour depth. `platformio.ini` also defines
+`PIXEL_COLOR_DEPTH_BITS=6` when compiling the HUB75 library, so its brightness
+lookup table matches the six DMA bitplanes. An eight-bit table with only six
+bitplanes discards the upper bits and wraps intermediate colours; full white
+can still look correct. The firmware checks the configured depth at compile time.
+The regression test exercises the pinned library's actual table:
+
+```bash
+c++ -std=c++11 -Wall -Wextra -Werror -DPIXEL_COLOR_DEPTH_BITS=6 \
+  -I '.pio/libdeps/esp32dev/ESP32 HUB75 LED MATRIX PANEL DMA Display/src' \
+  tests/panel_colour_test.cpp -o /tmp/matrix-panel-colour-test
+/tmp/matrix-panel-colour-test
+```
+
 On hardware, first verify the previous RGB test sketch works. After uploading
 this project, use **Image → Preview a colour test → Send to display**. Then verify
 text, brightness, Wi-Fi reconnect after a reset, and preservation of the last frame
@@ -196,6 +210,11 @@ G2 → GPIO12, B2 → GPIO13. Turn off power before reseating wires.
 
 Send uppercase `W` over serial to fill the entire panel with white at the current
 brightness. Send normal content from the web interface to replace the white test.
+Send uppercase `G` for eight grayscale swatches from black to white on the top
+half and cream, pale yellow/red/green/blue/cyan/magenta, and white on the bottom.
+This uses direct RGB888 values to check intermediate shades independently of
+browser resizing and RGB565 conversion. Judge the colours directly: camera
+exposure timing can introduce tints or bands when photographing scanned LEDs.
 Send uppercase `H` for a static white `Hello` on a black background. This is drawn
 once using the on-device font, without browser rendering or continuous frame uploads.
 Startup now uses profile **N**, the best of the latest visual comparison: 4 MHz,
@@ -214,7 +233,7 @@ use the same content and intensity. Ignore the brief transition between profiles
 Report the letter with the fewest ghost pixels, checking both halves of the panel.
 Serial commands: `P` pauses/resumes, `N` advances, and `X` stops and restores the
 settings used before the sweep. Sending normal content, changing brightness,
-or using `T`, `W`, `H`, or `C` also stops the sweep and restores those settings.
+or using `T`, `W`, `G`, `H`, or `C` also stops the sweep and restores those settings.
 
 Send uppercase `F` for the focused **N → Q → R → S** comparison (12 seconds per
 test, 48 seconds per cycle). This retains N's weakest clock drive, phase false,

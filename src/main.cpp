@@ -13,6 +13,9 @@
 #include "FrameProtocol.h"
 #include "web_ui.h"
 
+static_assert(PIXEL_COLOR_DEPTH_BITS == 6,
+              "Compile the HUB75 library with the same six-bit depth as the DMA buffer.");
+
 WebServer server(80);
 Preferences settings;
 MatrixPanel_I2S_DMA* panel = nullptr;
@@ -159,6 +162,23 @@ void showHardwareWhiteTest() {
   panel->flipDMABuffer();
   receivedContent = true;
   Serial.println("Hardware white test: all 64x32 pixels WHITE; brightness=" + String(brightness));
+}
+
+void showHardwarePaletteTest() {
+  const uint8_t grays[] = {0, 32, 64, 96, 128, 180, 220, 255};
+  const uint8_t pastels[][3] = {{240, 230, 220}, {255, 240, 200}, {240, 200, 200},
+                              {200, 240, 200}, {200, 200, 240}, {200, 240, 240},
+                              {240, 200, 240}, {255, 255, 255}};
+  for (int16_t y = 0; y < 32; ++y) {
+    for (int16_t x = 0; x < 64; ++x) {
+      const size_t swatch = x / 8;
+      if (y < 16) panel->drawPixelRGB888(x, y, grays[swatch], grays[swatch], grays[swatch]);
+      else panel->drawPixelRGB888(x, y, pastels[swatch][0], pastels[swatch][1], pastels[swatch][2]);
+    }
+  }
+  panel->flipDMABuffer();
+  receivedContent = true;
+  Serial.println("Hardware palette test: top BLACK to WHITE grayscale; bottom CREAM, PALE YELLOW, RED, GREEN, BLUE, CYAN, MAGENTA, WHITE.");
 }
 
 void showHardwareTextTest() {
@@ -409,7 +429,7 @@ void setup() {
   config.i2sspeed = static_cast<HUB75_I2S_CFG::clk_speed>(40000000 / STARTUP_TIMING.divider);
   config.latch_blanking = 4; // Longer output blanking to reduce ghost pixels around text.
   config.double_buff = true;
-  config.setPixelColorDepthBits(6);
+  config.setPixelColorDepthBits(PIXEL_COLOR_DEPTH_BITS);
   panel = new MatrixPanel_I2S_DMA(config);
   if (!panel->begin()) {
     Serial.println("Panel initialization failed. Check DMA memory and library installation.");
@@ -420,6 +440,7 @@ void setup() {
   panel->setBrightness8(brightness);
   Serial.println("Startup profile N: 4 MHz, clkphase=false, latch blanking=4, clock drive=0.");
   Serial.println("Calculated panel refresh: " + String(panel->calculated_refresh_rate) + " Hz.");
+  Serial.println("Panel colour depth and compiled CIE table: " + String(PIXEL_COLOR_DEPTH_BITS) + " bits.");
   showMessage("STARTING");
   if (!settings.begin("matrix-ui", false)) {
     Serial.println("Could not open settings storage.");
@@ -462,7 +483,7 @@ void setup() {
   server.onNotFound([]() { sendJSON(404, "{\"error\":\"Not found\"}"); });
   server.begin();
   Serial.println("Matrix web server started.");
-  Serial.println("Send T for RGB, W for full-panel white, H for white Hello, or C to toggle clock drive.");
+  Serial.println("Send T for RGB, W for full-panel white, G for grayscale/pastels, H for white Hello, or C to toggle clock drive.");
   Serial.println("Send F for slow-clock tests N,Q,R,S or S for all A-S; P=pause/resume N=next X=stop.");
 }
 
@@ -471,6 +492,7 @@ void loop() {
     const char command = Serial.read();
     if (command == 'T') { stopTimingSweep(); showHardwareColorTest(); }
     else if (command == 'W') { stopTimingSweep(); showHardwareWhiteTest(); }
+    else if (command == 'G') { stopTimingSweep(); showHardwarePaletteTest(); }
     else if (command == 'H') { stopTimingSweep(); showHardwareTextTest(); }
     else if (command == 'C') {
       stopTimingSweep();

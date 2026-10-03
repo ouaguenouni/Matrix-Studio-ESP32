@@ -72,6 +72,22 @@ OBSERVED: User reports N best again after the N/Q/R/S slow-clock comparison.
           the remaining copies is unconfirmed.
 PASS: Reset reconfirmed startup N at 4 MHz and calculated refresh 105 Hz.
       Comparison stopped; static white Hello acknowledged and left displayed.
+OBSERVED: User reports pale sprite areas purple, then clarifies the tint is only
+          visible in photos. Camera capture timing is a separate possible cause.
+FOUND: Driver was compiled with an eight-bit CIE table but configured with six
+       DMA bitplanes. Reproduced cream RGB(240,230,220) emitting six-bit values
+       (26,4,47) instead of the matching table's (54,48,43). Full white emits
+       (63,63,63) in both cases, hiding the mismatch in endpoint tests.
+PASS: Added global PIXEL_COLOR_DEPTH_BITS=6 build flag, matching runtime depth,
+      and compile-time check. Actual library LUT regression verifies monotonic
+      output for all 256 input levels, no discarded bits, black/white endpoints,
+      and preservation of cream channel ordering.
+PASS: Firmware rebuilt (including HUB75 library), uploaded and verified after
+      reset: startup N, 105 Hz calculated refresh, compiled/runtime depth 6 bits.
+      Direct RGB888 grayscale/pastel diagnostic acknowledged and left displayed.
+      Static RAM: 51,320 bytes; flash: 857,329 bytes.
+PENDING: User visual assessment of sprites after the fix. Photo-only tint may
+         remain; no camera waveform or exposure timing was measured.
 NOT RUN: Actual HTTP multipart processing validation on physical hardware.
 
 The provided browser test uses simulated endpoints and would not, by itself,
