@@ -215,6 +215,13 @@ half and cream, pale yellow/red/green/blue/cyan/magenta, and white on the bottom
 This uses direct RGB888 values to check intermediate shades independently of
 browser resizing and RGB565 conversion. Judge the colours directly: camera
 exposure timing can introduce tints or bands when photographing scanned LEDs.
+Send uppercase `V` for red, green, blue, magenta, purple, dark purple, lavender,
+and white columns. The top half uses direct RGB888, the bottom RGB565 as used
+by browser uploads. Magenta, purple and dark purple have zero green input.
+In the browser's Image tab, **Preview a purple test → Send to display** sends
+the same colours through the actual browser/upload path. Compare directly with
+your eyes. Differences between panel halves can also indicate separate upper
+and lower signal wiring, so they are not proof of an encoding fault by themselves.
 Send uppercase `H` for a static white `Hello` on a black background. This is drawn
 once using the on-device font, without browser rendering or continuous frame uploads.
 Startup now uses profile **N**, the best of the latest visual comparison: 4 MHz,
@@ -233,7 +240,7 @@ use the same content and intensity. Ignore the brief transition between profiles
 Report the letter with the fewest ghost pixels, checking both halves of the panel.
 Serial commands: `P` pauses/resumes, `N` advances, and `X` stops and restores the
 settings used before the sweep. Sending normal content, changing brightness,
-or using `T`, `W`, `G`, `H`, or `C` also stops the sweep and restores those settings.
+or using `T`, `W`, `G`, `V`, `H`, or `C` also stops the sweep and restores those settings.
 
 Send uppercase `F` for the focused **N → Q → R → S** comparison (12 seconds per
 test, 48 seconds per cycle). This retains N's weakest clock drive, phase false,

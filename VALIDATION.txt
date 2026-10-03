@@ -88,6 +88,18 @@ PASS: Firmware rebuilt (including HUB75 library), uploaded and verified after
       Static RAM: 51,320 bytes; flash: 857,329 bytes.
 PENDING: User visual assessment of sprites after the fix. Photo-only tint may
          remain; no camera waveform or exposure timing was measured.
+OBSERVED: User reports substantially improved borders/contours after the matched
+          six-bit colour fix and requests keeping it. Haunter still looks greenish.
+PASS: Added direct RGB888/RGB565 purple comparison and matching browser chart.
+      Codec and actual driver LUT tests verify purple does not gain green.
+      Browser regression verifies all 2048 uploaded chart pixels against the
+      expected RGB565 values, plus existing browser controls and scrolling.
+PASS: Firmware built and uploaded; reset confirms N at 4 MHz, calculated refresh
+      105 Hz, matching six-bit table/DMA. Purple comparison acknowledged over USB
+      and left displayed. Static RAM: 51,320 bytes; flash: 858,201 bytes.
+PENDING: User comparison of purple columns on both panel halves and browser
+         preview. The new green tint's cause is unconfirmed; no channel swap or
+         calibration has been applied without evidence.
 NOT RUN: Actual HTTP multipart processing validation on physical hardware.
 
 The provided browser test uses simulated endpoints and would not, by itself,

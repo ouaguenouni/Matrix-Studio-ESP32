@@ -49,6 +49,11 @@ const html=fs.readFileSync(path.join(root,'web/preview.html'),'utf8');
     await page.locator('#tab-image').click();await page.locator('#pattern').click();await page.locator('#send').click();
     await page.waitForFunction(()=>document.querySelector('#message').textContent==='Sent to your display.'&&!document.querySelector('#send').disabled);
     assert.equal(frame.readUInt16LE(0),0xf800);assert.equal(frame.readUInt16LE(21*2),0x07e0);assert.equal(frame.readUInt16LE(42*2),0x001f);
+    await page.locator('#purplePattern').click();await page.locator('#send').click();
+    await page.waitForFunction(()=>!document.querySelector('#send').disabled);
+    const purpleWords=[0xf800,0x07e0,0x001f,0xf81f,0x8018,0x400c,0xb49c,0xffff];
+    for(let y=0;y<32;y++)for(let x=0;x<64;x++)
+      assert.equal(frame.readUInt16LE((y*64+x)*2),purpleWords[Math.floor(x/8)]);
     const png=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=c.height=1;const x=c.getContext('2d');x.fillStyle='red';x.fillRect(0,0,1,1);return c.toDataURL().split(',')[1];});
     await page.locator('#imageFile').setInputFiles({name:'red.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')});
     await page.getByText('Image ready. Choose “Send to display”.',{exact:true}).waitFor();

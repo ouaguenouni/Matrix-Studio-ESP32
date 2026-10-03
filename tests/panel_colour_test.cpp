@@ -19,5 +19,9 @@ int main() {
   // table feeding six bitplanes emitted (26,4,47), turning it purple.
   assert(lumConvTab[240] > lumConvTab[230]);
   assert(lumConvTab[230] > lumConvTab[220]);
+  // Purple's red/blue must remain lit while its zero green input stays off.
+  assert((lumConvTab[0] & mask) == 0);
+  for (unsigned input : {64u, 96u, 128u, 192u, 255u})
+    assert((lumConvTab[input] & mask) > 0);
   std::cout << "Panel colours: matching LUT/DMA depth, monotonic shades, endpoints, and cream hue passed.\n";
 }

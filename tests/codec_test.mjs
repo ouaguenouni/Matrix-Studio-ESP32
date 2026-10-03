@@ -7,6 +7,13 @@ const rgba=new Uint8ClampedArray([
 assert.deepEqual([...rgbaTo565(rgba,6,1)], [0,248,224,7,31,0,255,255,0,0,0,128]);
 assert.equal(rgbaTo565(new Uint8ClampedArray(64*32*4)).length,4096);
 assert.throws(()=>rgbaTo565(new Uint8Array(3)));
+// Violet shades must not acquire green during packing or endian conversion.
+for (const [r,b] of [[255,255],[128,192],[64,96]]) {
+  const bytes=rgbaTo565(new Uint8ClampedArray([r,0,b,255]),1,1);
+  const pixel=bytes[0]|(bytes[1]<<8);
+  assert.equal((pixel>>5)&63,0);
+  assert((pixel>>11)>0&&(pixel&31)>0);
+}
 const mask=new Uint8ClampedArray([255,255,255,0, 255,255,255,127, 255,255,255,128, 255,255,255,255]);
 const sharp=rgbaTo565(textMaskToRgba(mask,'#ffffff','#000000'),4,1);
 assert.deepEqual([...sharp], [0,0, 0,0, 255,255, 255,255]);

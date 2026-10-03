@@ -39,6 +39,7 @@
 <label for="smoothing">Resizing</label><select id="smoothing"><option value="smooth">Smooth for photos</option><option value="pixel">Sharp for pixel art</option></select>
 <p class="muted">PNG, JPEG, WebP, BMP or a GIF's first frame. Images are resized on this device before sending. Animated GIF playback is not included.</p>
 <button id="pattern" class="wide">Preview a colour test</button>
+<button id="purplePattern" class="wide" style="margin-top:10px">Preview a purple test</button>
 </div>
 <div class="pane" id="pane-draw" role="tabpanel" aria-labelledby="tab-draw" hidden>
 <p>Draw directly on the preview with your finger or mouse.</p><label for="brush">Brush colour</label><input id="brush" type="color" value="#ffb267">
@@ -168,6 +169,13 @@ $('pattern').onclick=()=>{
   stopScroll();background();
   ['#ff0000','#00ff00','#0000ff'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(i*21,0,i===2?22:21,24);});
   ctx.fillStyle='#ffffff';ctx.font='7px monospace';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('RGB TEST',2,25);
+};
+$('purplePattern').onclick=()=>{
+  stopScroll();background();
+  ['#ff0000','#00ff00','#0000ff','#ff00ff','#8000c0','#400060','#b090e0','#ffffff'].forEach((colour,i)=>{
+    ctx.fillStyle=colour;ctx.fillRect(i*8,0,8,32);
+  });
+  message('Left to right: red, green, blue, magenta, purple, dark purple, lavender, white. Send to compare.');
 };
 function paint(event){
   const r=canvas.getBoundingClientRect();const x=Math.floor((event.clientX-r.left)*64/r.width),y=Math.floor((event.clientY-r.top)*32/r.height);

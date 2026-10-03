@@ -193,6 +193,22 @@ void showHardwareTextTest() {
   Serial.println("Hardware text test: static WHITE Hello on BLACK; brightness=" + String(brightness));
 }
 
+void showHardwarePurpleTest() {
+  const uint8_t colors[][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 0, 255},
+                             {128, 0, 192}, {64, 0, 96}, {176, 144, 224}, {255, 255, 255}};
+  for (int16_t y = 0; y < 32; ++y) {
+    for (int16_t x = 0; x < 64; ++x) {
+      const auto& color = colors[x / 8];
+      if (y < 16) panel->drawPixelRGB888(x, y, color[0], color[1], color[2]);
+      else panel->drawPixel(x, y, panel->color565(color[0], color[1], color[2]));
+    }
+  }
+  panel->flipDMABuffer();
+  receivedContent = true;
+  Serial.println("Hardware purple test: RED GREEN BLUE MAGENTA PURPLE DARK-PURPLE LAVENDER WHITE.");
+  Serial.println("Top=direct RGB888; bottom=RGB565 like browser uploads. Magenta/purple/dark-purple have zero green input.");
+}
+
 void applyTimingProfile(const TimingProfile& profile) {
   // Temporarily blank both buffers while changing the clock routing and divider.
   panel->setBrightness8(0);
@@ -483,7 +499,7 @@ void setup() {
   server.onNotFound([]() { sendJSON(404, "{\"error\":\"Not found\"}"); });
   server.begin();
   Serial.println("Matrix web server started.");
-  Serial.println("Send T for RGB, W for full-panel white, G for grayscale/pastels, H for white Hello, or C to toggle clock drive.");
+  Serial.println("Send T for RGB, W for full-panel white, G for grayscale/pastels, V for purple comparison, H for white Hello, or C to toggle clock drive.");
   Serial.println("Send F for slow-clock tests N,Q,R,S or S for all A-S; P=pause/resume N=next X=stop.");
 }
 
@@ -493,6 +509,7 @@ void loop() {
     if (command == 'T') { stopTimingSweep(); showHardwareColorTest(); }
     else if (command == 'W') { stopTimingSweep(); showHardwareWhiteTest(); }
     else if (command == 'G') { stopTimingSweep(); showHardwarePaletteTest(); }
+    else if (command == 'V') { stopTimingSweep(); showHardwarePurpleTest(); }
     else if (command == 'H') { stopTimingSweep(); showHardwareTextTest(); }
     else if (command == 'C') {
       stopTimingSweep();
