@@ -154,7 +154,7 @@ void showHardwareColorTest() {
   panel->flipDMABuffer();
   receivedContent = true;
   Serial.println("Hardware RGB test: RED | GREEN | BLUE, with a WHITE strip on the bottom 8 rows.");
-  Serial.println("G1=GPIO26 B1=GPIO27 G2=GPIO12 B2=GPIO13; brightness=" + String(brightness));
+  Serial.println("G1=GPIO27 B1=GPIO26 G2=GPIO13 B2=GPIO12; brightness=" + String(brightness));
 }
 
 void showHardwareWhiteTest() {
@@ -424,11 +424,13 @@ void setup() {
   delay(500);
   HUB75_I2S_CFG config(64, 32, 1);
   config.gpio.r1 = 25;
-  config.gpio.g1 = 26;
-  config.gpio.b1 = 27;
+  // The direct RGB test rendered RED, BLUE, GREEN on this panel. Correct its
+  // green/blue channel order for both halves at the driver pin mapping.
+  config.gpio.g1 = 27;
+  config.gpio.b1 = 26;
   config.gpio.r2 = 14;
-  config.gpio.g2 = 12;
-  config.gpio.b2 = 13;
+  config.gpio.g2 = 13;
+  config.gpio.b2 = 12;
   config.gpio.a = 23;
   config.gpio.b = 19;
   config.gpio.c = 5;
@@ -457,6 +459,9 @@ void setup() {
   Serial.println("Startup profile N: 4 MHz, clkphase=false, latch blanking=4, clock drive=0.");
   Serial.println("Calculated panel refresh: " + String(panel->calculated_refresh_rate) + " Hz.");
   Serial.println("Panel colour depth and compiled CIE table: " + String(PIXEL_COLOR_DEPTH_BITS) + " bits.");
+  Serial.printf("Panel colour pins: R1=%d G1=%d B1=%d R2=%d G2=%d B2=%d\n",
+                config.gpio.r1, config.gpio.g1, config.gpio.b1,
+                config.gpio.r2, config.gpio.g2, config.gpio.b2);
   showMessage("STARTING");
   if (!settings.begin("matrix-ui", false)) {
     Serial.println("Could not open settings storage.");

@@ -100,6 +100,16 @@ PASS: Firmware built and uploaded; reset confirms N at 4 MHz, calculated refresh
 PENDING: User comparison of purple columns on both panel halves and browser
          preview. The new green tint's cause is unconfirmed; no channel swap or
          calibration has been applied without evidence.
+OBSERVED: User confirms direct RGB bands display RED, BLUE, GREEN instead of
+          RED, GREEN, BLUE. This establishes swapped green/blue channels.
+CHANGE: Corrected driver pins for both halves: G1=27, B1=26, G2=13, B2=12.
+        Retained R1=25, R2=14, matching six-bit LUT/DMA and N timing at 4 MHz.
+PASS: Firmware compilation and USB upload after the mapping correction.
+      Static RAM: 51,320 bytes; flash: 858,297 bytes.
+PASS: USB reset confirms corrected R/G/B pins on both halves, six-bit colour
+      depth and startup N at 4 MHz (calculated refresh 105 Hz). RGB and purple
+      diagnostics acknowledged; purple comparison left displayed.
+PENDING: User visual confirmation of corrected primary colours and Haunter.
 NOT RUN: Actual HTTP multipart processing validation on physical hardware.
 
 The provided browser test uses simulated endpoints and would not, by itself,

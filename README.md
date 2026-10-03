@@ -109,18 +109,20 @@ clients on the same LAN or password-protected setup network can control it.
 
 ## Pin mapping
 
-The reported ribbon-wire connections match the assignments in `src/main.cpp`.
-Wire colours identify the ribbon conductors; they do not identify LED colours.
+The table records the reported ribbon-wire connections and corrected firmware
+LED channels. The direct RGB test rendered red, blue, green, so firmware swaps
+green and blue on both panel halves. Wire colours identify the ribbon conductors;
+they do not identify LED colours.
 
-| Wire number | Wire colour | HUB75 signal | ESP32 printed label |
+| Wire number | Wire colour | Firmware channel/signal | ESP32 printed label |
 |---|---|---|---|
 | 1 | Brown — outer edge | R1 | G25 |
-| 2 | Red | G1 | G26 |
-| 3 | Orange | B1 | G27 |
+| 2 | Red | B1 | G26 |
+| 3 | Orange | G1 | G27 |
 | 4 | Yellow | GND | GND |
 | 5 | Green | R2 | G14 |
-| 6 | Blue | G2 | G12 |
-| 7 | Purple | B2 | G13 |
+| 6 | Blue | B2 | G12 |
+| 7 | Purple | G2 | G13 |
 | 8 | Grey | GND | GND |
 | 9 | White | A | G23 |
 | 10 | Black | B | G19 |
@@ -205,8 +207,8 @@ baud and send uppercase `T`. The firmware displays red, green, and blue vertical
 bands on the top 24 rows, with a white strip on the bottom 8 rows, using RGB888
 directly. Send normal content from the web
 interface to replace the test. If green and blue are black in this test too, check
-the corresponding signal wires and panel hardware: G1 → GPIO26, B1 → GPIO27,
-G2 → GPIO12, B2 → GPIO13. Turn off power before reseating wires.
+the corresponding signal wires and panel hardware: G1 → GPIO27, B1 → GPIO26,
+G2 → GPIO13, B2 → GPIO12. Turn off power before reseating wires.
 
 Send uppercase `W` over serial to fill the entire panel with white at the current
 brightness. Send normal content from the web interface to replace the white test.
