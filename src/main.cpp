@@ -5,6 +5,7 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Preferences.h>
+#include <LittleFS.h>
 #include <esp_system.h>
 #include <driver/gpio.h>
 #include <rom/gpio.h>
@@ -12,6 +13,8 @@
 #include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>
 #include "FrameProtocol.h"
 #include "web_ui.h"
+#include "crystal_assets.h"
+#include "BluetoothSpeaker.h"
 
 static_assert(PIXEL_COLOR_DEPTH_BITS == 6,
               "Compile the HUB75 library with the same six-bit depth as the DMA buffer.");
@@ -28,6 +31,46 @@ uint8_t brightness = 30;
 unsigned uploadFiles = 0;
 gpio_drive_cap_t clockDrive = GPIO_DRIVE_CAP_0;
 bool runtimeClockPhase = false;
+bool spriteStorageReady = false;
+void sendJSON(int code, const String& body);
+
+void crystalCatalogueRoute() {
+  File file = spriteStorageReady ? LittleFS.open("/crystal.json.gz", "r") : File();
+  if (!file && spriteStorageReady) file = LittleFS.open("/crystal.json", "r");
+  if (!file) { sendJSON(503, "{\"error\":\"Sprite gallery is missing. Upload the LittleFS image with PlatformIO.\"}"); return; }
+  server.sendHeader("Cache-Control", "no-cache");
+  // streamFile adds Content-Encoding automatically for a .gz filename.
+  server.streamFile(file, "application/json");
+}
+
+void staticSpriteRoute() {
+  if (server.method() == HTTP_GET) {
+    const String path = server.uri();
+    for (const CrystalAsset& asset : CRYSTAL_ASSETS) {
+      if (path != asset.path) continue;
+      File file = spriteStorageReady ? LittleFS.open("/crystal.bin", "r") : File();
+      if (!file || asset.offset + asset.size > file.size() || !file.seek(asset.offset)) {
+        sendJSON(503, "{\"error\":\"Sprite storage unavailable. Upload the LittleFS image.\"}"); return;
+      }
+      server.sendHeader("Content-Encoding", "gzip");
+      server.sendHeader("Cache-Control", "public, max-age=604800");
+      server.sendHeader("X-Content-Type-Options", "nosniff");
+      server.setContentLength(asset.size);
+      server.send(200, "image/gif", "");
+      char chunk[1024];
+      size_t remaining = asset.size;
+      while (remaining && server.client().connected()) {
+        const size_t count = file.readBytes(chunk, remaining < sizeof(chunk) ? remaining : sizeof(chunk));
+        if (!count) break;
+        server.sendContent(chunk, count);
+        remaining -= count;
+        yield();
+      }
+      return;
+    }
+  }
+  sendJSON(404, "{\"error\":\"Not found\"}");
+}
 
 enum SignalDriveMode : uint8_t { SIGNALS_DEFAULT, CONTROL_SOFT, ALL_SOFT };
 SignalDriveMode signalDriveMode = SIGNALS_DEFAULT;
@@ -377,6 +420,18 @@ void finishFrame() {
     sendJSON(400, "{\"error\":\"Upload one frame file of exactly 4096 RGB565-LE bytes\"}");
     return;
   }
+  const String cry = server.arg("cry");
+  unsigned species = 0;
+  if (cry.length()) {
+    bool validCry = cry.length() <= 3;
+    for (size_t i = 0; i < cry.length(); ++i) validCry &= isDigit(cry[i]);
+    species = cry.toInt();
+    if (!validCry || species < 1 || species > 251) {
+      incomingFrame.reject();
+      sendJSON(400, "{\"error\":\"Cry species must be a Pokédex number from 1 to 251.\"}");
+      return;
+    }
+  }
   stopTimingSweep();
   for (size_t y = 0; y < MatrixProtocol::HEIGHT; ++y)
     for (size_t x = 0; x < MatrixProtocol::WIDTH; ++x)
@@ -384,7 +439,11 @@ void finishFrame() {
   panel->flipDMABuffer();
   receivedContent = true;
   ++framesReceived;
-  sendJSON(200, "{\"ok\":true,\"frames\":" + String(framesReceived) + "}");
+  // Start the matching sound only after a complete frame has reached the panel.
+  const bool playingCry = species && playPokemonCry(species);
+  const char* audio = !species ? "none" : playingCry ? "queued" : "disconnected";
+  sendJSON(200, "{\"ok\":true,\"frames\":" + String(framesReceived) +
+           ",\"cry\":" + jsonString(audio) + "}");
   incomingFrame.reject();
 }
 
@@ -422,6 +481,7 @@ void wifiRoute() {
 void setup() {
   Serial.begin(115200);
   delay(500);
+  prepareSpeakerMemory();
   HUB75_I2S_CFG config(64, 32, 1);
   config.gpio.r1 = 25;
   // The direct RGB test rendered RED, BLUE, GREEN on this panel. Correct its
@@ -488,6 +548,9 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
   beginHomeWiFi();
+  // Mount without formatting: a missing image must not erase user storage.
+  spriteStorageReady = LittleFS.begin(false);
+  Serial.println(spriteStorageReady ? "Crystal GIF storage mounted." : "Crystal GIF storage missing; upload the filesystem image.");
 
   const char* headers[] = {"X-Matrix-Control"};
   server.collectHeaders(headers, 1);
@@ -501,7 +564,9 @@ void setup() {
   server.on("/api/frame", HTTP_POST, finishFrame, uploadFrame);
   server.on("/api/brightness", HTTP_POST, brightnessRoute);
   server.on("/api/wifi", HTTP_POST, wifiRoute);
-  server.onNotFound([]() { sendJSON(404, "{\"error\":\"Not found\"}"); });
+  registerSpeakerRoutes(server);
+  server.on("/sprites/crystal.json", HTTP_GET, crystalCatalogueRoute);
+  server.onNotFound(staticSpriteRoute);
   server.begin();
   Serial.println("Matrix web server started.");
   Serial.println("Send T for RGB, W for full-panel white, G for grayscale/pastels, V for purple comparison, H for white Hello, or C to toggle clock drive.");
@@ -532,6 +597,7 @@ void loop() {
     else if (command == 'X') stopTimingSweep(true);
   }
   server.handleClient();
+  updateBluetoothSpeaker();
   updateWiFi();
   updateTimingSweep();
   delay(1);

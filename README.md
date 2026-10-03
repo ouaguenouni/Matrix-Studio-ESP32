@@ -1,7 +1,8 @@
 # Matrix Studio: ESP32 + Waveshare 64x32
 
 A local browser interface hosted on your ESP32. Send text, resized still images,
-pixel drawings, Pokémon sprites, or browser-streamed scrolling text to the panel. No cloud account
+pixel drawings, Pokémon sprites, animated GIFs, or browser-streamed scrolling text
+to the panel. No cloud account
 or separate server is needed. Upload this firmware once; ordinary display updates
 then happen over Wi-Fi.
 
@@ -26,6 +27,8 @@ The browser interaction tests pass against simulated endpoints in local Chromium
 The live browser fetched the online catalogue, sent Haunter to the ESP32, and
 cycled from Haunter to Gengar with acknowledged frame uploads. Physical colour
 appearance still needs the viewer's confirmation.
+Crystal GIF storage mounting, animated Haunter uploads, and cycling between
+normal and shiny Haunter have also been verified through the live browser.
 
 ## 1. Install and upload
 
@@ -40,21 +43,29 @@ appearance still needs the viewer's confirmation.
    ```bash
    pio run
    pio run --target upload
+   pio run --target uploadfs
    pio device monitor
    ```
 
-4. If multiple USB serial devices are connected, select the ESP32 explicitly with
+4. **Upload Filesystem Image** (`pio run --target uploadfs`) installs the 552 downloaded
+   Crystal GIF sprites. Do this once after installing this version, and again if
+   gallery assets change. `partitions.csv` reserves one 2.5 MB firmware slot for
+   Wi-Fi, the panel and Bluetooth audio. Uploads use USB; OTA is not implemented.
+   NVS and the 1.4 MB LittleFS retain their original offsets and sizes, preserving
+   saved Wi-Fi credentials and installed GIFs when updating the firmware.
+5. If multiple USB serial devices are connected, select the ESP32 explicitly with
    `pio run --target upload --upload-port /dev/cu.YOUR_PORT` and
    `pio device monitor --port /dev/cu.YOUR_PORT` (use the appropriate port on your OS).
    Run `pio device list` to see available ports.
-5. If uploading waits at “Connecting…”, hold BOOT until writing starts, then release it.
-6. The serial monitor uses **115200 baud**. Press the board's **EN/RST** button
+6. If uploading waits at “Connecting…”, hold BOOT until writing starts, then release it.
+7. The serial monitor uses **115200 baud**. Press the board's **EN/RST** button
    to view startup messages.
 
 Firmware lives in `src/main.cpp`; headers live in `include/`. The build automatically
 regenerates `include/web_ui.h` from `web/interface.html`, `web/codec.mjs`, and
-`web/pokemon.mjs` using
-PlatformIO's own Python interpreter. No filesystem upload is required.
+`web/pokemon.mjs`, `web/gif.mjs`, `web/gallery.js`, `web/speaker.js`, and the bundled GIF decoder using
+PlatformIO's own Python interpreter. The same build repacks original GIFs from
+`assets/crystal/` into `data/` for the LittleFS upload; no external server is needed.
 
 ## 2. Join your home Wi-Fi
 
@@ -95,8 +106,28 @@ by device and network. Guest Wi-Fi/client isolation may block access.
   mode uses full foreground/background pixels instead of dim antialiased edges,
   including during scrolling. Uncheck it to keep smooth edges.
   The preview shows clipping at the actual 64x32 resolution.
-- **Image:** local PNG, JPEG, WebP, BMP, or GIF first frame; fit, crop, or stretch.
+- **Image:** local PNG, JPEG, WebP, BMP, or animated GIF; fit, crop, or stretch.
   Images are resized on your phone/computer, then sent as 4096-byte pixel frames.
+  GIFs animate in the preview. Click **Play GIF on panel** to stream the animation,
+  or **Send to display** to send a still frame. Playback loops while the page stays
+  visible; Stop, Clear, or switching tabs stops uploads.
+- **GIFs:** an offline gallery of 552 downloaded Pokémon Crystal animations
+  (276 normal and 276 shiny, including Unown A–Z). Search by English name or number,
+  filter normal/shiny, Kanto/Johto/Unown, and browse pages of 24 thumbnails. Select
+  a thumbnail, then **Play GIF on panel**. **Cycle GIF gallery on panel** animates
+  every matching sprite across all pages, starting at the selection and wrapping
+  around; **Seconds per Pokémon** controls when it changes sprites (2–60 seconds).
+  The browser decodes transparency, frame disposal and delays, then sends one frame
+  at a time. Frame delays have a 40 ms minimum and uploads can slow playback when
+  Wi-Fi is busy. Sprite scaling uses one bounding box across the whole animation
+  so the image stays aligned. Native GIF loop counts are ignored for continuous
+  playback. The gallery needs no internet access after the filesystem is uploaded.
+  **Play matching Pokémon cries on JBL** is enabled by default. With a speaker
+  connected, the first accepted frame of each selected/cycled sprite queues its
+  legacy cry once. GIF loops stay silent until the next Pokémon appears. Normal,
+  shiny, and every Unown letter share their species cry. Previews and local GIF
+  uploads stay silent. Muting, stopping, switching tabs or hiding the browser
+  stops the current cry. GIFs still play if the JBL is disconnected.
 - **Pokémon:** search the complete PokéAPI catalogue by English name or number
   (for example, `haunter` or `93`). Select **Load sprite**, then **Send to display**.
   Matching names appear in the list; Previous/Next browse in Pokédex order.
@@ -113,12 +144,29 @@ by device and network. Guest Wi-Fi/client isolation may block access.
 - **Send to display:** commits the preview. Editing alone does not update the panel.
 - **Clear:** clears the preview; then press Send to clear the physical panel.
 - **Brightness:** changes the physical panel immediately; initial value is 30/255.
+- **Bluetooth speaker:** expand the JBL Go 4 card. Turn on the speaker and press
+  its Bluetooth button, then **Scan for speakers**. Choose the JBL by name/address
+  and click **Connect speaker**. Connection status comes from the ESP32's real
+  Bluetooth Classic A2DP source, not the phone's Bluetooth. Connecting is silent.
+  **Play a 2-second test sound** sends a quiet 440 Hz tone; **Speaker audio volume**
+  scales both cries and that tone, independently of the JBL's hardware volume.
+  **Disconnect** ends the link or
+  cancels a scan/connection. Bluetooth starts only on Scan and remains initialized
+  until reboot; connections are not restored automatically. No music source is
+  included. Scanning enables Wi-Fi modem sleep, which the ESP32 requires for
+  Wi-Fi/Bluetooth coexistence. Bluetooth and Wi-Fi share the radio, so GIF uploads
+  may slow during audio playback or discovery. The Bluetooth source uses no
+  panel pins or I2S.
+  The browser serializes ESP32 requests, including gallery thumbnails. Firmware
+  bounds Wi-Fi to two static RX and four dynamic RX/TX buffers, one Bluetooth
+  audio peer, and 512-byte multipart upload chunks so those features can share
+  RAM without reducing the panel's colour depth or double buffering.
 - **Scrolling:** sends approximately eight frames per second, subject to Wi-Fi speed.
   Keep the browser page visible and awake. It stops if you leave the tab or close it.
 
 The last sent frame remains while the ESP32 is powered, even if the browser closes.
 Display content and brightness are **not** restored after power loss; Wi-Fi settings are.
-Animated sprites, videos, saved playlists, and remote control from outside your network
+Videos, saved playlists, and remote control from outside your network
 are extension points, not included features. This interface has no user login;
 clients on the same LAN or password-protected setup network can control it.
 
@@ -161,9 +209,18 @@ the included Python image sender without changing how the panel is wired.
 |---|---|---|---|
 | `/` | GET | None | Browser interface |
 | `/api/status` | GET | None | Network, dimensions, brightness, frame count, free heap |
-| `/api/frame` | POST | One multipart file named `frame` | Atomically replace all pixels |
+| `/api/frame` | POST | One multipart file named `frame`; optional `cry=1..251` field | Atomically replace all pixels and queue a matching cry after accepting the frame |
 | `/api/brightness` | POST | URL-encoded `value=0..255` | Set brightness |
 | `/api/wifi` | POST | URL-encoded `ssid` and `password` | Save credentials and connect |
+| `/api/speaker` | GET | None | Speaker state and discovered audio devices |
+| `/api/speaker/scan` | POST | None | Initialize Classic Bluetooth and scan for 12.8 seconds |
+| `/api/speaker/connect` | POST | URL-encoded discovered `address` | Connect to an A2DP speaker |
+| `/api/speaker/disconnect` | POST | None | Cancel discovery/connection or disconnect |
+| `/api/speaker/test` | POST | None | Send a two-second 440 Hz test tone |
+| `/api/speaker/volume` | POST | URL-encoded `value=0..100` | Set cry/test sound volume |
+| `/api/speaker/cry/stop` | POST | None | Stop the current Pokémon cry without disconnecting |
+| `/sprites/crystal.json` | GET | None | Downloaded Crystal GIF catalogue |
+| `/sprites/crystal/{normal,shiny}/{number}.gif` | GET | None | Original GIF, served with gzip content encoding |
 
 All POST requests require the header `X-Matrix-Control: 1`. It limits accidental
 cross-site browser requests; it is **not** an authentication credential. CORS is
@@ -187,7 +244,7 @@ python3 tools/send_image.py http://192.168.1.42 photo.png
 ```
 
 To edit the embedded interface, modify `web/interface.html`, `web/codec.mjs`, or
-`web/pokemon.mjs`,
+`web/pokemon.mjs`, `web/gif.mjs`, or `web/gallery.js`,
 then build and upload the firmware again. PlatformIO regenerates the embedded UI
 automatically; you can also run `python3 tools/build_ui.py` manually.
 `web/preview.html` is the generated UI for local inspection; a normal local preview
@@ -201,6 +258,53 @@ sprite caching, and cropping. `tests/browser_test.cjs` and
 `tests/pokemon_browser_test.cjs` run the browser interface against simulated
 endpoints using Playwright, including sprite playback and cancellation. These
 do not replace hardware testing.
+
+`node tests/gif_test.mjs` compares every archived GIF's composited frames against
+Pillow reference hashes in `tests/fixtures/crystal_frames.json`, and checks disposal,
+timing and gallery filters. `tests/gif_browser_test.cjs` tests animated preview,
+multiple changing RGB565 frame uploads, cycling, local GIF uploads, cancellation
+and error handling. The small MIT-licensed omggif decoder is bundled locally with
+its license retained in `web/vendor/`.
+
+Original GIFs are in `assets/crystal/normal/` and `assets/crystal/shiny/`.
+Run `python3 tools/prepare_crystal.py` to regenerate the compressed pack manually.
+The roughly 1.1 MB pack plus catalogue fits the default 1.4 MB filesystem.
+The catalogue is also served compressed (about 6 KB) to keep loading fast when
+Bluetooth shares the Wi-Fi radio.
+
+All 251 legacy Pokémon cries are downloaded from the pinned
+[PokéAPI cries archive](https://github.com/PokeAPI/cries) in `assets/cries/legacy/`.
+`assets/cries/adpcm/` contains 8 kHz mono IMA ADPCM blocks. The normal offline
+build concatenates them and embeds the roughly 840 KB pack in firmware flash;
+no LittleFS space is needed for audio. The existing 2.5 MB app slot is nearly
+full (about 99%), so future additions may require changing storage/compression.
+The Bluetooth callback decodes from flash and interpolates to 44.1 kHz stereo
+without allocating a full cry buffer. It feeds a short silence tail before
+suspending A2DP so the queued end of the cry can finish transmitting.
+The panel settings and filesystem layout
+remain unchanged. Bluetooth speaker buffering can add a short delay to audible
+output; the image and cry cue are submitted together, not synchronized to each
+individual GIF animation frame.
+
+`python3 tools/prepare_cries.py --download --convert` explicitly downloads and
+converts audio using curl and ffmpeg. Normal builds do not require ffmpeg or
+internet access. Original/converted SHA-256 hashes are in the audio catalogue.
+`python3 tests/cry_audio_test.py` compares all 251 firmware decodes against
+FFmpeg with address/undefined-behavior sanitizers, and checks interpolation,
+replacement and end-of-stream. `tests/cry_browser_test.cjs` verifies first-frame
+species matching, once-per-appearance playback, cycling, shiny/Unown mapping,
+mute, cancellation/restart ordering, disconnected fallback, and a maximum of
+one simultaneous ESP32 request, including thumbnails and polling.
+
+`tests/speaker_browser_test.cjs` checks discovery results, distinct speakers with
+the same name, asynchronous connection status, disconnect, test tone/volume
+controls, request errors and mobile layout against simulated endpoints. Actual
+JBL pairing and audible output require the speaker to be available in pairing mode.
+Hardware checks verified Bluetooth startup, discovery and an A2DP connection to
+the JBL Go 4. Haunter's first-frame cry completed through the A2DP start/suspend
+acknowledgements while GIF uploads continued; listening confirmed the full cry
+after the memory and audio-tail fixes. Repeated playback stayed responsive with
+stable free memory and no restarts during the live test.
 
 The panel runs at six-bit colour depth. `platformio.ini` also defines
 `PIXEL_COLOR_DEPTH_BITS=6` when compiling the HUB75 library, so its brightness
@@ -335,5 +439,7 @@ describes startup profile N and is not updated by temporary sweep overrides.
 - Waveshare panel: https://docs.waveshare.com/RGB-Matrix-Px-64x32
 - Pokémon catalogue API: https://pokeapi.co/docs/v2
 - Pokémon sprite repository: https://github.com/PokeAPI/sprites
+- Crystal GIF archive: https://bluemoonfalls.com/pages/general/crystal-gif-archive
+- GIF decoder (MIT): https://github.com/deanm/omggif
 
 Prepared 2026-10-03. No real Wi-Fi credentials are included.

@@ -7,6 +7,10 @@
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#182a29;background:#f4f5ee;font-size:15px;--green:#176b57;--border:#d8dfd6}
 *{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:30px 22px 55px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:34px}.logo{display:flex;gap:12px;align-items:center}.mark{font-size:24px;letter-spacing:2px;color:var(--green)}h1{font-size:23px;letter-spacing:-.8px;margin:0}h2{font-size:18px;margin:0 0 15px}p{line-height:1.6}.muted{color:#657470;font-size:13px}.badge{padding:8px 12px;border:1px solid var(--border);border-radius:30px;font-size:12px;background:#fff}.lead{font-size:36px;letter-spacing:-1.5px;font-weight:600;margin:0 0 7px}.sub{margin:0 0 28px;color:#657470}.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:22px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}.preview{background:#0a1110;border-radius:12px;padding:18px;margin:18px 0;color:#95ada4}.preview canvas{display:block;width:100%;height:auto;aspect-ratio:2;background:#000;image-rendering:pixelated;touch-action:none;cursor:crosshair}.caps{text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:#64756c;display:flex;justify-content:space-between;gap:10px}label{display:block;font-size:13px;font-weight:600;margin:15px 0 6px}input:not([type=color]):not([type=range]),textarea,select{font:inherit;width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:#182a29}textarea{resize:vertical;min-height:88px}input[type=color]{width:100%;height:41px;border:1px solid var(--border);border-radius:8px;padding:4px;background:#fff}input[type=range]{width:100%;accent-color:var(--green)}button{font:inherit;cursor:pointer;border:1px solid var(--border);border-radius:9px;padding:10px 14px;background:#fff;color:#182a29;font-weight:600}button:hover{background:#edf4ee}button:disabled{opacity:.55;cursor:wait}.primary{background:var(--green);color:#fff;border-color:var(--green)}.primary:hover{background:#105642}.wide{width:100%}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}.tab{flex:1;font-size:13px;padding:8px}.tab[aria-selected=true]{background:#e8f2eb;color:#125944;border-color:#91b5a5}.pane[hidden]{display:none}.message{min-height:24px;font-size:13px;line-height:1.5;margin-top:12px}.error{color:#a33028}.success{color:var(--green)}.connection{margin-top:22px}summary{cursor:pointer;font-size:15px;font-weight:600}details[open] summary{margin-bottom:15px}a{color:var(--green);overflow-wrap:anywhere}footer{font-size:12px;color:#657470;margin-top:25px}.hint{background:#f0f5ef;border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.5}.selected{background:#e8f2eb!important;border-color:#91b5a5!important}small{font-size:12px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e6a558;outline-offset:2px}@media(max-width:730px){main{padding:22px 15px}.layout{grid-template-columns:1fr}.lead{font-size:29px}header{margin-bottom:25px}.card{padding:18px}.preview{padding:10px}}
 </style>
+<style>
+.tabs{flex-wrap:wrap}.tab{min-width:48px}.gif-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.gallery-tile{min-width:0;padding:8px 4px;font-size:11px;line-height:1.4}.gallery-tile img{display:block;margin:0 auto 5px;width:56px;height:56px;image-rendering:pixelated;object-fit:contain}.gallery-tile[aria-pressed=true]{background:#e8f2eb;border-color:#91b5a5}.gallery-tile span{display:block;overflow-wrap:anywhere}.gallery-pages{font-size:12px;text-align:center}.gif-gallery .muted{grid-column:1/-1}
+@media(max-width:730px){.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
 </head>
 <body><main>
 <header><div class="logo"><span class="mark" aria-hidden="true">▦</span><h1>Matrix Studio</h1></div><span class="badge" id="connectionBadge">Connecting…</span></header>
@@ -22,7 +26,7 @@
 <p class="muted">Brightness changes apply directly to the panel.</p>
 </section>
 <section class="card" aria-label="Canvas tools">
-<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-pokemon" aria-controls="pane-pokemon" aria-selected="false" data-tab="pokemon">Pokémon</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
+<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-pokemon" aria-controls="pane-pokemon" aria-selected="false" data-tab="pokemon">Pokémon</button><button class="tab" role="tab" id="tab-gallery" aria-controls="pane-gallery" aria-selected="false" data-tab="gallery">GIFs</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
 <div class="pane" id="pane-text" role="tabpanel" aria-labelledby="tab-text">
 <label for="text">Message</label><textarea id="text" maxlength="500">Hello!</textarea>
 <div class="row"><div><label for="textColor">Text colour</label><input id="textColor" type="color" value="#ffffff"></div><div><label for="background">Background</label><input id="background" type="color" value="#000000"></div></div>
@@ -37,7 +41,8 @@
 <label for="imageFile">Choose an image</label><input type="file" id="imageFile" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp">
 <label for="fit">Fit to display</label><select id="fit"><option value="contain">Fit whole image</option><option value="cover">Fill and crop</option><option value="stretch">Stretch</option></select>
 <label for="smoothing">Resizing</label><select id="smoothing"><option value="smooth">Smooth for photos</option><option value="pixel">Sharp for pixel art</option></select>
-<p class="muted">PNG, JPEG, WebP, BMP or a GIF's first frame. Images are resized on this device before sending. Animated GIF playback is not included.</p>
+<p class="muted">PNG, JPEG, WebP, BMP and animated GIF. Images are resized here before sending. Keep this page visible during GIF playback.</p>
+<button id="imageGifPlay" class="wide" hidden>Play GIF on panel</button>
 <button id="pattern" class="wide">Preview a colour test</button>
 <button id="purplePattern" class="wide" style="margin-top:10px">Preview a purple test</button>
 </div>
@@ -55,6 +60,21 @@
 <p class="muted">Cycles the selected catalogue in Pokédex order. Keep this page open and visible; stopping leaves the last sprite on the panel.</p>
 <p class="muted">Internet is needed to load new sprites. <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">Sprites and catalogue from PokéAPI</a>.</p>
 </div>
+<div class="pane" id="pane-gallery" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+<p class="muted">Pokémon Crystal · 552 animated sprites stored on your ESP32.</p>
+<label for="gifQuery">Search GIFs by name or number</label><input type="search" id="gifQuery" placeholder="Haunter or 93" maxlength="60">
+<div class="row"><div><label for="gifVariant">Colours</label><select id="gifVariant"><option value="normal">Normal</option><option value="shiny">Shiny</option><option value="both">Normal and shiny</option></select></div><div><label for="gifRegion">Pokémon</label><select id="gifRegion"><option value="all">All Crystal sprites</option><option value="kanto">Kanto (1–151)</option><option value="johto">Johto (152–251)</option><option value="unown">Unown forms</option></select></div></div>
+<p id="gifStatus" class="muted" role="status" aria-live="polite">Loading the GIF gallery…</p>
+<div id="gifGallery" class="gif-gallery" aria-label="Crystal GIF gallery"></div>
+<div class="row"><button id="gifPreviousPage">Previous page</button><span id="gifPage" class="gallery-pages"></span><button id="gifNextPage">Next page</button></div>
+<button id="gifPlay" class="wide" style="margin-top:16px" disabled>Play GIF on panel</button>
+<label for="gifCries"><input id="gifCries" type="checkbox" checked style="width:auto"> Play matching Pokémon cries on JBL</label>
+<p id="gifCryStatus" class="muted" role="status">Matching cries play once when each Pokémon appears. Connect your JBL below; its volume slider controls cries too.</p>
+<label for="gifInterval">Seconds per Pokémon</label><input id="gifInterval" type="number" min="2" max="60" value="5">
+<button id="gifCycle" class="wide" style="margin-top:12px">Cycle GIF gallery on panel</button>
+<p class="muted">Cycling uses every matching sprite across all pages. Keep this page open and visible. Stop leaves the last frame on the panel.</p>
+<p class="muted">GIFs downloaded from <a href="https://bluemoonfalls.com/pages/general/crystal-gif-archive" target="_blank" rel="noopener noreferrer">Blue Moon Falls</a>. Original Pokémon artwork © Nintendo / Game Freak.</p>
+</div>
 <div class="pane" id="pane-draw" role="tabpanel" aria-labelledby="tab-draw" hidden>
 <p>Draw directly on the preview with your finger or mouse.</p><label for="brush">Brush colour</label><input id="brush" type="color" value="#ffb267">
 <div class="row" style="margin-top:18px"><button id="pencil" class="selected">Pencil</button><button id="eraser">Eraser</button></div>
@@ -62,6 +82,17 @@
 </div>
 </section>
 </div>
+<details class="card connection" id="speakerDetails"><summary>Bluetooth speaker · JBL Go 4</summary>
+<p class="muted">Turn on your JBL Go 4 and press its Bluetooth button to enter pairing mode. Scan, select the speaker, then connect.</p>
+<p class="hint" id="speakerStatus" role="status" aria-live="polite">Bluetooth is off until you scan for a speaker.</p>
+<button id="speakerScan" class="wide">Scan for speakers</button>
+<label for="speakerDevice">Available speakers</label><select id="speakerDevice"><option value="">Scan to find your JBL Go 4</option></select>
+<div class="row" style="margin-top:12px"><button id="speakerConnect" class="primary" disabled>Connect speaker</button><button id="speakerDisconnect" disabled>Disconnect</button></div>
+<label for="speakerVolume">Speaker audio volume <span id="speakerVolumeValue" class="muted">25%</span></label><input id="speakerVolume" type="range" min="0" max="100" value="25">
+<button id="speakerTest" class="wide" style="margin-top:12px" disabled>Play a 2-second test sound</button>
+<p class="muted">The ESP32 plays matching cries during GIF playback. This volume controls cries and the test sound; you can also adjust volume on the JBL.</p>
+<div class="message" id="speakerMessage" role="status" aria-live="polite"></div>
+</details>
 <details class="card connection" id="wifiDetails"><summary>Wi-Fi connection</summary>
 <p id="networkInfo" class="hint">Checking the ESP32…</p>
 <form id="wifiForm"><div class="row"><div><label for="ssid">Home Wi-Fi name (2.4 GHz)</label><input id="ssid" name="ssid" maxlength="32" autocomplete="off" required></div><div><label for="wifiPassword">Wi-Fi password</label><input id="wifiPassword" name="password" type="password" minlength="8" maxlength="63" autocomplete="new-password" required></div></div>
@@ -72,18 +103,26 @@
 </main><script>
 /*__CODEC__*/
 /*__POKEMON__*/
+/*__GIF__*/
 const $ = id => document.getElementById(id);
 const canvas = $('canvas'), ctx = canvas.getContext('2d', {willReadFrequently:true});
 const textMask = document.createElement('canvas'); textMask.width=64; textMask.height=32;
 const textCtx = textMask.getContext('2d', {willReadFrequently:true});
 let tab = 'text', loadedImage = null, imageGeneration = 0, erasing = false, drawing = false;
 let scrolling = false, scrollOffset = 64, streamTimer = null, busy = false, streamGeneration = 0;
-let lastStatus = null, initialized = false, wifiWasEdited = false;
+let lastStatus = null, initialized = false, wifiWasEdited = false, statusRefreshing = false;
 const pokemonClient=createPokemonClient();
 let pokemonCatalog=[],pokemonCurrent=null,pokemonCycling=false,pokemonTimer=null,pokemonGeneration=0,pokemonLoading=false;
 let pokemonPool=[],pokemonCursor=0;
 function message(text, error = false) { $('message').textContent = text; $('message').className = 'message ' + (error ? 'error' : 'success'); }
-async function request(path, options = {}) {
+let deviceRequests=Promise.resolve();
+function withDeviceRequest(work) {
+  const pending=deviceRequests.then(work);deviceRequests=pending.catch(()=>{});return pending;
+}
+function request(path, options = {}) {
+  return withDeviceRequest(()=>performRequest(path,options));
+}
+async function performRequest(path, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 8000);
   try {
@@ -116,6 +155,7 @@ function renderText() {
   compositeText();
 }
 function renderImage() {
+  if(imageGif){gifCurrent=imageGif;renderGifFrame();return;}
   if(!loadedImage) return;
   background();ctx.imageSmoothingEnabled=$('smoothing').value==='smooth';
   const p=imagePlacement(loadedImage.width,loadedImage.height,$('fit').value);
@@ -130,8 +170,12 @@ function setTab(next) {
     if(pokemonCurrent)renderPokemon();
     loadPokemonCatalog().catch(error=>message(error.message,true));
   }
+  else if(next==='gallery') {
+    gifCurrent=galleryGif;if(gifCurrent)renderGifFrame();else background();
+    loadGifCatalogue().catch(error=>message(error.message,true));
+  }
 }
-function updateSendButton() { $('send').disabled=busy||pokemonLoading; }
+function updateSendButton() { $('send').disabled=busy||pokemonLoading||gifLoading; }
 function stopPokemonCycle() {
   pokemonCycling=false;pokemonGeneration++;clearTimeout(pokemonTimer);pokemonLoading=false;
   $('pokemonCycle').textContent='Start cycling on panel';$('pokemonLoad').disabled=false;updateSendButton();
@@ -224,9 +268,21 @@ document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>setTa
 ['fit','smoothing'].forEach(id=>$(id).onchange=renderImage);
 $('imageFile').onchange=async()=>{
   const file=$('imageFile').files[0]; if(!file)return;
+  stopScroll();
   const generation=++imageGeneration;
+  const gifToken=gifGeneration;
   try {
     if(file.size>20*1024*1024)throw new Error('Choose an image smaller than 20 MB.');
+    const signature=new TextDecoder().decode(await file.slice(0,6).arrayBuffer());
+    if(signature==='GIF87a'||signature==='GIF89a') {
+      gifLoading=true;updateSendButton();
+      const animation=decodeGIF(await file.arrayBuffer());
+      if(generation!==imageGeneration||gifToken!==gifGeneration||tab!=='image')return;
+      if(loadedImage?.close)loadedImage.close();loadedImage=null;
+      imageGif={animation,owner:'image',name:file.name};gifCurrent=imageGif;gifFrameIndex=0;
+      $('imageGifPlay').hidden=false;$('smoothing').value='pixel';
+      gifLoading=false;startGifPreview();message('GIF ready. Choose “Play GIF on panel” to animate it.');return;
+    }
     let image;
     if(typeof createImageBitmap==='function') image=await createImageBitmap(file);
     else image=await new Promise((resolve,reject)=>{
@@ -234,10 +290,12 @@ $('imageFile').onchange=async()=>{
       img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};
       img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('This image format could not be opened.'));};img.src=url;
     });
-    if(generation!==imageGeneration){if(image.close)image.close();return;}
+    if(generation!==imageGeneration||gifToken!==gifGeneration||tab!=='image'){if(image.close)image.close();return;}
+    imageGif=null;$('imageGifPlay').hidden=true;
     if(loadedImage&&loadedImage.close)loadedImage.close();loadedImage=image;renderImage();
     message('Image ready. Choose “Send to display”.');
-  }catch(error){message(error.message,true);}
+  }catch(error){if(gifToken===gifGeneration)message(error.message,true);}
+  finally {if(gifToken===gifGeneration){gifLoading=false;updateSendButton();}}
 };
 $('pattern').onclick=()=>{
   stopScroll();background();
@@ -261,18 +319,28 @@ canvas.onpointermove=event=>{if(drawing)paint(event);};
 canvas.onpointerup=canvas.onpointercancel=()=>drawing=false;
 $('pencil').onclick=()=>{erasing=false;$('pencil').classList.add('selected');$('eraser').classList.remove('selected');};
 $('eraser').onclick=()=>{erasing=true;$('eraser').classList.add('selected');$('pencil').classList.remove('selected');};
-async function sendCanvas(){
+async function sendCanvas(cryId=0,generation=null){
   if(busy)return false;
   busy=true;updateSendButton();
   try{
+    if(cryId)await gifCryStop;
+    if(generation!==null&&generation!==gifGeneration)return false;
     const pixels=rgbaTo565(ctx.getImageData(0,0,64,32).data);
     const form=new FormData();form.append('frame',new Blob([pixels],{type:'application/octet-stream'}),'frame.rgb565');
-    await request('/api/frame',{method:'POST',body:form});return true;
+    if(cryId)form.append('cry',String(cryId));
+    const uploading=request('/api/frame',{method:'POST',body:form});
+    if(cryId){gifCryOwned=true;gifCryUpload=uploading;}
+    const result=await uploading;
+    if(cryId){
+      if(gifCryUpload===uploading)gifCryUpload=null;
+      if((generation===null||generation===gifGeneration)&&$('gifCries').checked)cryNotice(result.cry);
+    }
+    return true;
   }finally{busy=false;updateSendButton();}
 }
 $('send').onclick=async()=>{stopScroll();try{if(await sendCanvas())message('Sent to your display.');}catch(e){message(e.message,true);}};
 $('clear').onclick=()=>{stopScroll();background();message('Preview cleared. Send it to clear the panel.');};
-function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';stopPokemonCycle();}
+function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';stopGifPlayback();stopPokemonCycle();}
 async function streamTick(generation){
   if(!scrolling||generation!==streamGeneration)return;
   const started=performance.now();
@@ -287,7 +355,7 @@ async function streamTick(generation){
 $('scroll').onclick=()=>{if(scrolling){stopScroll();message('Scrolling stopped. The last frame remains on the panel.');return;}
   if(!$('text').value.trim()){message('Enter a message first.',true);return;}
   scrolling=true;scrollOffset=64;$('scroll').textContent='Stop scrolling';message('Streaming. Keep this page open and visible.');streamTick(++streamGeneration);};
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&(scrolling||pokemonCycling||pokemonLoading)){stopScroll();message('Playback paused because this page was hidden.');}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&(scrolling||pokemonCycling||pokemonLoading||gifRunning||gifLoading)){stopScroll();message('Playback paused because this page was hidden.');}});
 $('brightness').oninput=()=>$('brightnessValue').textContent=Math.round(Number($('brightness').value)/255*100)+'%';
 $('brightness').onchange=async()=>{try{await request('/api/brightness',{method:'POST',body:new URLSearchParams({value:$('brightness').value})});message('Brightness updated.');}catch(e){message(e.message,true);}};
 $('ssid').oninput=()=>wifiWasEdited=true;
@@ -299,7 +367,8 @@ $('wifiForm').onsubmit=async event=>{
   finally{$('saveWiFi').disabled=false;}
 };
 async function refreshStatus(){
-  if(busy)return;
+  if(busy||statusRefreshing||document.hidden)return;
+  statusRefreshing=true;
   try{
     const data=await request('/api/status');lastStatus=data;
     $('connectionBadge').textContent=data.connected?'On your Wi-Fi':'Setup network';
@@ -316,6 +385,9 @@ async function refreshStatus(){
       initialized=true;
     }
   }catch(e){$('connectionBadge').textContent='ESP32 unreachable';}
+  finally{statusRefreshing=false;}
 }
+/*__GALLERY__*/
+/*__SPEAKER__*/
 renderText();refreshStatus();setInterval(refreshStatus,4000);
 </script></body></html>
