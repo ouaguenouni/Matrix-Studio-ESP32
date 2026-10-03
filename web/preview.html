@@ -22,7 +22,7 @@
 <p class="muted">Brightness changes apply directly to the panel.</p>
 </section>
 <section class="card" aria-label="Canvas tools">
-<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
+<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-pokemon" aria-controls="pane-pokemon" aria-selected="false" data-tab="pokemon">Pokémon</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
 <div class="pane" id="pane-text" role="tabpanel" aria-labelledby="tab-text">
 <label for="text">Message</label><textarea id="text" maxlength="500">Hello!</textarea>
 <div class="row"><div><label for="textColor">Text colour</label><input id="textColor" type="color" value="#ffffff"></div><div><label for="background">Background</label><input id="background" type="color" value="#000000"></div></div>
@@ -41,6 +41,20 @@
 <button id="pattern" class="wide">Preview a colour test</button>
 <button id="purplePattern" class="wide" style="margin-top:10px">Preview a purple test</button>
 </div>
+<div class="pane" id="pane-pokemon" role="tabpanel" aria-labelledby="tab-pokemon" hidden>
+<form id="pokemonSearchForm">
+<label for="pokemonQuery">Pokémon name or number</label><input id="pokemonQuery" type="search" value="haunter" placeholder="Haunter or 93" maxlength="60">
+<button id="pokemonLoad" class="wide" style="margin-top:10px" type="submit">Load sprite</button>
+</form>
+<label for="pokemonScope">Catalogue</label><select id="pokemonScope"><option value="all">All Pokémon and forms</option><option value="gen1">First generation (1–151)</option></select>
+<label for="pokemonResults">Matching Pokémon</label><select id="pokemonResults" size="5" aria-label="Matching Pokémon"></select>
+<p id="pokemonStatus" class="muted" role="status" aria-live="polite">Search the online sprite catalogue.</p>
+<div class="row"><button id="pokemonPrevious">Previous</button><button id="pokemonNext">Next</button></div>
+<label for="pokemonInterval">Seconds per sprite</label><input id="pokemonInterval" type="number" value="5" min="2" max="60">
+<button id="pokemonCycle" class="wide" style="margin-top:12px">Start cycling on panel</button>
+<p class="muted">Cycles the selected catalogue in Pokédex order. Keep this page open and visible; stopping leaves the last sprite on the panel.</p>
+<p class="muted">Internet is needed to load new sprites. <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">Sprites and catalogue from PokéAPI</a>.</p>
+</div>
 <div class="pane" id="pane-draw" role="tabpanel" aria-labelledby="tab-draw" hidden>
 <p>Draw directly on the preview with your finger or mouse.</p><label for="brush">Brush colour</label><input id="brush" type="color" value="#ffb267">
 <div class="row" style="margin-top:18px"><button id="pencil" class="selected">Pencil</button><button id="eraser">Eraser</button></div>
@@ -54,7 +68,7 @@
 <button type="submit" id="saveWiFi" style="margin-top:15px">Save and connect</button></form>
 <p class="muted">The credentials are saved on the ESP32. If joining fails, its setup network stays available.</p><div id="wifiMessage" class="message" role="status"></div>
 </details>
-<footer>Local control · No cloud service · The last image stays until you replace it or restart the ESP32.</footer>
+<footer>Local display control · The last image stays until you replace it or restart the ESP32.</footer>
 </main><script>
 function rgbaTo565(rgba, width = 64, height = 32) {
   if (rgba.length !== width * height * 4) throw new Error('Unexpected canvas dimensions');
@@ -93,6 +107,104 @@ function imagePlacement(iw, ih, mode, w = 64, h = 32) {
   return { x: (w - iw * scale) / 2, y: (h - ih * scale) / 2, w: iw * scale, h: ih * scale };
 }
 
+function opaqueBounds(rgba,width,height) {
+  if(rgba.length!==width*height*4)throw new Error('Unexpected sprite dimensions');
+  let left=width,top=height,right=-1,bottom=-1;
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(rgba[(y*width+x)*4+3]) {
+    left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+  }
+  return right<0 ? null : {x:left,y:top,w:right-left+1,h:bottom-top+1};
+}
+
+function pokemonQuery(value) {
+  const query=String(value).trim().toLowerCase().replace(/^#/, '');
+  if (/^\d+$/.test(query) && Number(query)>0) return String(Number(query));
+  if (/^[a-z][a-z0-9-]*$/.test(query)) return query;
+  throw new Error('Enter a Pokémon name or Pokédex number, such as Haunter or 93.');
+}
+
+function pokemonEntries(data) {
+  const entries=new Map();
+  for (const item of data.results || []) {
+    const match=/^https:\/\/pokeapi\.co\/api\/v2\/pokemon\/(\d+)\/$/.exec(item.url || '');
+    if (match && /^[a-z][a-z0-9-]*$/.test(item.name))
+      entries.set(Number(match[1]), {id:Number(match[1]),name:item.name});
+  }
+  if (!entries.size) throw new Error('The Pokémon catalogue is empty. Try again.');
+  return [...entries.values()].sort((a,b)=>a.id-b.id);
+}
+
+function filterPokemon(entries, scope, search='') {
+  const query=search.trim().toLowerCase().replace(/^#/, '');
+  return entries.filter(entry=>(scope!=='gen1' || entry.id<=151) &&
+    (!query || (/^\d+$/.test(query) ? entry.id===Number(query) : entry.name.includes(query))));
+}
+
+function createPokemonClient(fetcher=fetch, decode=null) {
+  const imageCache=new Map(), detailsCache=new Map();
+  let cataloguePromise=null;
+  const prefix='matrix-pokemon-v1:', cacheAge=7*24*60*60*1000;
+  function readCache(key) {
+    try {
+      const saved=JSON.parse(localStorage.getItem(prefix+key));
+      return saved && Date.now()-saved.at<cacheAge ? saved.data : null;
+    } catch { return null; }
+  }
+  function writeCache(key,data) {
+    try { localStorage.setItem(prefix+key,JSON.stringify({at:Date.now(),data})); } catch {}
+  }
+  async function getJSON(key,url,project=value=>value) {
+    const cached=readCache(key);if(cached)return cached;
+    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),12000);
+    try {
+      const response=await fetcher(url,{signal:controller.signal,cache:'force-cache',credentials:'omit'});
+      if(response.status===404)throw new Error('No Pokémon found with that name or number.');
+      if(!response.ok)throw new Error('Pokémon service unavailable. Try again later.');
+      const data=project(await response.json());writeCache(key,data);return data;
+    } catch(error) {
+      if(error.name==='AbortError')throw new Error('Pokémon download timed out. Check your internet connection.');
+      throw error;
+    } finally {clearTimeout(timer);}
+  }
+  async function defaultDecode(url) {
+    return new Promise((resolve,reject)=>{
+      const image=new Image(),timer=setTimeout(()=>{image.src='';reject(new Error('Sprite download timed out.'));},12000);
+      image.crossOrigin='anonymous';
+      image.onload=()=>{clearTimeout(timer);resolve(image);};
+      image.onerror=()=>{clearTimeout(timer);reject(new Error('Could not download the sprite. Check your internet connection.'));};
+      image.src=url;
+    });
+  }
+  return {
+    catalogue() {
+      if(!cataloguePromise)cataloguePromise=getJSON('catalogue','https://pokeapi.co/api/v2/pokemon?limit=10000')
+        .then(pokemonEntries).catch(error=>{cataloguePromise=null;throw error;});
+      return cataloguePromise;
+    },
+    async load(value) {
+      const query=pokemonQuery(value);
+      let data=detailsCache.get(query);
+      if(!data) {
+        data=await getJSON('pokemon:'+query,'https://pokeapi.co/api/v2/pokemon/'+query,
+          value=>({id:value.id,name:value.name,sprites:{front_default:value.sprites?.front_default || null}}));
+        if(!Number.isInteger(data.id)||data.id<=0||!/^[a-z][a-z0-9-]*$/.test(data.name))
+          throw new Error('Invalid Pokémon response. Try again.');
+        detailsCache.set(query,data);detailsCache.set(String(data.id),data);detailsCache.set(data.name,data);
+      }
+      const url=data.sprites?.front_default;
+      if(!url) {const error=new Error('No front sprite is available for '+data.name+'.');error.code='NO_SPRITE';throw error;}
+      if(!url.startsWith('https://raw.githubusercontent.com/PokeAPI/sprites/'))throw new Error('Unsupported sprite source.');
+      let image=imageCache.get(url);
+      if(!image) {
+        image=await (decode || defaultDecode)(url);
+        imageCache.set(url,image);
+        if(imageCache.size>32)imageCache.delete(imageCache.keys().next().value);
+      }
+      return {id:data.id,name:data.name,image};
+    }
+  };
+}
+
 const $ = id => document.getElementById(id);
 const canvas = $('canvas'), ctx = canvas.getContext('2d', {willReadFrequently:true});
 const textMask = document.createElement('canvas'); textMask.width=64; textMask.height=32;
@@ -100,6 +212,9 @@ const textCtx = textMask.getContext('2d', {willReadFrequently:true});
 let tab = 'text', loadedImage = null, imageGeneration = 0, erasing = false, drawing = false;
 let scrolling = false, scrollOffset = 64, streamTimer = null, busy = false, streamGeneration = 0;
 let lastStatus = null, initialized = false, wifiWasEdited = false;
+const pokemonClient=createPokemonClient();
+let pokemonCatalog=[],pokemonCurrent=null,pokemonCycling=false,pokemonTimer=null,pokemonGeneration=0,pokemonLoading=false;
+let pokemonPool=[],pokemonCursor=0;
 function message(text, error = false) { $('message').textContent = text; $('message').className = 'message ' + (error ? 'error' : 'success'); }
 async function request(path, options = {}) {
   const controller = new AbortController();
@@ -144,7 +259,99 @@ function setTab(next) {
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===next)));
   document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!==`pane-${next}`);
   if(next==='text')renderText(); else if(next==='image')renderImage();
+  else if(next==='pokemon') {
+    if(pokemonCurrent)renderPokemon();
+    loadPokemonCatalog().catch(error=>message(error.message,true));
+  }
 }
+function updateSendButton() { $('send').disabled=busy||pokemonLoading; }
+function stopPokemonCycle() {
+  pokemonCycling=false;pokemonGeneration++;clearTimeout(pokemonTimer);pokemonLoading=false;
+  $('pokemonCycle').textContent='Start cycling on panel';$('pokemonLoad').disabled=false;updateSendButton();
+}
+function pokemonLabel(pokemon) { return '#'+pokemon.id+' · '+pokemon.name.split('-').map(word=>word[0].toUpperCase()+word.slice(1)).join(' '); }
+function refreshPokemonResults() {
+  const matches=filterPokemon(pokemonCatalog,$('pokemonScope').value,$('pokemonQuery').value);
+  $('pokemonResults').replaceChildren();
+  for(const pokemon of matches.slice(0,100)) {
+    const option=document.createElement('option');option.value=String(pokemon.id);option.textContent=pokemonLabel(pokemon);
+    option.selected=pokemonCurrent?.id===pokemon.id;$('pokemonResults').append(option);
+  }
+  $('pokemonStatus').textContent=pokemonCatalog.length
+    ? `${pokemonCatalog.length} catalogue entries loaded; ${matches.length} matches${matches.length>100?' (first 100 shown)':''}.`
+    : 'Loading Pokémon catalogue…';
+}
+async function loadPokemonCatalog() {
+  if(!pokemonCatalog.length)pokemonCatalog=await pokemonClient.catalogue();
+  refreshPokemonResults();return pokemonCatalog;
+}
+function renderPokemon() {
+  if(!pokemonCurrent)return;
+  const image=pokemonCurrent.image,source=document.createElement('canvas');
+  source.width=image.naturalWidth||image.width;source.height=image.naturalHeight||image.height;
+  const sourceCtx=source.getContext('2d',{willReadFrequently:true});sourceCtx.drawImage(image,0,0);
+  const bounds=opaqueBounds(sourceCtx.getImageData(0,0,source.width,source.height).data,source.width,source.height);
+  if(!bounds)throw new Error('This sprite is empty. Choose another Pokémon.');
+  const scale=Math.min(64/bounds.w,32/bounds.h),w=Math.max(1,Math.floor(bounds.w*scale)),h=Math.max(1,Math.floor(bounds.h*scale));
+  background();ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(image,bounds.x,bounds.y,bounds.w,bounds.h,Math.floor((64-w)/2),Math.floor((32-h)/2),w,h);
+  $('pokemonStatus').textContent=pokemonLabel(pokemonCurrent)+' ready.';
+}
+async function previewPokemon(query) {
+  stopScroll();const generation=++pokemonGeneration;pokemonLoading=true;$('pokemonLoad').disabled=true;updateSendButton();
+  try {
+    const pokemon=await pokemonClient.load(query);
+    if(generation!==pokemonGeneration||tab!=='pokemon')return;
+    pokemonCurrent=pokemon;renderPokemon();message('Sprite ready. Choose “Send to display”.');
+  } catch(error) {if(generation===pokemonGeneration)message(error.message,true);}
+  finally {if(generation===pokemonGeneration){pokemonLoading=false;$('pokemonLoad').disabled=false;updateSendButton();}}
+}
+$('pokemonSearchForm').onsubmit=event=>{event.preventDefault();previewPokemon($('pokemonQuery').value);};
+$('pokemonQuery').oninput=()=>{stopScroll();refreshPokemonResults();};
+$('pokemonScope').onchange=()=>{stopScroll();refreshPokemonResults();};
+$('pokemonResults').onchange=()=>previewPokemon($('pokemonResults').value);
+async function stepPokemon(direction) {
+  stopScroll();const generation=pokemonGeneration;
+  try {
+    await loadPokemonCatalog();if(generation!==pokemonGeneration||tab!=='pokemon')return;
+    const pool=filterPokemon(pokemonCatalog,$('pokemonScope').value),current=pool.findIndex(pokemon=>pokemon.id===pokemonCurrent?.id);
+    if(!pool.length)throw new Error('No Pokémon in this catalogue.');
+    const index=current<0?(direction>0?0:pool.length-1):(current+direction+pool.length)%pool.length;
+    $('pokemonQuery').value=pool[index].name;refreshPokemonResults();previewPokemon(pool[index].id);
+  } catch(error){if(generation===pokemonGeneration)message(error.message,true);}
+}
+$('pokemonPrevious').onclick=()=>stepPokemon(-1);$('pokemonNext').onclick=()=>stepPokemon(1);
+async function pokemonTick(generation,skipped=0) {
+  if(!pokemonCycling||generation!==pokemonGeneration)return;
+  try {
+    pokemonLoading=true;updateSendButton();
+    const pokemon=await pokemonClient.load(pokemonPool[pokemonCursor].id);
+    if(!pokemonCycling||generation!==pokemonGeneration)return;
+    pokemonCurrent=pokemon;renderPokemon();pokemonLoading=false;updateSendButton();
+    const sent=await sendCanvas();if(!pokemonCycling||generation!==pokemonGeneration)return;
+    if(sent){message('Cycling: '+pokemonLabel(pokemon)+'.');pokemonCursor=(pokemonCursor+1)%pokemonPool.length;}
+    const seconds=Math.max(2,Math.min(60,Number($('pokemonInterval').value)||5));
+    pokemonTimer=setTimeout(()=>pokemonTick(generation),sent?seconds*1000:200);
+  } catch(error) {
+    if(generation!==pokemonGeneration)return;
+    if(error.code==='NO_SPRITE'&&skipped+1<pokemonPool.length) {
+      pokemonCursor=(pokemonCursor+1)%pokemonPool.length;
+      pokemonTimer=setTimeout(()=>pokemonTick(generation,skipped+1),200);
+    } else {stopPokemonCycle();message(error.message,true);}
+  }
+}
+$('pokemonCycle').onclick=async()=>{
+  if(pokemonCycling){stopScroll();message('Cycling stopped. The last sprite remains on the panel.');return;}
+  stopScroll();const generation=++pokemonGeneration;
+  try {
+    if(document.hidden)throw new Error('Keep this page visible to cycle sprites.');
+    await loadPokemonCatalog();if(generation!==pokemonGeneration||tab!=='pokemon')return;
+    pokemonPool=filterPokemon(pokemonCatalog,$('pokemonScope').value);
+    if(!pokemonPool.length)throw new Error('No Pokémon in this catalogue.');
+    pokemonCursor=Math.max(0,pokemonPool.findIndex(pokemon=>pokemon.id===pokemonCurrent?.id));
+    pokemonCycling=true;$('pokemonCycle').textContent='Stop cycling';pokemonTick(generation);
+  } catch(error){if(generation===pokemonGeneration){stopPokemonCycle();message(error.message,true);}}
+};
 document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>setTab(button.dataset.tab));
 ['text','fontSize','font','textColor','background','align','sharpText'].forEach(id=>$(id).addEventListener('input',()=>{stopScroll();renderText();}));
 ['fit','smoothing'].forEach(id=>$(id).onchange=renderImage);
@@ -189,16 +396,16 @@ $('pencil').onclick=()=>{erasing=false;$('pencil').classList.add('selected');$('
 $('eraser').onclick=()=>{erasing=true;$('eraser').classList.add('selected');$('pencil').classList.remove('selected');};
 async function sendCanvas(){
   if(busy)return false;
-  busy=true;$('send').disabled=true;
+  busy=true;updateSendButton();
   try{
     const pixels=rgbaTo565(ctx.getImageData(0,0,64,32).data);
     const form=new FormData();form.append('frame',new Blob([pixels],{type:'application/octet-stream'}),'frame.rgb565');
     await request('/api/frame',{method:'POST',body:form});return true;
-  }finally{busy=false;$('send').disabled=false;}
+  }finally{busy=false;updateSendButton();}
 }
 $('send').onclick=async()=>{stopScroll();try{if(await sendCanvas())message('Sent to your display.');}catch(e){message(e.message,true);}};
 $('clear').onclick=()=>{stopScroll();background();message('Preview cleared. Send it to clear the panel.');};
-function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';}
+function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';stopPokemonCycle();}
 async function streamTick(generation){
   if(!scrolling||generation!==streamGeneration)return;
   const started=performance.now();
@@ -213,7 +420,7 @@ async function streamTick(generation){
 $('scroll').onclick=()=>{if(scrolling){stopScroll();message('Scrolling stopped. The last frame remains on the panel.');return;}
   if(!$('text').value.trim()){message('Enter a message first.',true);return;}
   scrolling=true;scrollOffset=64;$('scroll').textContent='Stop scrolling';message('Streaming. Keep this page open and visible.');streamTick(++streamGeneration);};
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&scrolling){stopScroll();message('Scrolling paused because this page was hidden.');}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&(scrolling||pokemonCycling||pokemonLoading)){stopScroll();message('Playback paused because this page was hidden.');}});
 $('brightness').oninput=()=>$('brightnessValue').textContent=Math.round(Number($('brightness').value)/255*100)+'%';
 $('brightness').onchange=async()=>{try{await request('/api/brightness',{method:'POST',body:new URLSearchParams({value:$('brightness').value})});message('Brightness updated.');}catch(e){message(e.message,true);}};
 $('ssid').oninput=()=>wifiWasEdited=true;

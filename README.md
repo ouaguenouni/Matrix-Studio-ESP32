@@ -1,7 +1,7 @@
 # Matrix Studio: ESP32 + Waveshare 64x32
 
 A local browser interface hosted on your ESP32. Send text, resized still images,
-pixel drawings, or browser-streamed scrolling text to the panel. No cloud account
+pixel drawings, Pokémon sprites, or browser-streamed scrolling text to the panel. No cloud account
 or separate server is needed. Upload this firmware once; ordinary display updates
 then happen over Wi-Fi.
 
@@ -22,8 +22,10 @@ passes host-side frame-protocol tests, colour-conversion tests, and JavaScript/P
 syntax checks. USB firmware upload, Wi-Fi provisioning, reconnection, and serial
 diagnostic controls have been verified on the connected ESP32. Panel timing is
 being compared visually on hardware; the remaining text ghosting is unresolved.
-The browser interaction test passes against simulated endpoints in local Chromium.
-Physical browser-to-panel display checks remain.
+The browser interaction tests pass against simulated endpoints in local Chromium.
+The live browser fetched the online catalogue, sent Haunter to the ESP32, and
+cycled from Haunter to Gengar with acknowledged frame uploads. Physical colour
+appearance still needs the viewer's confirmation.
 
 ## 1. Install and upload
 
@@ -50,7 +52,8 @@ Physical browser-to-panel display checks remain.
    to view startup messages.
 
 Firmware lives in `src/main.cpp`; headers live in `include/`. The build automatically
-regenerates `include/web_ui.h` from `web/interface.html` and `web/codec.mjs` using
+regenerates `include/web_ui.h` from `web/interface.html`, `web/codec.mjs`, and
+`web/pokemon.mjs` using
 PlatformIO's own Python interpreter. No filesystem upload is required.
 
 ## 2. Join your home Wi-Fi
@@ -94,6 +97,18 @@ by device and network. Guest Wi-Fi/client isolation may block access.
   The preview shows clipping at the actual 64x32 resolution.
 - **Image:** local PNG, JPEG, WebP, BMP, or GIF first frame; fit, crop, or stretch.
   Images are resized on your phone/computer, then sent as 4096-byte pixel frames.
+- **Pokémon:** search the complete PokéAPI catalogue by English name or number
+  (for example, `haunter` or `93`). Select **Load sprite**, then **Send to display**.
+  Matching names appear in the list; Previous/Next browse in Pokédex order.
+  Choose all Pokémon/forms or the first generation, set 2–60 seconds per sprite,
+  and click **Start cycling on panel** to send sprites automatically, starting
+  with the current selection and wrapping around the chosen catalogue.
+  Keep this browser page visible and awake. Stop, switching content tabs, or hiding
+  the page ends cycling; the last sent sprite remains. Unavailable front sprites
+  are skipped during cycling. Internet access is needed to load new sprites.
+  Catalogue and metadata are cached in the browser for seven days; images load
+  on demand from PokéAPI's sprite repository, rather than occupying ESP32 flash.
+  Transparent borders are cropped and resizing uses nearest-neighbour pixels.
 - **Draw:** tap or drag on the preview to paint pixels; use the eraser as needed.
 - **Send to display:** commits the preview. Editing alone does not update the panel.
 - **Clear:** clears the preview; then press Send to clear the physical panel.
@@ -103,7 +118,7 @@ by device and network. Guest Wi-Fi/client isolation may block access.
 
 The last sent frame remains while the ESP32 is powered, even if the browser closes.
 Display content and brightness are **not** restored after power loss; Wi-Fi settings are.
-Animations, videos, saved playlists, and remote control from outside your network
+Animated sprites, videos, saved playlists, and remote control from outside your network
 are extension points, not included features. This interface has no user login;
 clients on the same LAN or password-protected setup network can control it.
 
@@ -171,7 +186,8 @@ python3 -m pip install Pillow
 python3 tools/send_image.py http://192.168.1.42 photo.png
 ```
 
-To edit the embedded interface, modify `web/interface.html` or `web/codec.mjs`,
+To edit the embedded interface, modify `web/interface.html`, `web/codec.mjs`, or
+`web/pokemon.mjs`,
 then build and upload the firmware again. PlatformIO regenerates the embedded UI
 automatically; you can also run `python3 tools/build_ui.py` manually.
 `web/preview.html` is the generated UI for local inspection; a normal local preview
@@ -180,8 +196,11 @@ does not control hardware because it has no ESP32 server behind it.
 ## Verification and troubleshooting
 
 Run `node tests/codec_test.mjs` and compile/run `tests/frame_protocol_test.cpp` with
-a standard C++ compiler. `tests/browser_test.cjs` runs the real browser interface
-against simulated endpoints using Playwright. These do not replace hardware testing.
+a standard C++ compiler. `node tests/pokemon_test.mjs` checks catalogue/search,
+sprite caching, and cropping. `tests/browser_test.cjs` and
+`tests/pokemon_browser_test.cjs` run the browser interface against simulated
+endpoints using Playwright, including sprite playback and cancellation. These
+do not replace hardware testing.
 
 The panel runs at six-bit colour depth. `platformio.ini` also defines
 `PIXEL_COLOR_DEPTH_BITS=6` when compiling the HUB75 library, so its brightness
@@ -314,5 +333,7 @@ describes startup profile N and is not updated by temporary sweep overrides.
 - Espressif WebServer example: https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer/examples/HelloServer
 - HUB75 library: https://github.com/mrcodetastic/ESP32-HUB75-MatrixPanel-DMA
 - Waveshare panel: https://docs.waveshare.com/RGB-Matrix-Px-64x32
+- Pokémon catalogue API: https://pokeapi.co/docs/v2
+- Pokémon sprite repository: https://github.com/PokeAPI/sprites
 
 Prepared 2026-10-03. No real Wi-Fi credentials are included.

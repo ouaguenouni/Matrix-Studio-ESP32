@@ -34,3 +34,12 @@ export function imagePlacement(iw, ih, mode, w = 64, h = 32) {
   const scale = mode === 'cover' ? Math.max(w / iw, h / ih) : Math.min(w / iw, h / ih);
   return { x: (w - iw * scale) / 2, y: (h - ih * scale) / 2, w: iw * scale, h: ih * scale };
 }
+
+export function opaqueBounds(rgba,width,height) {
+  if(rgba.length!==width*height*4)throw new Error('Unexpected sprite dimensions');
+  let left=width,top=height,right=-1,bottom=-1;
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(rgba[(y*width+x)*4+3]) {
+    left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+  }
+  return right<0 ? null : {x:left,y:top,w:right-left+1,h:bottom-top+1};
+}
