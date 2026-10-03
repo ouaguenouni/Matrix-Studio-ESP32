@@ -1,0 +1,78 @@
+Validation performed on 2026-10-03
+
+PASS: JavaScript RGB565 conversion, primaries, transparency, image placement,
+      output size, and rejection of unexpected input dimensions.
+PASS: C++ frame receiver with -Wall -Wextra -Werror, AddressSanitizer, and UBSan.
+      Tested full frames in 1-byte, 37-byte, 1436-byte, and whole-frame chunks;
+      little-endian colour decoding; short/oversized uploads; abort and recovery.
+      LeakSanitizer was disabled because it cannot operate in this environment.
+PASS: Syntax checks for embedded browser JavaScript, the Playwright test script,
+      and Python helper scripts.
+
+PASS: Full browser interaction test using workspace-local Playwright and existing
+      local Chromium. Verified default sharp white text sends only 0x0000/0xFFFF,
+      smooth mode retains edge shades, foreground/background selection works,
+      sharp scrolling, RGB frame order, image upload, drawing, brightness,
+      errors, Wi-Fi form, and mobile layout. Endpoints were simulated.
+PASS: Codec regression tests include sharp/smooth text masking and colour output.
+PASS: PlatformIO ESP32 firmware compilation after migration to src/ and include/.
+      Environment: esp32dev, espressif32 6.12.0, Arduino core 2.0.17,
+      Adafruit GFX 1.12.6, HUB75 DMA Display 3.0.15.
+      Automatic embedded UI generation ran successfully during the build.
+      Static RAM: 51,280 / 327,680 bytes (15.6%).
+      Flash: 851,057 / 1,310,720 bytes (64.9%).
+      Firmware artifact: .pio/build/esp32dev/firmware.bin.
+PASS: Existing C++ frame-protocol test rerun with -std=c++11 -Wall -Wextra -Werror.
+PASS: Existing JavaScript codec test rerun; build scripts pass Python syntax checks.
+PASS: USB firmware upload and device-side acknowledgements for RGB, full-white,
+      and static Hello diagnostics on the connected ESP32.
+PASS: Wi-Fi provisioning into device preferences and reconnection after restoring
+      Matrix Studio and resetting the ESP32, confirmed through serial output.
+PASS: Timing comparison firmware builds and uploads successfully.
+      Verified automatic A-to-B switching, pause for a full 12-second interval,
+      manual progression through A-J and wraparound, stop acknowledgement,
+      and restart into the running A-J sweep.
+      Static RAM: 51,312 bytes; flash: 854,593 bytes.
+OBSERVED: User reports J flickers on many columns; I is best, with slight residual
+          ghosting. I and J differ only in clock GPIO drive strength.
+PASS: Focused comparison firmware builds and uploads successfully.
+      Startup profile I confirmed over USB: 5 MHz, phase false, blanking 4,
+      clock drive level 1; calculated startup refresh 131 Hz.
+      Verified automatic I-to-K switching, pause acknowledgement, manual L/M/I
+      progression and wraparound, stop and restart. Serial acknowledgements
+      confirm the requested clock and other signal drive settings for each test.
+      Left the focused I/K/L/M sweep running (12 seconds per profile).
+OBSERVED: Focused comparison ranking reported by user: K best, followed by I;
+          L and M clearly bad. Retain normal drive on non-clock panel signals.
+PASS: Profile K made the startup default; firmware built and uploaded.
+      Confirmed after reset over USB: 5 MHz, phase false, blanking 4, clock
+      drive level 0, calculated refresh 131 Hz. Static white Hello acknowledged
+      and left displayed with the sweep off.
+      Static RAM: 51,320 bytes; flash: 855,165 bytes.
+OBSERVED: User still sees a slight one-column shifted ghost with K.
+          Signal ringing is a hypothesis, not a measured waveform.
+PASS: Updated browser renderer and clock-only comparison firmware built and
+      uploaded. Static RAM: 51,320 bytes; flash: 856,573 bytes.
+      Startup K verified after reset. Focused K/N/O/P sweep verified over USB:
+      automatic K-to-N advance, pause acknowledgement, manual O/P/K progression,
+      wraparound, stop and restart. All retain clock drive 0, blanking 4 and
+      non-clock signal drive 3. Left the 12-second comparison running.
+PENDING: User visual comparison of K/N/O/P and physical browser white text.
+OBSERVED: User reports N best and requests much slower clock trials.
+PASS: Startup default changed to N; slow-clock firmware built and uploaded.
+      Static RAM: 51,320 bytes; flash: 856,729 bytes.
+      Reset confirmed startup N at 4 MHz, clock drive 0, phase false, blanking 4,
+      with calculated scan refresh 105 Hz.
+      Verified automatic N-to-Q advance, pause, manual R/S/N progression,
+      wraparound, stop and restart. Left N/Q/R/S cycling every 12 seconds.
+      Clock trials: 4, 2, 1 and 0.5 MHz. Estimated scan refresh: 105, 52.5,
+      26.2 and 13.1 Hz respectively; these are calculations, not measurements.
+OBSERVED: User reports N best again after the N/Q/R/S slow-clock comparison.
+          Retain N as the operating and startup setting. Complete removal of
+          the remaining copies is unconfirmed.
+PASS: Reset reconfirmed startup N at 4 MHz and calculated refresh 105 Hz.
+      Comparison stopped; static white Hello acknowledged and left displayed.
+NOT RUN: Actual HTTP multipart processing validation on physical hardware.
+
+The provided browser test uses simulated endpoints and would not, by itself,
+validate the ESP32 WebServer implementation. Hardware validation steps are in README.md.

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrix Studio</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#182a29;background:#f4f5ee;font-size:15px;--green:#176b57;--border:#d8dfd6}
+*{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:30px 22px 55px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:34px}.logo{display:flex;gap:12px;align-items:center}.mark{font-size:24px;letter-spacing:2px;color:var(--green)}h1{font-size:23px;letter-spacing:-.8px;margin:0}h2{font-size:18px;margin:0 0 15px}p{line-height:1.6}.muted{color:#657470;font-size:13px}.badge{padding:8px 12px;border:1px solid var(--border);border-radius:30px;font-size:12px;background:#fff}.lead{font-size:36px;letter-spacing:-1.5px;font-weight:600;margin:0 0 7px}.sub{margin:0 0 28px;color:#657470}.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:22px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}.preview{background:#0a1110;border-radius:12px;padding:18px;margin:18px 0;color:#95ada4}.preview canvas{display:block;width:100%;height:auto;aspect-ratio:2;background:#000;image-rendering:pixelated;touch-action:none;cursor:crosshair}.caps{text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:#64756c;display:flex;justify-content:space-between;gap:10px}label{display:block;font-size:13px;font-weight:600;margin:15px 0 6px}input:not([type=color]):not([type=range]),textarea,select{font:inherit;width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:#182a29}textarea{resize:vertical;min-height:88px}input[type=color]{width:100%;height:41px;border:1px solid var(--border);border-radius:8px;padding:4px;background:#fff}input[type=range]{width:100%;accent-color:var(--green)}button{font:inherit;cursor:pointer;border:1px solid var(--border);border-radius:9px;padding:10px 14px;background:#fff;color:#182a29;font-weight:600}button:hover{background:#edf4ee}button:disabled{opacity:.55;cursor:wait}.primary{background:var(--green);color:#fff;border-color:var(--green)}.primary:hover{background:#105642}.wide{width:100%}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}.tab{flex:1;font-size:13px;padding:8px}.tab[aria-selected=true]{background:#e8f2eb;color:#125944;border-color:#91b5a5}.pane[hidden]{display:none}.message{min-height:24px;font-size:13px;line-height:1.5;margin-top:12px}.error{color:#a33028}.success{color:var(--green)}.connection{margin-top:22px}summary{cursor:pointer;font-size:15px;font-weight:600}details[open] summary{margin-bottom:15px}a{color:var(--green);overflow-wrap:anywhere}footer{font-size:12px;color:#657470;margin-top:25px}.hint{background:#f0f5ef;border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.5}.selected{background:#e8f2eb!important;border-color:#91b5a5!important}small{font-size:12px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e6a558;outline-offset:2px}@media(max-width:730px){main{padding:22px 15px}.layout{grid-template-columns:1fr}.lead{font-size:29px}header{margin-bottom:25px}.card{padding:18px}.preview{padding:10px}}
+</style>
+</head>
+<body><main>
+<header><div class="logo"><span class="mark" aria-hidden="true">▦</span><h1>Matrix Studio</h1></div><span class="badge" id="connectionBadge">Connecting…</span></header>
+<p class="lead">Your 64 × 32 canvas.</p><p class="sub">Make something here. Send it to your display.</p>
+<div class="layout">
+<section class="card" aria-label="Display preview">
+<div class="caps"><span>Preview</span><span>2,048 pixels · RGB</span></div>
+<div class="preview"><canvas id="canvas" width="64" height="32" aria-label="64 by 32 pixel preview"></canvas></div>
+<div class="row"><button class="primary" id="send">Send to display</button><button id="clear">Clear</button></div>
+<div class="message" id="message" role="status" aria-live="polite">Edits stay in the preview until you send them.</div>
+<label for="brightness">Panel brightness <span class="muted" id="brightnessValue">12%</span></label>
+<input type="range" id="brightness" min="0" max="255" value="30">
+<p class="muted">Brightness changes apply directly to the panel.</p>
+</section>
+<section class="card" aria-label="Canvas tools">
+<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
+<div class="pane" id="pane-text" role="tabpanel" aria-labelledby="tab-text">
+<label for="text">Message</label><textarea id="text" maxlength="500">Hello!</textarea>
+<div class="row"><div><label for="textColor">Text colour</label><input id="textColor" type="color" value="#ffffff"></div><div><label for="background">Background</label><input id="background" type="color" value="#000000"></div></div>
+<div class="row"><div><label for="fontSize">Size in pixels</label><input id="fontSize" type="number" value="10" min="6" max="32"></div><div><label for="align">Alignment</label><select id="align"><option value="center">Centre</option><option value="left">Left</option><option value="right">Right</option></select></div></div>
+<label for="font">Font</label><select id="font"><option value="monospace">Monospace</option><option value="sans-serif">Sans serif</option><option value="serif">Serif</option></select>
+<label for="sharpText"><input id="sharpText" type="checkbox" checked style="width:auto"> Sharp text pixels</label>
+<p class="muted">Solid colour pixels for clearer letters. Uncheck for smooth edges.</p>
+<button id="scroll" class="wide" style="margin-top:18px">Start scrolling on panel</button>
+<p class="muted">Scrolling streams from this page. Keep it open and visible; stopping leaves the last frame on the panel.</p>
+</div>
+<div class="pane" id="pane-image" role="tabpanel" aria-labelledby="tab-image" hidden>
+<label for="imageFile">Choose an image</label><input type="file" id="imageFile" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp">
+<label for="fit">Fit to display</label><select id="fit"><option value="contain">Fit whole image</option><option value="cover">Fill and crop</option><option value="stretch">Stretch</option></select>
+<label for="smoothing">Resizing</label><select id="smoothing"><option value="smooth">Smooth for photos</option><option value="pixel">Sharp for pixel art</option></select>
+<p class="muted">PNG, JPEG, WebP, BMP or a GIF's first frame. Images are resized on this device before sending. Animated GIF playback is not included.</p>
+<button id="pattern" class="wide">Preview a colour test</button>
+</div>
+<div class="pane" id="pane-draw" role="tabpanel" aria-labelledby="tab-draw" hidden>
+<p>Draw directly on the preview with your finger or mouse.</p><label for="brush">Brush colour</label><input id="brush" type="color" value="#ffb267">
+<div class="row" style="margin-top:18px"><button id="pencil" class="selected">Pencil</button><button id="eraser">Eraser</button></div>
+<p class="muted">Choose “Send to display” when your drawing is ready.</p>
+</div>
+</section>
+</div>
+<details class="card connection" id="wifiDetails"><summary>Wi-Fi connection</summary>
+<p id="networkInfo" class="hint">Checking the ESP32…</p>
+<form id="wifiForm"><div class="row"><div><label for="ssid">Home Wi-Fi name (2.4 GHz)</label><input id="ssid" name="ssid" maxlength="32" autocomplete="off" required></div><div><label for="wifiPassword">Wi-Fi password</label><input id="wifiPassword" name="password" type="password" minlength="8" maxlength="63" autocomplete="new-password" required></div></div>
+<button type="submit" id="saveWiFi" style="margin-top:15px">Save and connect</button></form>
+<p class="muted">The credentials are saved on the ESP32. If joining fails, its setup network stays available.</p><div id="wifiMessage" class="message" role="status"></div>
+</details>
+<footer>Local control · No cloud service · The last image stays until you replace it or restart the ESP32.</footer>
+</main><script>
+/*__CODEC__*/
+const $ = id => document.getElementById(id);
+const canvas = $('canvas'), ctx = canvas.getContext('2d', {willReadFrequently:true});
+const textMask = document.createElement('canvas'); textMask.width=64; textMask.height=32;
+const textCtx = textMask.getContext('2d', {willReadFrequently:true});
+let tab = 'text', loadedImage = null, imageGeneration = 0, erasing = false, drawing = false;
+let scrolling = false, scrollOffset = 64, streamTimer = null, busy = false, streamGeneration = 0;
+let lastStatus = null, initialized = false, wifiWasEdited = false;
+function message(text, error = false) { $('message').textContent = text; $('message').className = 'message ' + (error ? 'error' : 'success'); }
+async function request(path, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch(path, {...options, signal:controller.signal, cache:'no-store',
+      headers:{'X-Matrix-Control':'1', ...(options.headers || {})}});
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+    return data;
+  } catch (error) {
+    if (error.name === 'AbortError') throw new Error('The ESP32 did not respond. Check your Wi-Fi connection.');
+    throw error;
+  } finally { clearTimeout(timer); }
+}
+function background(colour = '#000000') { ctx.fillStyle = colour; ctx.fillRect(0,0,64,32); }
+function size() { return Math.max(6,Math.min(32,Number($('fontSize').value) || 10)); }
+function textStyle() {
+  textCtx.clearRect(0,0,64,32); textCtx.font=`${size()}px ${$('font').value}`;
+  textCtx.textBaseline='middle'; textCtx.fillStyle='#ffffff';
+}
+function compositeText() {
+  const pixels=textCtx.getImageData(0,0,64,32);
+  pixels.data.set(textMaskToRgba(pixels.data,$('textColor').value,$('background').value,$('sharpText').checked));
+  ctx.putImageData(pixels,0,0);
+}
+function renderText() {
+  textStyle(); textCtx.textAlign=$('align').value;
+  const lines=$('text').value.split('\n'), step=size()+1;
+  const x=textCtx.textAlign==='left'?1:textCtx.textAlign==='right'?63:32;
+  lines.forEach((line,i)=>textCtx.fillText(line,x,Math.round(16+(i-(lines.length-1)/2)*step)));
+  compositeText();
+}
+function renderImage() {
+  if(!loadedImage) return;
+  background();ctx.imageSmoothingEnabled=$('smoothing').value==='smooth';
+  const p=imagePlacement(loadedImage.width,loadedImage.height,$('fit').value);
+  ctx.drawImage(loadedImage,p.x,p.y,p.w,p.h);
+}
+function setTab(next) {
+  stopScroll(); tab=next;
+  document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===next)));
+  document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!==`pane-${next}`);
+  if(next==='text')renderText(); else if(next==='image')renderImage();
+}
+document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>setTab(button.dataset.tab));
+['text','fontSize','font','textColor','background','align','sharpText'].forEach(id=>$(id).addEventListener('input',()=>{stopScroll();renderText();}));
+['fit','smoothing'].forEach(id=>$(id).onchange=renderImage);
+$('imageFile').onchange=async()=>{
+  const file=$('imageFile').files[0]; if(!file)return;
+  const generation=++imageGeneration;
+  try {
+    if(file.size>20*1024*1024)throw new Error('Choose an image smaller than 20 MB.');
+    let image;
+    if(typeof createImageBitmap==='function') image=await createImageBitmap(file);
+    else image=await new Promise((resolve,reject)=>{
+      const url=URL.createObjectURL(file), img=new Image();
+      img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};
+      img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('This image format could not be opened.'));};img.src=url;
+    });
+    if(generation!==imageGeneration){if(image.close)image.close();return;}
+    if(loadedImage&&loadedImage.close)loadedImage.close();loadedImage=image;renderImage();
+    message('Image ready. Choose “Send to display”.');
+  }catch(error){message(error.message,true);}
+};
+$('pattern').onclick=()=>{
+  stopScroll();background();
+  ['#ff0000','#00ff00','#0000ff'].forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(i*21,0,i===2?22:21,24);});
+  ctx.fillStyle='#ffffff';ctx.font='7px monospace';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('RGB TEST',2,25);
+};
+function paint(event){
+  const r=canvas.getBoundingClientRect();const x=Math.floor((event.clientX-r.left)*64/r.width),y=Math.floor((event.clientY-r.top)*32/r.height);
+  if(x<0||x>=64||y<0||y>=32)return;
+  ctx.fillStyle=erasing?'#000000':$('brush').value;ctx.fillRect(x,y,1,1);
+}
+canvas.onpointerdown=event=>{if(tab!=='draw')return;drawing=true;canvas.setPointerCapture(event.pointerId);paint(event);};
+canvas.onpointermove=event=>{if(drawing)paint(event);};
+canvas.onpointerup=canvas.onpointercancel=()=>drawing=false;
+$('pencil').onclick=()=>{erasing=false;$('pencil').classList.add('selected');$('eraser').classList.remove('selected');};
+$('eraser').onclick=()=>{erasing=true;$('eraser').classList.add('selected');$('pencil').classList.remove('selected');};
+async function sendCanvas(){
+  if(busy)return false;
+  busy=true;$('send').disabled=true;
+  try{
+    const pixels=rgbaTo565(ctx.getImageData(0,0,64,32).data);
+    const form=new FormData();form.append('frame',new Blob([pixels],{type:'application/octet-stream'}),'frame.rgb565');
+    await request('/api/frame',{method:'POST',body:form});return true;
+  }finally{busy=false;$('send').disabled=false;}
+}
+$('send').onclick=async()=>{stopScroll();try{if(await sendCanvas())message('Sent to your display.');}catch(e){message(e.message,true);}};
+$('clear').onclick=()=>{stopScroll();background();message('Preview cleared. Send it to clear the panel.');};
+function stopScroll(){scrolling=false;streamGeneration++;clearTimeout(streamTimer);$('scroll').textContent='Start scrolling on panel';}
+async function streamTick(generation){
+  if(!scrolling||generation!==streamGeneration)return;
+  const started=performance.now();
+  textStyle();textCtx.textAlign='left';
+  const text=$('text').value.replace(/\n/g,' ');
+  textCtx.fillText(text,scrollOffset,16);const width=textCtx.measureText(text).width;
+  compositeText();
+  try{if(await sendCanvas()){if(generation!==streamGeneration)return;scrollOffset-=1;if(scrollOffset < -width)scrollOffset=64;}}
+  catch(e){if(generation===streamGeneration){stopScroll();message(e.message,true);}return;}
+  if(scrolling&&generation===streamGeneration)streamTimer=setTimeout(()=>streamTick(generation),Math.max(0,125-(performance.now()-started)));
+}
+$('scroll').onclick=()=>{if(scrolling){stopScroll();message('Scrolling stopped. The last frame remains on the panel.');return;}
+  if(!$('text').value.trim()){message('Enter a message first.',true);return;}
+  scrolling=true;scrollOffset=64;$('scroll').textContent='Stop scrolling';message('Streaming. Keep this page open and visible.');streamTick(++streamGeneration);};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&scrolling){stopScroll();message('Scrolling paused because this page was hidden.');}});
+$('brightness').oninput=()=>$('brightnessValue').textContent=Math.round(Number($('brightness').value)/255*100)+'%';
+$('brightness').onchange=async()=>{try{await request('/api/brightness',{method:'POST',body:new URLSearchParams({value:$('brightness').value})});message('Brightness updated.');}catch(e){message(e.message,true);}};
+$('ssid').oninput=()=>wifiWasEdited=true;
+$('wifiForm').onsubmit=async event=>{
+  event.preventDefault();stopScroll();$('saveWiFi').disabled=true;
+  try{const result=await request('/api/wifi',{method:'POST',body:new URLSearchParams({ssid:$('ssid').value,password:$('wifiPassword').value})});
+    $('wifiPassword').value='';$('wifiMessage').textContent=result.message;$('wifiMessage').className='message success';
+  }catch(e){$('wifiMessage').textContent=e.message;$('wifiMessage').className='message error';}
+  finally{$('saveWiFi').disabled=false;}
+};
+async function refreshStatus(){
+  if(busy)return;
+  try{
+    const data=await request('/api/status');lastStatus=data;
+    $('connectionBadge').textContent=data.connected?'On your Wi-Fi':'Setup network';
+    $('networkInfo').replaceChildren();
+    if(data.connected){
+      $('networkInfo').append(document.createTextNode(`Connected to ${data.ssid}. On your home network, open `));
+      const link=document.createElement('a');link.href='http://'+data.ip;link.textContent=link.href;$('networkInfo').append(link);
+      $('networkInfo').append(document.createTextNode(`. You can also try http://${data.hostname}.`));
+    }else{$('networkInfo').textContent='Enter your home Wi-Fi details below, or use the display directly through this setup network.';}
+    if(!initialized){
+      $('brightness').value=data.brightness;$('brightness').oninput();
+      if(!wifiWasEdited)$('ssid').value=data.ssid;
+      if(!data.connected)$('wifiDetails').open=true;
+      initialized=true;
+    }
+  }catch(e){$('connectionBadge').textContent='ESP32 unreachable';}
+}
+renderText();refreshStatus();setInterval(refreshStatus,4000);
+</script></body></html>
