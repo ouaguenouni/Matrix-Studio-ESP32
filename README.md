@@ -7,6 +7,15 @@ or separate server is needed. Upload this firmware once; ordinary display update
 then happen over Wi-Fi. Pokémon sprites, the Crystal GIF gallery, cries, and
 Bluetooth audio live on the `pokemon` branch.
 
+The five 3D enclosure designs are in
+[`cad/enclosure-comparison`](cad/enclosure-comparison/README.md), with an offline
+3D viewer, individual STL kits and assembly guides. Digital geometry checks pass;
+fit with the actual components still needs a workshop test.
+
+A simpler [two-part frame with an enclosed rear](cad/minimal-frame/README.md)
+adds integral ESP32 guides and rear-facing USB-C/DC access. Its
+[French workshop guide](cad/minimal-frame/FABLAB-FR.md) covers fit checks and assembly.
+
 ## Your hardware
 
 - Classic ESP32-WROOM development board, configured as **esp32dev** in PlatformIO.

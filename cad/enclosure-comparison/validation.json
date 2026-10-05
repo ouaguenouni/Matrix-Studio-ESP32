@@ -1,6 +1,17 @@
 {
   "status": "digital_checks_only",
   "hardware_fit_verified": false,
+  "slicer_verified": false,
+  "hardware_parameters": {
+    "panel_depth": 14.5,
+    "acrylic_thickness": 1.0,
+    "pcb_length": 58.0,
+    "pcb_width": 29.0,
+    "pcb_thickness": 1.6,
+    "pcb_hole_length": 52.0,
+    "pcb_hole_width": 23.0,
+    "pcb_standoff": 20.0
+  },
   "variants": [
     {
       "name": "01-line",
@@ -157,7 +168,7 @@
             60.0,
             3.0
           ],
-          "solid_volume_cm3": 15.66
+          "solid_volume_cm3": 15.72
         },
         "bezel": {
           "watertight": true,
@@ -171,7 +182,7 @@
             110.0,
             6.5
           ],
-          "solid_volume_cm3": 41.78
+          "solid_volume_cm3": 41.8
         },
         "keeper": {
           "watertight": true,
@@ -190,14 +201,40 @@
       },
       "collisions": [],
       "envelopes": [],
+      "acrylic_cut_size_mm": [
+        164.0,
+        84.0
+      ],
+      "acrylic_svg_page_size_mm": [
+        166.0,
+        86.0
+      ],
       "conservative_6mm_coil_m": 0.2,
+      "pcb_bolt_passages_checked": 4,
+      "envelope_assumptions_mm": {
+        "panel_connector_zone": [
+          148,
+          48,
+          20
+        ],
+        "pcb_and_wiring_zone": [
+          64,
+          36,
+          38
+        ],
+        "usb_plug_zone": [
+          26,
+          12,
+          10
+        ]
+      },
       "acrylic_to_panel_gap_mm": 4.5,
       "panel_face_to_keeper_gap_mm": 2.2,
       "panel_mount_spacing_mm": [
         125,
         65
       ],
-      "assembled_printed_mass_solid_upper_bound_g": 420.6
+      "assembled_printed_mass_solid_upper_bound_g": 420.7
     },
     {
       "name": "02-orbit",
@@ -354,7 +391,7 @@
             60.0,
             3.0
           ],
-          "solid_volume_cm3": 15.66
+          "solid_volume_cm3": 15.72
         },
         "bezel": {
           "watertight": true,
@@ -368,7 +405,7 @@
             122.0,
             6.5
           ],
-          "solid_volume_cm3": 64.81
+          "solid_volume_cm3": 64.82
         },
         "keeper": {
           "watertight": true,
@@ -387,7 +424,33 @@
       },
       "collisions": [],
       "envelopes": [],
+      "acrylic_cut_size_mm": [
+        164.0,
+        84.0
+      ],
+      "acrylic_svg_page_size_mm": [
+        166.0,
+        86.0
+      ],
       "conservative_6mm_coil_m": 0.4,
+      "pcb_bolt_passages_checked": 4,
+      "envelope_assumptions_mm": {
+        "panel_connector_zone": [
+          148,
+          48,
+          20
+        ],
+        "pcb_and_wiring_zone": [
+          64,
+          36,
+          38
+        ],
+        "usb_plug_zone": [
+          26,
+          12,
+          10
+        ]
+      },
       "acrylic_to_panel_gap_mm": 4.5,
       "panel_face_to_keeper_gap_mm": 2.2,
       "panel_mount_spacing_mm": [
@@ -495,7 +558,7 @@
             156.0,
             3.0
           ],
-          "solid_volume_cm3": 85.92
+          "solid_volume_cm3": 86.14
         },
         "ports_usb_c": {
           "watertight": true,
@@ -551,7 +614,7 @@
             60.0,
             3.0
           ],
-          "solid_volume_cm3": 15.66
+          "solid_volume_cm3": 15.72
         },
         "bezel": {
           "watertight": true,
@@ -565,7 +628,7 @@
             156.0,
             6.5
           ],
-          "solid_volume_cm3": 79.41
+          "solid_volume_cm3": 79.43
         },
         "keeper": {
           "watertight": true,
@@ -584,14 +647,40 @@
       },
       "collisions": [],
       "envelopes": [],
+      "acrylic_cut_size_mm": [
+        180.0,
+        130.0
+      ],
+      "acrylic_svg_page_size_mm": [
+        182.0,
+        132.0
+      ],
       "conservative_6mm_coil_m": 0.4,
+      "pcb_bolt_passages_checked": 4,
+      "envelope_assumptions_mm": {
+        "panel_connector_zone": [
+          148,
+          48,
+          20
+        ],
+        "pcb_and_wiring_zone": [
+          64,
+          36,
+          38
+        ],
+        "usb_plug_zone": [
+          26,
+          12,
+          10
+        ]
+      },
       "acrylic_to_panel_gap_mm": 4.5,
       "panel_face_to_keeper_gap_mm": 2.2,
       "panel_mount_spacing_mm": [
         125,
         65
       ],
-      "assembled_printed_mass_solid_upper_bound_g": 582.2
+      "assembled_printed_mass_solid_upper_bound_g": 582.5
     },
     {
       "name": "04-vault",
@@ -692,7 +781,7 @@
             156.0,
             3.0
           ],
-          "solid_volume_cm3": 85.92
+          "solid_volume_cm3": 86.14
         },
         "ports_usb_c": {
           "watertight": true,
@@ -748,7 +837,7 @@
             60.0,
             3.0
           ],
-          "solid_volume_cm3": 15.66
+          "solid_volume_cm3": 15.72
         },
         "bezel": {
           "watertight": true,
@@ -762,7 +851,7 @@
             156.0,
             6.5
           ],
-          "solid_volume_cm3": 79.41
+          "solid_volume_cm3": 79.43
         },
         "keeper": {
           "watertight": true,
@@ -781,14 +870,40 @@
       },
       "collisions": [],
       "envelopes": [],
+      "acrylic_cut_size_mm": [
+        180.0,
+        130.0
+      ],
+      "acrylic_svg_page_size_mm": [
+        182.0,
+        132.0
+      ],
       "conservative_6mm_coil_m": 1.0,
+      "pcb_bolt_passages_checked": 4,
+      "envelope_assumptions_mm": {
+        "panel_connector_zone": [
+          148,
+          48,
+          20
+        ],
+        "pcb_and_wiring_zone": [
+          64,
+          36,
+          38
+        ],
+        "usb_plug_zone": [
+          26,
+          12,
+          10
+        ]
+      },
       "acrylic_to_panel_gap_mm": 4.5,
       "panel_face_to_keeper_gap_mm": 2.2,
       "panel_mount_spacing_mm": [
         125,
         65
       ],
-      "assembled_printed_mass_solid_upper_bound_g": 672.7
+      "assembled_printed_mass_solid_upper_bound_g": 673.0
     },
     {
       "name": "05-console",
@@ -945,7 +1060,7 @@
             60.0,
             3.0
           ],
-          "solid_volume_cm3": 15.66
+          "solid_volume_cm3": 15.72
         },
         "bezel": {
           "watertight": true,
@@ -959,7 +1074,7 @@
             122.0,
             6.5
           ],
-          "solid_volume_cm3": 65.62
+          "solid_volume_cm3": 65.64
         },
         "keeper": {
           "watertight": true,
@@ -978,16 +1093,123 @@
       },
       "collisions": [],
       "envelopes": [],
+      "acrylic_cut_size_mm": [
+        164.0,
+        84.0
+      ],
+      "acrylic_svg_page_size_mm": [
+        166.0,
+        86.0
+      ],
       "conservative_6mm_coil_m": 0.8,
+      "pcb_bolt_passages_checked": 4,
+      "envelope_assumptions_mm": {
+        "panel_connector_zone": [
+          148,
+          48,
+          20
+        ],
+        "pcb_and_wiring_zone": [
+          64,
+          36,
+          38
+        ],
+        "usb_plug_zone": [
+          26,
+          12,
+          10
+        ]
+      },
       "acrylic_to_panel_gap_mm": 4.5,
       "panel_face_to_keeper_gap_mm": 2.2,
       "panel_mount_spacing_mm": [
         125,
         65
       ],
-      "assembled_printed_mass_solid_upper_bound_g": 514.5
+      "assembled_printed_mass_solid_upper_bound_g": 514.6
     }
   ],
+  "checked_files_sha256": {
+    "family.scad": "f00751fd25ccdf0a0785e228e087beff9127d8aa1c6fc86ad68693df4b6962cd",
+    "manifest.json": "3d11e07b263c1e27ea3720eba0a5ede279598f089c9a0f9f55841c82f30464b9",
+    "geometry.py": "e6d0bb6813f57aa84c77a7da3114b3fc0db975631a666be925ded5d0d0f14059",
+    "validate.py": "05ac6ace99cf9e821b4bbf55a0c1937fb36483e6cf29a64fe034aaa27193d246",
+    "01-line/stl/spacer.stl": "f91f04e4a92d00b17746d0c17b711ede7f1eaf1fa29689ed92c70aec0ab2934b",
+    "01-line/stl/feet.stl": "a30be04bcea93a3faa804ea9e745843d5f17b6efbf3a4761ba22f16b5eb1ec1d",
+    "01-line/stl/carrier.stl": "4a9df7fbd14d215f77db5499342fa7ce5305cddaa9dcbf08c9439ed4e0f5eb4f",
+    "01-line/stl/bridge.stl": "79af53e9a38b2456e209fee7b6012c0d6fe0dc47d35390476a9f3345df5eda92",
+    "01-line/stl/body.stl": "f37336397b899477df7c0604f487649adbf867eea9ab949f3ae3127b81d2f629",
+    "01-line/stl/cassette.stl": "1589204a4a22625fd7f2d265d59c347ca829eaef9861bf0eab888038ebb64589",
+    "01-line/stl/lid.stl": "dd14d1d2dbffc0aefdf7c3cf4290efb746f28e9cd0085710aee99c15a6f348d8",
+    "01-line/stl/ports_usb_c.stl": "42105c600b9a347f661c450c7b725fbf81c08ffb4f05310e274f1f35ace9b26b",
+    "01-line/stl/ports.stl": "28154d7d24599aa6e6bb0b25072eacad19be7cf30c693981c220c21174b31151",
+    "01-line/stl/rail.stl": "d20bc38145a547c96b70fa9e8a7b59c2c20006df959cea32a86b23cae68e2b6a",
+    "01-line/stl/coupon.stl": "dcfd8988fdf617c5ca8a90e27a3d263c9949c98dc9353e1d00e2116691a89e12",
+    "01-line/stl/bezel.stl": "c62b94d1564a49694b7c9228037a65dcbcf4bfb9081b90f3532757144a54aca4",
+    "01-line/stl/keeper.stl": "924800c1b2f7018fc37c4bcf724aab7d807b6bd641aaeaf89643d08d1a341ce3",
+    "01-line/acrylic-outline.svg": "b793003c24aad610f1d52cfdfa9bfb7593e36963d859efa6d21ed7059e38ebbc",
+    "01-line/model.scad": "34adb79c8ba9907771d4854b63b68530464a994c7e56bad44cfd4ec933f67661",
+    "02-orbit/stl/spacer.stl": "f91f04e4a92d00b17746d0c17b711ede7f1eaf1fa29689ed92c70aec0ab2934b",
+    "02-orbit/stl/feet.stl": "6efd4fd05ee623c8fc2db26190a31e5ae2fd83dd5f197de959e81383aa06e3d5",
+    "02-orbit/stl/carrier.stl": "4a9df7fbd14d215f77db5499342fa7ce5305cddaa9dcbf08c9439ed4e0f5eb4f",
+    "02-orbit/stl/bridge.stl": "f538da3a461dbedbeb694010fc672b665a537ea278540f2cb39632a24e7e2ae4",
+    "02-orbit/stl/body.stl": "42878d0815e4b487d2b9a0e5046c96c1070ce8cf1d539252cf523af20fb7eb92",
+    "02-orbit/stl/cassette.stl": "4795a5a1ce0086aa78aefcd896b72d3fd95945ee356dc9b0b31599f82eaf0c83",
+    "02-orbit/stl/lid.stl": "1ea6afe62f1612d9785616d02521eaeb6334dc68e3b9020ef2643d9ce1fbc570",
+    "02-orbit/stl/ports_usb_c.stl": "42105c600b9a347f661c450c7b725fbf81c08ffb4f05310e274f1f35ace9b26b",
+    "02-orbit/stl/ports.stl": "28154d7d24599aa6e6bb0b25072eacad19be7cf30c693981c220c21174b31151",
+    "02-orbit/stl/rail.stl": "d20bc38145a547c96b70fa9e8a7b59c2c20006df959cea32a86b23cae68e2b6a",
+    "02-orbit/stl/coupon.stl": "dcfd8988fdf617c5ca8a90e27a3d263c9949c98dc9353e1d00e2116691a89e12",
+    "02-orbit/stl/bezel.stl": "d6537b645bf95ea27648474267696b1fff7b242b7248a0be7c59dcbce8b98e3e",
+    "02-orbit/stl/keeper.stl": "924800c1b2f7018fc37c4bcf724aab7d807b6bd641aaeaf89643d08d1a341ce3",
+    "02-orbit/acrylic-outline.svg": "b793003c24aad610f1d52cfdfa9bfb7593e36963d859efa6d21ed7059e38ebbc",
+    "02-orbit/model.scad": "47bbe34659f7f719ef4e6fcf4d99fbe11701b2df704def74eb4904b8b1cf072b",
+    "03-gallery/stl/spacer.stl": "f91f04e4a92d00b17746d0c17b711ede7f1eaf1fa29689ed92c70aec0ab2934b",
+    "03-gallery/stl/feet.stl": "6efd4fd05ee623c8fc2db26190a31e5ae2fd83dd5f197de959e81383aa06e3d5",
+    "03-gallery/stl/carrier.stl": "4a9df7fbd14d215f77db5499342fa7ce5305cddaa9dcbf08c9439ed4e0f5eb4f",
+    "03-gallery/stl/bridge.stl": "9d83dcefbb8713b9f88e276c50e4f9d6581a5af449e4485ecc6e36b31d64fe81",
+    "03-gallery/stl/body.stl": "3b610ee17f242e2027a56262358983d4885aed92a74439373ac2a687551915ec",
+    "03-gallery/stl/cassette.stl": "4795a5a1ce0086aa78aefcd896b72d3fd95945ee356dc9b0b31599f82eaf0c83",
+    "03-gallery/stl/lid.stl": "3b6a7723f924f210af8e2c174fb290e1c6dbfbb00d030abb1ea0f39ec93f24cc",
+    "03-gallery/stl/ports_usb_c.stl": "42105c600b9a347f661c450c7b725fbf81c08ffb4f05310e274f1f35ace9b26b",
+    "03-gallery/stl/ports.stl": "28154d7d24599aa6e6bb0b25072eacad19be7cf30c693981c220c21174b31151",
+    "03-gallery/stl/rail.stl": "d20bc38145a547c96b70fa9e8a7b59c2c20006df959cea32a86b23cae68e2b6a",
+    "03-gallery/stl/coupon.stl": "dcfd8988fdf617c5ca8a90e27a3d263c9949c98dc9353e1d00e2116691a89e12",
+    "03-gallery/stl/bezel.stl": "f0781355af3e49040b40a04470d7f66ff3f4b906d63ee73f982dbb4e9f2bae65",
+    "03-gallery/stl/keeper.stl": "b6d78ae21d3d9af3f0cd5dc0bd12939c84c26c25532016c8ead2ad1fc2cb0276",
+    "03-gallery/acrylic-outline.svg": "ef9fafafc3eece39d7680b7f64197e9d97c7501905bc2da634f6dce68f08cb7f",
+    "03-gallery/model.scad": "29a3bcd4f8d631963896fe4e5fe337b808e08325c2d0f0701cdbe5015e76b7b6",
+    "04-vault/stl/spacer.stl": "f91f04e4a92d00b17746d0c17b711ede7f1eaf1fa29689ed92c70aec0ab2934b",
+    "04-vault/stl/feet.stl": "be7397e617b7e8a845fc69282c546dc4f2fb45096939653af0718e110f6a006b",
+    "04-vault/stl/carrier.stl": "4a9df7fbd14d215f77db5499342fa7ce5305cddaa9dcbf08c9439ed4e0f5eb4f",
+    "04-vault/stl/bridge.stl": "9d83dcefbb8713b9f88e276c50e4f9d6581a5af449e4485ecc6e36b31d64fe81",
+    "04-vault/stl/body.stl": "a2a2c290709a219c84c158dcf44375b0d8735e2211f67a932f9ac91163f1ebc8",
+    "04-vault/stl/cassette.stl": "5f8b4de19ba3d0300cc07717e1052fdabd60964d02c90a80462f3cda0e9d7396",
+    "04-vault/stl/lid.stl": "3b6a7723f924f210af8e2c174fb290e1c6dbfbb00d030abb1ea0f39ec93f24cc",
+    "04-vault/stl/ports_usb_c.stl": "42105c600b9a347f661c450c7b725fbf81c08ffb4f05310e274f1f35ace9b26b",
+    "04-vault/stl/ports.stl": "28154d7d24599aa6e6bb0b25072eacad19be7cf30c693981c220c21174b31151",
+    "04-vault/stl/rail.stl": "d20bc38145a547c96b70fa9e8a7b59c2c20006df959cea32a86b23cae68e2b6a",
+    "04-vault/stl/coupon.stl": "dcfd8988fdf617c5ca8a90e27a3d263c9949c98dc9353e1d00e2116691a89e12",
+    "04-vault/stl/bezel.stl": "f0781355af3e49040b40a04470d7f66ff3f4b906d63ee73f982dbb4e9f2bae65",
+    "04-vault/stl/keeper.stl": "b6d78ae21d3d9af3f0cd5dc0bd12939c84c26c25532016c8ead2ad1fc2cb0276",
+    "04-vault/acrylic-outline.svg": "ef9fafafc3eece39d7680b7f64197e9d97c7501905bc2da634f6dce68f08cb7f",
+    "04-vault/model.scad": "076733ea24a403df7f832d527e490d6132ef7c5f1d5764278620a8032ab61e67",
+    "05-console/stl/spacer.stl": "f91f04e4a92d00b17746d0c17b711ede7f1eaf1fa29689ed92c70aec0ab2934b",
+    "05-console/stl/feet.stl": "15200add4e40c7a830eb4ef047fabb9610859902ed0a9dc8451dc7ce9fbaecb8",
+    "05-console/stl/carrier.stl": "4a9df7fbd14d215f77db5499342fa7ce5305cddaa9dcbf08c9439ed4e0f5eb4f",
+    "05-console/stl/bridge.stl": "f538da3a461dbedbeb694010fc672b665a537ea278540f2cb39632a24e7e2ae4",
+    "05-console/stl/body.stl": "18d010d6bf7e64b07aa022851f4f0e841688df7ba775e2d5e7f4c296949b1793",
+    "05-console/stl/cassette.stl": "ac21d27bb05bad5a39e5470eb830c50c40c14edb54091b2e1232e442ab206e0f",
+    "05-console/stl/lid.stl": "bfcb7295e4bfc369565caae008a560bd18427b943fc6f0a647450dae8fbe67da",
+    "05-console/stl/ports_usb_c.stl": "42105c600b9a347f661c450c7b725fbf81c08ffb4f05310e274f1f35ace9b26b",
+    "05-console/stl/ports.stl": "28154d7d24599aa6e6bb0b25072eacad19be7cf30c693981c220c21174b31151",
+    "05-console/stl/rail.stl": "d20bc38145a547c96b70fa9e8a7b59c2c20006df959cea32a86b23cae68e2b6a",
+    "05-console/stl/coupon.stl": "dcfd8988fdf617c5ca8a90e27a3d263c9949c98dc9353e1d00e2116691a89e12",
+    "05-console/stl/bezel.stl": "96edff6770a12d777c3978f875f7ae79c818ae94af0c97278aff61c4187b07d6",
+    "05-console/stl/keeper.stl": "924800c1b2f7018fc37c4bcf724aab7d807b6bd641aaeaf89643d08d1a341ce3",
+    "05-console/acrylic-outline.svg": "b793003c24aad610f1d52cfdfa9bfb7593e36963d859efa6d21ed7059e38ebbc",
+    "05-console/model.scad": "5771b41cbf89b0dfda772d66d28a0e05fdfa2cb467006ce65f2a254e6f1882f8"
+  },
   "failures": [],
   "passed": true
 }

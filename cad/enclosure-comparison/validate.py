@@ -2,18 +2,38 @@
 """Topology, actual assembly intersections, source-backed clearances and layer checks.
 No claim of thermal, electrical or physical fit certification is made.
 """
-import itertools, json, math, numpy as np, trimesh
-from geometry import ROOT,MANIFEST,meshes,assembly,moved
-report={'status':'digital_checks_only','hardware_fit_verified':False,'variants':[]}
+import hashlib, itertools, json, math, re, xml.etree.ElementTree as ET, numpy as np, trimesh
+from geometry import ROOT,MANIFEST,PARAMETERS,meshes,assembly,moved
+report={'status':'digital_checks_only','hardware_fit_verified':False,
+ 'slicer_verified':False,'hardware_parameters':PARAMETERS,'variants':[], 'checked_files_sha256':{}}
 failures=[]
+def record(path):
+ report['checked_files_sha256'][str(path.relative_to(ROOT))]=hashlib.sha256(path.read_bytes()).hexdigest()
+record(ROOT/'family.scad');record(ROOT/'manifest.json')
+record(ROOT/'geometry.py');record(ROOT/'validate.py')
+if MANIFEST.get('source_sha256') != report['checked_files_sha256']['family.scad']:
+ failures.append('CAD source changed since export: run build.py')
 for v in MANIFEST['variants']:
  ms=meshes(v);r={'name':v['name'],'parts':{},'collisions':[],'envelopes':[]}
+ expected=set(MANIFEST['quantities'])
+ if set(ms)!=expected:failures.append(f'{v["name"]}: missing or unexpected parts: {set(ms)^expected}')
+ for p in (ROOT/v['name']/'stl').glob('*.stl'):record(p)
+ record(ROOT/v['name']/'acrylic-outline.svg');record(ROOT/v['name']/'model.scad')
+ svg=ET.parse(ROOT/v['name']/'acrylic-outline.svg').getroot()
+ coords=np.array([(float(x),float(y)) for path in svg.findall('{http://www.w3.org/2000/svg}path')
+  for x,y in re.findall(r'([-+\d.]+),([-+\d.]+)',path.attrib['d'])])
+ cut_size=np.ptp(coords,axis=0)
+ r['acrylic_cut_size_mm']=cut_size.tolist()
+ r['acrylic_svg_page_size_mm']=[float(svg.attrib[p].removesuffix('mm')) for p in ['width','height']]
+ if not np.allclose(cut_size,v['lens'][:2],atol=.01):failures.append(f'{v["name"]}: acrylic cut path disagrees with manifest')
  for name,m in ms.items():
   ok=m.is_watertight and m.is_winding_consistent and m.volume>0 and m.body_count==1
   bed=bool(np.all(m.extents[:2]+10<=220) and m.extents[2]<=250)
   flat=bool(abs(m.bounds[0,2])<.01)
   r['parts'][name]={'watertight':bool(m.is_watertight),'consistent_winding':bool(m.is_winding_consistent),'bodies':int(m.body_count),'positive_volume':bool(m.volume>0),'bed_with_5mm_brim':bed,'on_z0':flat,'size_mm':m.extents.round(3).tolist(),'solid_volume_cm3':round(float(m.volume)/1000,2)}
   if not(ok and bed and flat):failures.append(f'{v["name"]}/{name}: mesh/bed/base')
+  if name=='body' and not np.allclose(m.extents,[v['width'],v['height'],v['body_depth']],atol=.02):
+   failures.append(f'{v["name"]}: manifest dimensions disagree with body mesh')
  parts=assembly(v)
  for (an,a),(bn,b) in itertools.combinations(parts.items(),2):
   if np.any(a.bounds[0]>=b.bounds[1]-.001) or np.any(b.bounds[0]>=a.bounds[1]-.001):continue
@@ -25,8 +45,8 @@ for v in MANIFEST['variants']:
  # Reserve a 20mm connector zone behind panel; board keepout is wider than nominal PCB.
  z=v['body_depth']+6.5
  envelopes={
-  'panel_connector_zone':moved(trimesh.creation.box([148,48,20]),[0,0,36]),
-  'usb_plug_zone':moved(trimesh.creation.box([26,12,10]),[1,12,z-36]),
+  'panel_connector_zone':moved(trimesh.creation.box([148,48,20]),[0,0,8.5+PARAMETERS.get('panel_depth',14.5)+13]),
+  'usb_plug_zone':moved(trimesh.creation.box([26,12,10]),[1,12,z-16-PARAMETERS.get('pcb_standoff',20)]),
   'pcb_and_wiring_zone':moved(trimesh.creation.box([64,36,38]),[43,12,z-20]),
  }
  for name,env in envelopes.items():
@@ -38,8 +58,19 @@ for v in MANIFEST['variants']:
  # Usable one-layer-wide coil,6mm effective diameter,0.2m per revolution,2mm headroom.
  turns=max(0,math.floor((v['cassette_height']-4.4)/6))
  r['conservative_6mm_coil_m']=round(turns*.2,1)
- r['acrylic_to_panel_gap_mm']=4.5
- r['panel_face_to_keeper_gap_mm']=2.2
+ # Check clear bolt passages through the actual PCB, spacer and rail geometry.
+ for sy in [-1,1]:
+  for sx in [-1,1]:
+   bolt=moved(trimesh.creation.cylinder(radius=1.5,height=PARAMETERS.get('pcb_standoff',20)+6,sections=24),
+    [43+sx*PARAMETERS.get('pcb_hole_length',52)/2,12+sy*PARAMETERS.get('pcb_hole_width',23)/2,
+     z-12-PARAMETERS.get('pcb_standoff',20)/2])
+   for name in ['pcb',f'rail{sy}',f'spacer{sx}_{sy}']:
+    intersection=trimesh.boolean.intersection([bolt,parts[name]],engine='manifold')
+    if abs(float(intersection.volume))>.05:failures.append(f'{v["name"]}: blocked PCB bolt passage at {sx}/{sy} in {name}')
+ r['pcb_bolt_passages_checked']=4
+ r['envelope_assumptions_mm']={'panel_connector_zone':[148,48,20], 'pcb_and_wiring_zone':[64,36,38], 'usb_plug_zone':[26,12,10]}
+ r['acrylic_to_panel_gap_mm']=round(8.5-v['lens'][2]-3,2)
+ r['panel_face_to_keeper_gap_mm']=round(8.5-(3+v['lens'][2]+.3+2),2)
  r['panel_mount_spacing_mm']=[125,65]
  r['assembled_printed_mass_solid_upper_bound_g']=round(sum(ms[n].volume/1000*1.27*q for n,q in MANIFEST['quantities'].items() if n!='coupon'),1)
  report['variants'].append(r)

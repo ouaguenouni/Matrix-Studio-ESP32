@@ -1,12 +1,12 @@
 
-Could not initialize localization (application path is '/Users/ahmedbaoun/Documents/GitHub/Matrix-Studio-ESP32').
-Geometries in cache: 34
-Geometry cache size in bytes: 157080
+Could not initialize localization (application path is '/Users/mohamedouaguenouni/Desktop/Matrix-Studio-ESP32').
+Geometries in cache: 38
+Geometry cache size in bytes: 184472
 CGAL Polyhedrons in cache: 4
-CGAL cache size in bytes: 434000
-Total rendering time: 0:00:00.064
+CGAL cache size in bytes: 514000
+Total rendering time: 0:00:00.059
    Top level object is a 3D object (manifold):
    Status:     NoError
-   Genus:      10
-   Vertices:      912
-   Facets:       1860
+   Genus:      12
+   Vertices:     1072
+   Facets:       2188

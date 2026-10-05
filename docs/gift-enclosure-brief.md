@@ -1,9 +1,14 @@
 # Inge — gift enclosure design brief
 
-Status, 5 October 2026: editable prototype CAD and STL parts now exist in
-[`cad/inge-after-hours`](../cad/inge-after-hours/README.md), with geometry checks
-and a visual overview. **Hardware fit remains unverified.** The user confirmed
-replacing the picture frame with the complete printed case.
+Status, 5 October 2026: the five digital enclosure kits are completed in
+[`cad/enclosure-comparison`](../cad/enclosure-comparison/README.md), with an
+offline viewer, per-design STL archives, assembly guides and fresh geometry
+checks. The confirmed enclosed components are the panel, ESP32, acrylic and
+wiring; the power adapter remains external. **Hardware fit remains unverified.**
+The comparison family uses 1 mm acrylic and existing cable pass-throughs.
+[`cad/inge-after-hours`](../cad/inge-after-hours/README.md) is the older single-case
+prototype and the research notes below describe that earlier proposal. The user
+confirmed replacing the picture frame with the complete printed case.
 
 All five supplied photos have been inspected. The moulded panel marking reads
 P2.5-1 / 80×160; the board has USB-C and four corner holes. The external adapter

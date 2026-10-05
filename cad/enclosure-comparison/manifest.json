@@ -1,7 +1,18 @@
 {
   "units": "mm",
+  "revision": 3,
   "hardware_fit_verified": false,
-  "acrylic_thickness_mm": 1,
+  "acrylic_thickness_mm": 1.0,
+  "hardware_parameters": {
+    "panel_depth": 14.5,
+    "acrylic_thickness": 1.0,
+    "pcb_length": 58.0,
+    "pcb_width": 29.0,
+    "pcb_thickness": 1.6,
+    "pcb_hole_length": 52.0,
+    "pcb_hole_width": 23.0,
+    "pcb_standoff": 20.0
+  },
   "variants": [
     {
       "id": 1,
@@ -14,7 +25,7 @@
       "lens": [
         164,
         84,
-        1
+        1.0
       ],
       "cassette_height": 14
     },
@@ -29,7 +40,7 @@
       "lens": [
         164,
         84,
-        1
+        1.0
       ],
       "cassette_height": 20
     },
@@ -44,7 +55,7 @@
       "lens": [
         180,
         130,
-        1
+        1.0
       ],
       "cassette_height": 20
     },
@@ -59,7 +70,7 @@
       "lens": [
         180,
         130,
-        1
+        1.0
       ],
       "cassette_height": 40
     },
@@ -74,7 +85,7 @@
       "lens": [
         164,
         84,
-        1
+        1.0
       ],
       "cassette_height": 30
     }
@@ -93,5 +104,6 @@
     "feet": 2,
     "coupon": 1,
     "ports_usb_c": 0
-  }
+  },
+  "source_sha256": "f00751fd25ccdf0a0785e228e087beff9127d8aa1c6fc86ad68693df4b6962cd"
 }

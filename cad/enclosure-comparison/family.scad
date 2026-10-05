@@ -1,13 +1,21 @@
-/* INGE / AFTER HOURS, revision 2. All dimensions in mm.
+/* INGE / AFTER HOURS, revision 3. All dimensions in mm.
    Five printable comparison prototypes; hardware fit and thermal tests pending.
    See PRINT-GUIDE.md. Panel mounts from Waveshare DWG: 125 x 65, M3.
    Print parts individually, never print assembly/exploded output. */
 variant = 1; // [1:Line,2:Orbit,3:Gallery,4:Vault,5:Console]
-part = "assembly"; // [assembly,exploded,body,bezel,lid,keeper,bridge,carrier,rail,spacer,ports,cassette,feet,coupon,acrylic_template]
+part = "assembly"; // [assembly,exploded,body,bezel,lid,keeper,bridge,carrier,rail,spacer,ports,ports_usb_c,cassette,feet,coupon,acrylic_template]
 acrylic_thickness = 1; // Confirmed by owner, 2026-10-05
 panel_depth = 14.5; // Waveshare official dimension image
 pilot = 2.6; // Pre-tap M3 or tune with coupon; do not force screws
+keeper_pilot = 1.6; // M2 pilot; tune after coupon testing
 clearance = 3.4;
+// Provisional PCB envelope and adjustable hole pattern: measure the actual board.
+pcb_length = 58;
+pcb_width = 29;
+pcb_thickness = 1.6;
+pcb_hole_length = 52;
+pcb_hole_width = 23;
+pcb_standoff = 20;
 $fn=40;
 eps=0.04;
 // width,height,body depth,corner radius,lens width,lens height,cable tray height
@@ -32,6 +40,10 @@ assert(style>=1 && style<=5);
 assert(acrylic_thickness>0 && acrylic_thickness<=1.2,"Recess needs regeneration for thicker stock");
 assert(keeper_z+2<=bezel_t);
 assert(W<=210 && H<=210,"Bed margin exhausted");
+assert(pcb_hole_length>=30 && pcb_hole_length<=64,"PCB holes exceed rail adjustment");
+assert(pcb_hole_width>=0 && pcb_hole_width<=32,"PCB holes exceed carrier adjustment");
+assert(pcb_length<=64 && pcb_width<=36,"PCB exceeds reserved wiring envelope");
+assert(pcb_standoff>=20 && pcb_standoff<=24,"Recheck PCB/panel connector clearance");
 label_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ /";
 label_rows = [[2, 5, 7, 5, 5], [6, 5, 6, 5, 6], [7, 4, 4, 4, 7], [6, 5, 5, 5, 6], [7, 4, 6, 4, 7], [7, 4, 6, 4, 4], [7, 4, 5, 5, 7], [5, 5, 7, 5, 5], [7, 2, 2, 2, 7], [1, 1, 1, 5, 7], [5, 5, 6, 5, 5], [4, 4, 4, 4, 7], [5, 7, 7, 5, 5], [5, 7, 7, 7, 5], [7, 5, 5, 5, 7], [7, 5, 7, 4, 4], [7, 5, 5, 7, 1], [6, 5, 6, 5, 5], [7, 4, 7, 1, 7], [7, 2, 2, 2, 2], [5, 5, 5, 5, 7], [5, 5, 5, 5, 2], [5, 5, 7, 7, 5], [5, 5, 2, 5, 5], [5, 5, 2, 2, 2], [7, 1, 2, 4, 7], [0, 0, 0, 0, 0], [1, 1, 2, 4, 4]];
 function label_index(c, i=0) = i>=len(label_chars) ? -1 : label_chars[i]==c ? i : label_index(c,i+1);
@@ -69,7 +81,7 @@ module bezel(){
         translate([0,0,3]) slab(LW+.8,LH+.8,4,style>=3&&style<=4?.2:1.2);
         translate([0,0,keeper_z]) linear_extrude(3) keeper_outline(.25);
         corners(-eps,clearance,bezel_t+2*eps);
-        for(x=[-1,1],y=[-1,1]) hole(x*(LW/2+3),y*(LH/2-9),1.0,2.0,5.6);
+        for(x=[-1,1],y=[-1,1]) hole(x*(LW/2+3),y*(LH/2-9),1.0,keeper_pilot,5.6);
     }
 }
 module keeper(){difference(){
@@ -154,7 +166,7 @@ module rail(){difference(){
         slot(x*23.5,0,-eps,17,3.2,4);
     }
 }}
-module spacer(){difference(){cylinder(d=7,h=20);translate([0,0,-eps]) cylinder(d=3.2,h=21);}}
+module spacer(){difference(){cylinder(d=7,h=pcb_standoff);translate([0,0,-eps]) cylinder(d=3.2,h=pcb_standoff+1);}}
 module cassette(){difference(){
     union(){
         slab(78,72,2.4,5);
@@ -183,8 +195,9 @@ module feet(){
 module feet_print(){translate([0,14,0]) feet();}
 module coupon(){difference(){
     slab(95,60,3,3);
-    for(i=[0:6]) hole(-36+i*12,-20,-eps,[2.0,2.2,2.4,2.6,2.8,3.0,3.4][i],4);
-    for(i=[0:2]) translate([-28+i*28,-5,1.2]) cube([22,1.0+i*.2,3],center=true);
+    for(i=[0:8]) hole(-36+i*9,-20,-eps,[1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.4][i],4);
+    // Top-open acrylic edge gauges with a 1.2mm floor (the old slots had a roof).
+    for(i=[0:2]) translate([-39+i*28,-5-(1.0+i*.2)/2,1.2]) cube([22,1.0+i*.2,2]);
     for(i=[0:2]) hole(-28+i*28,15,-eps,12.2+i*.2,4);
 }}
 module acrylic_template(){rr(LW,LH,style>=3&&style<=4?.2:1);}
@@ -197,9 +210,14 @@ module assembly(explode=false){
     color("#2e3d48") translate([0,0,D+bezel_t+(explode?70:0)]) lid();
     color("#82a79b") translate([0,ports_y,D+bezel_t+3+(explode?90:0)]) ports();
     color("#839eae") translate([carrier_xy[0],carrier_xy[1],D+bezel_t-(explode?-45:0)]) rotate([180,0,0]) carrier();
-    for(y=[-1,1]) color("#b8c8c2") translate([carrier_xy[0],carrier_xy[1]+y*11.5,D+bezel_t-9+(explode?40:0)]) rotate([180,0,0]) rail();
+    for(y=[-1,1]) color("#b8c8c2") translate([carrier_xy[0],carrier_xy[1]+y*pcb_hole_width/2,D+bezel_t-9+(explode?40:0)]) rotate([180,0,0]) rail();
     color("#bd977b") translate([cassette_xy[0],cassette_xy[1],D+bezel_t+(explode?45:0)]) rotate([180,0,0]) cassette();
-    for(x=[-1,1],y=[-1,1]) color("#aabbb0") translate([carrier_xy[0]+x*26,carrier_xy[1]+y*11.5,D+bezel_t-12+(explode?40:0)]) rotate([180,0,0]) spacer();
+    for(x=[-1,1],y=[-1,1]) color("#aabbb0") translate([carrier_xy[0]+x*pcb_hole_length/2,carrier_xy[1]+y*pcb_hole_width/2,D+bezel_t-12+(explode?40:0)]) rotate([180,0,0]) spacer();
+    for(x=[-1,1]) color("#2e3d48")
+        translate([x*(W/2-22)-7,-H/2-4,-5])
+        multmatrix([[0,1,0,0],[0,0,1,0],[1,0,0,0],[0,0,0,1]]) feet_print();
+    color("#5e9b88") translate([carrier_xy[0]-pcb_length/2,carrier_xy[1]-pcb_width/2,D+bezel_t-12-pcb_standoff-pcb_thickness+(explode?40:0)])
+        cube([pcb_length,pcb_width,pcb_thickness]);
     if(!explode) color("#101418") translate([0,0,panel_front]) slab(160,80,panel_depth,.4);
 }
 if(part=="body") body();

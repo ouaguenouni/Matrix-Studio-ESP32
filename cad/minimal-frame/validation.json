@@ -1,0 +1,556 @@
+{
+  "passed": true,
+  "checks_count": 87,
+  "failures": [],
+  "source_sha256": "409dd5eab6de3d0d387eb29d0b9aff447b97ef82e155fe0432ce739c869ed164",
+  "installed_prints": 2,
+  "parts": {
+    "frame": {
+      "size_mm": [
+        176.0,
+        96.0,
+        23.3
+      ],
+      "solid_volume_cm3": 49.353
+    },
+    "rear": {
+      "size_mm": [
+        176.0,
+        96.0,
+        84.7
+      ],
+      "solid_volume_cm3": 116.15
+    },
+    "fit_corner": {
+      "size_mm": [
+        33.0,
+        30.0,
+        23.3
+      ],
+      "solid_volume_cm3": 5.72
+    },
+    "board_gauge": {
+      "size_mm": [
+        8.0,
+        37.0,
+        12.0
+      ],
+      "solid_volume_cm3": 1.054
+    }
+  },
+  "total_solid_volume_cm3": 165.503,
+  "solid_PLA_mass_at_1_24_g_cm3": 205.2,
+  "physical_fit_verified": false,
+  "slicer_time_verified": false,
+  "limitations": [
+    "Board, USB socket and DC adapter dimensions are provisional.",
+    "Clearances use simple hardware and plug envelopes, not measured component CAD.",
+    "Printability, strength, wire routing, thermal performance and hardware fit need physical checks.",
+    "Solid volume/mass is not slicer filament consumption or a print-time estimate."
+  ],
+  "checks": {
+    "current_source": {
+      "pass": true,
+      "detail": "409dd5eab6de3d0d387eb29d0b9aff447b97ef82e155fe0432ce739c869ed164"
+    },
+    "current_export/stl/frame.stl": {
+      "pass": true,
+      "detail": "f4b148df696c89ffea93874c39934b9465d761f0cfb6824492b9aa3422baf9c8"
+    },
+    "current_export/stl/rear.stl": {
+      "pass": true,
+      "detail": "412aa2f344f7ab010d95d9979ca1fcc5d35ad8d2fcec4444fb6a58ef9cc63938"
+    },
+    "current_export/fit-tests/fit_corner.stl": {
+      "pass": true,
+      "detail": "aa21e810355f834cc5587d3f7d3ddae55079f2ff700295d26a65218281dbcbb8"
+    },
+    "current_export/fit-tests/board_gauge.stl": {
+      "pass": true,
+      "detail": "66f62f71344114979256c36eeb37df069fd0e0ec76c29ed932a83a479a1ec285"
+    },
+    "current_export/reference/panel_mock.stl": {
+      "pass": true,
+      "detail": "72322c5d94800cc862dd8b59e676bd58b058ad7bcbe7449feb404c7cfcfdbc03"
+    },
+    "current_export/reference/pcb_mock.stl": {
+      "pass": true,
+      "detail": "e6751ddb73fc57e0a65f940b7f88f08e3d94376dff54bdae14c674608a67ff3f"
+    },
+    "current_export/reference/usb_mock.stl": {
+      "pass": true,
+      "detail": "8f359d09af373587c62c8b7f6a636d581ba01460adb1d677cfe8f8791823f03b"
+    },
+    "current_export/reference/power_mock.stl": {
+      "pass": true,
+      "detail": "2db53241adeb87561eb8e3468e105beef5a0c2e676caed9389ee581e42ad14f7"
+    },
+    "current_export/acrylic-outline.svg": {
+      "pass": true,
+      "detail": "b793003c24aad610f1d52cfdfa9bfb7593e36963d859efa6d21ed7059e38ebbc"
+    },
+    "frame/solid": {
+      "pass": true,
+      "detail": {
+        "watertight": true,
+        "connected_solids": 1
+      }
+    },
+    "frame/bed": {
+      "pass": true,
+      "detail": "Z=0; fits a 220 x 220 mm bed with 5 mm brim on each side"
+    },
+    "frame/dimensions": {
+      "pass": true,
+      "detail": [
+        176.0,
+        96.0,
+        23.3
+      ]
+    },
+    "rear/solid": {
+      "pass": true,
+      "detail": {
+        "watertight": true,
+        "connected_solids": 1
+      }
+    },
+    "rear/bed": {
+      "pass": true,
+      "detail": "Z=0; fits a 220 x 220 mm bed with 5 mm brim on each side"
+    },
+    "rear/dimensions": {
+      "pass": true,
+      "detail": [
+        176.0,
+        96.0,
+        84.7
+      ]
+    },
+    "fit_corner/solid": {
+      "pass": true,
+      "detail": {
+        "watertight": true,
+        "connected_solids": 1
+      }
+    },
+    "fit_corner/bed": {
+      "pass": true,
+      "detail": "Z=0; fits a 220 x 220 mm bed with 5 mm brim on each side"
+    },
+    "board_gauge/solid": {
+      "pass": true,
+      "detail": {
+        "watertight": true,
+        "connected_solids": 1
+      }
+    },
+    "board_gauge/bed": {
+      "pass": true,
+      "detail": "Z=0; fits a 220 x 220 mm bed with 5 mm brim on each side"
+    },
+    "assembly/frame/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/panel": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/pcb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/usb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/power": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/frame/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/panel": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/pcb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/usb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/power": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/rear/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/pcb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/usb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/power": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/panel/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/usb": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/power": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/usb/power": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/usb/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/usb/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/usb/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/usb/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power/pcb_tie": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb_tie/power_tie0": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb_tie/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/pcb_tie/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power_tie0/power_tie1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power_tie0/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "assembly/power_tie1/acrylic": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/usb_plug_10x14/frame": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/usb_plug_10x14/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/dc_plug_d12/frame": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/dc_plug_d12/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/panel_wiring_20mm/frame": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/panel_wiring_20mm/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/gpio_wiring_25mm/frame": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/gpio_wiring_25mm/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/pcb_back_8mm/frame": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "access/pcb_back_8mm/rear": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "panel_front_loading": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "pcb_insertion": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "power_insertion": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/front/-1/-1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/panel/-1/-1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/front/-1/1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/panel/-1/1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/front/1/-1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/panel/1/-1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/front/1/1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "fastener_head/panel/1/1": {
+      "pass": true,
+      "detail": {
+        "overlap_mm3": 0.0
+      }
+    },
+    "closure_screw_engagement": {
+      "pass": true,
+      "detail": {
+        "M3x30_engagement_mm": 6.7,
+        "pilot_depth_mm": 11
+      }
+    }
+  }
+}
