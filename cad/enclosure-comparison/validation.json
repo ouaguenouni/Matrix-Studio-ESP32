@@ -1,0 +1,993 @@
+{
+  "status": "digital_checks_only",
+  "hardware_fit_verified": false,
+  "variants": [
+    {
+      "name": "01-line",
+      "parts": {
+        "spacer": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            7.0,
+            7.0,
+            20.0
+          ],
+          "solid_volume_cm3": 0.61
+        },
+        "feet": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            101.5,
+            14.0,
+            12.0
+          ],
+          "solid_volume_cm3": 6.36
+        },
+        "carrier": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            90.0,
+            60.0,
+            9.0
+          ],
+          "solid_volume_cm3": 12.23
+        },
+        "bridge": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            182.0,
+            12.0,
+            3.0
+          ],
+          "solid_volume_cm3": 6.37
+        },
+        "body": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            190.0,
+            110.0,
+            82.0
+          ],
+          "solid_volume_cm3": 160.38
+        },
+        "cassette": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            78.0,
+            72.0,
+            14.0
+          ],
+          "solid_volume_cm3": 14.52
+        },
+        "lid": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            190.0,
+            110.0,
+            3.0
+          ],
+          "solid_volume_cm3": 52.87
+        },
+        "ports_usb_c": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 11.85
+        },
+        "ports": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 10.5
+        },
+        "rail": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            88.0,
+            10.0,
+            3.0
+          ],
+          "solid_volume_cm3": 2.2
+        },
+        "coupon": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            95.0,
+            60.0,
+            3.0
+          ],
+          "solid_volume_cm3": 15.66
+        },
+        "bezel": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            190.0,
+            110.0,
+            6.5
+          ],
+          "solid_volume_cm3": 41.78
+        },
+        "keeper": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            178.0,
+            94.0,
+            2.0
+          ],
+          "solid_volume_cm3": 6.66
+        }
+      },
+      "collisions": [],
+      "envelopes": [],
+      "conservative_6mm_coil_m": 0.2,
+      "acrylic_to_panel_gap_mm": 4.5,
+      "panel_face_to_keeper_gap_mm": 2.2,
+      "panel_mount_spacing_mm": [
+        125,
+        65
+      ],
+      "assembled_printed_mass_solid_upper_bound_g": 420.6
+    },
+    {
+      "name": "02-orbit",
+      "parts": {
+        "spacer": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            7.0,
+            7.0,
+            20.0
+          ],
+          "solid_volume_cm3": 0.61
+        },
+        "feet": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            103.5,
+            14.0,
+            12.0
+          ],
+          "solid_volume_cm3": 6.47
+        },
+        "carrier": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            90.0,
+            60.0,
+            9.0
+          ],
+          "solid_volume_cm3": 12.23
+        },
+        "bridge": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            194.0,
+            12.0,
+            3.0
+          ],
+          "solid_volume_cm3": 6.8
+        },
+        "body": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            84.0
+          ],
+          "solid_volume_cm3": 161.2
+        },
+        "cassette": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            78.0,
+            72.0,
+            20.0
+          ],
+          "solid_volume_cm3": 16.66
+        },
+        "lid": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            3.0
+          ],
+          "solid_volume_cm3": 63.5
+        },
+        "ports_usb_c": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 11.85
+        },
+        "ports": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 10.5
+        },
+        "rail": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            88.0,
+            10.0,
+            3.0
+          ],
+          "solid_volume_cm3": 2.2
+        },
+        "coupon": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            95.0,
+            60.0,
+            3.0
+          ],
+          "solid_volume_cm3": 15.66
+        },
+        "bezel": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            6.5
+          ],
+          "solid_volume_cm3": 64.81
+        },
+        "keeper": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            178.0,
+            94.0,
+            2.0
+          ],
+          "solid_volume_cm3": 6.66
+        }
+      },
+      "collisions": [],
+      "envelopes": [],
+      "conservative_6mm_coil_m": 0.4,
+      "acrylic_to_panel_gap_mm": 4.5,
+      "panel_face_to_keeper_gap_mm": 2.2,
+      "panel_mount_spacing_mm": [
+        125,
+        65
+      ],
+      "assembled_printed_mass_solid_upper_bound_g": 468.5
+    },
+    {
+      "name": "03-gallery",
+      "parts": {
+        "spacer": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            7.0,
+            7.0,
+            20.0
+          ],
+          "solid_volume_cm3": 0.61
+        },
+        "feet": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            103.5,
+            14.0,
+            12.0
+          ],
+          "solid_volume_cm3": 6.47
+        },
+        "carrier": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            90.0,
+            60.0,
+            9.0
+          ],
+          "solid_volume_cm3": 12.23
+        },
+        "bridge": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            198.0,
+            12.0,
+            3.0
+          ],
+          "solid_volume_cm3": 6.95
+        },
+        "body": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            84.0
+          ],
+          "solid_volume_cm3": 192.89
+        },
+        "cassette": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            78.0,
+            72.0,
+            20.0
+          ],
+          "solid_volume_cm3": 16.66
+        },
+        "lid": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            3.0
+          ],
+          "solid_volume_cm3": 85.92
+        },
+        "ports_usb_c": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 11.85
+        },
+        "ports": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 10.5
+        },
+        "rail": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            88.0,
+            10.0,
+            3.0
+          ],
+          "solid_volume_cm3": 2.2
+        },
+        "coupon": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            95.0,
+            60.0,
+            3.0
+          ],
+          "solid_volume_cm3": 15.66
+        },
+        "bezel": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            6.5
+          ],
+          "solid_volume_cm3": 79.41
+        },
+        "keeper": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            194.0,
+            140.0,
+            2.0
+          ],
+          "solid_volume_cm3": 27.15
+        }
+      },
+      "collisions": [],
+      "envelopes": [],
+      "conservative_6mm_coil_m": 0.4,
+      "acrylic_to_panel_gap_mm": 4.5,
+      "panel_face_to_keeper_gap_mm": 2.2,
+      "panel_mount_spacing_mm": [
+        125,
+        65
+      ],
+      "assembled_printed_mass_solid_upper_bound_g": 582.2
+    },
+    {
+      "name": "04-vault",
+      "parts": {
+        "spacer": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            7.0,
+            7.0,
+            20.0
+          ],
+          "solid_volume_cm3": 0.61
+        },
+        "feet": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            129.5,
+            14.0,
+            12.0
+          ],
+          "solid_volume_cm3": 7.92
+        },
+        "carrier": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            90.0,
+            60.0,
+            9.0
+          ],
+          "solid_volume_cm3": 12.23
+        },
+        "bridge": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            198.0,
+            12.0,
+            3.0
+          ],
+          "solid_volume_cm3": 6.95
+        },
+        "body": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            110.0
+          ],
+          "solid_volume_cm3": 254.13
+        },
+        "cassette": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            78.0,
+            72.0,
+            40.0
+          ],
+          "solid_volume_cm3": 23.78
+        },
+        "lid": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            3.0
+          ],
+          "solid_volume_cm3": 85.92
+        },
+        "ports_usb_c": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 11.85
+        },
+        "ports": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 10.5
+        },
+        "rail": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            88.0,
+            10.0,
+            3.0
+          ],
+          "solid_volume_cm3": 2.2
+        },
+        "coupon": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            95.0,
+            60.0,
+            3.0
+          ],
+          "solid_volume_cm3": 15.66
+        },
+        "bezel": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            206.0,
+            156.0,
+            6.5
+          ],
+          "solid_volume_cm3": 79.41
+        },
+        "keeper": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            194.0,
+            140.0,
+            2.0
+          ],
+          "solid_volume_cm3": 27.15
+        }
+      },
+      "collisions": [],
+      "envelopes": [],
+      "conservative_6mm_coil_m": 1.0,
+      "acrylic_to_panel_gap_mm": 4.5,
+      "panel_face_to_keeper_gap_mm": 2.2,
+      "panel_mount_spacing_mm": [
+        125,
+        65
+      ],
+      "assembled_printed_mass_solid_upper_bound_g": 672.7
+    },
+    {
+      "name": "05-console",
+      "parts": {
+        "spacer": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            7.0,
+            7.0,
+            20.0
+          ],
+          "solid_volume_cm3": 0.61
+        },
+        "feet": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            115.5,
+            14.0,
+            12.0
+          ],
+          "solid_volume_cm3": 7.14
+        },
+        "carrier": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            90.0,
+            60.0,
+            9.0
+          ],
+          "solid_volume_cm3": 12.23
+        },
+        "bridge": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            194.0,
+            12.0,
+            3.0
+          ],
+          "solid_volume_cm3": 6.8
+        },
+        "body": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            96.0
+          ],
+          "solid_volume_cm3": 191.34
+        },
+        "cassette": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            78.0,
+            72.0,
+            30.0
+          ],
+          "solid_volume_cm3": 20.22
+        },
+        "lid": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            3.0
+          ],
+          "solid_volume_cm3": 63.88
+        },
+        "ports_usb_c": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 11.85
+        },
+        "ports": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            142.0,
+            32.0,
+            3.0
+          ],
+          "solid_volume_cm3": 10.5
+        },
+        "rail": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            88.0,
+            10.0,
+            3.0
+          ],
+          "solid_volume_cm3": 2.2
+        },
+        "coupon": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            95.0,
+            60.0,
+            3.0
+          ],
+          "solid_volume_cm3": 15.66
+        },
+        "bezel": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            202.0,
+            122.0,
+            6.5
+          ],
+          "solid_volume_cm3": 65.62
+        },
+        "keeper": {
+          "watertight": true,
+          "consistent_winding": true,
+          "bodies": 1,
+          "positive_volume": true,
+          "bed_with_5mm_brim": true,
+          "on_z0": true,
+          "size_mm": [
+            178.0,
+            94.0,
+            2.0
+          ],
+          "solid_volume_cm3": 6.66
+        }
+      },
+      "collisions": [],
+      "envelopes": [],
+      "conservative_6mm_coil_m": 0.8,
+      "acrylic_to_panel_gap_mm": 4.5,
+      "panel_face_to_keeper_gap_mm": 2.2,
+      "panel_mount_spacing_mm": [
+        125,
+        65
+      ],
+      "assembled_printed_mass_solid_upper_bound_g": 514.5
+    }
+  ],
+  "failures": [],
+  "passed": true
+}

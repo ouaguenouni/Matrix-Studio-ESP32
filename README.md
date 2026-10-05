@@ -51,9 +51,12 @@ Physical colour appearance still needs the viewer's confirmation.
 6. The serial monitor uses **115200 baud**. Press the board's **EN/RST** button
    to view startup messages.
 
-Firmware lives in `src/main.cpp`; headers live in `include/`. The build automatically
-regenerates `include/web_ui.h` from `web/interface.html`, `web/codec.mjs`,
-`web/gif.mjs`, `web/gif-player.js`, and the bundled GIF decoder using
+Hardware and HTTP handling live in `src/main.cpp`; live data and the background
+network worker live in `src/live.cpp`. Host-testable parsing, state, and display
+rendering live in `include/LiveData.h`, `LiveState.h`, and `Display.h`.
+`web/display.json` is the shared font/palette source; `tools/build_display.py`
+generates the C++ and JavaScript data tables as part of UI generation. The build regenerates `include/web_ui.h` and `web/preview.html` from the editable
+HTML, JavaScript modules, shared display data, and bundled GIF decoder, using
 PlatformIO's own Python interpreter.
 
 ## 2. Join your home Wi-Fi
@@ -103,6 +106,37 @@ by device and network. Guest Wi-Fi/client isolation may block access.
   The browser decodes transparency, frame disposal and delays, then sends one frame
   at a time. Frame delays have a 40 ms minimum.
 - **Draw:** tap or drag on the preview to paint pixels; use the eraser as needed.
+- **Global display palette:** Classic, Amber, Neon, Ocean, Mint, or Sunset. Each
+  live mode can follow global or use its own palette. Layout and animation are
+  separate settings, saved on the ESP32; changing a clock override affects only
+  the clock. Text, images, drawings, and GIFs retain their own colours.
+- **Weather:** animated icon/temperature or compact temperature/condition/city.
+  Choose network location or search for a city. Real zero temperatures remain
+  valid; missing data shows `--`. Long city names scroll slowly.
+- **BOOT button:** a short press steps through clock, weather, and configured
+  YouTube. EN/RST still restarts the board.
+- **Clock:** large digits with a seconds indicator, or time and date, using French
+  network time. Unsynchronised time shows `--:--`.
+- **YouTube:** Cosmic Hippo Sounds subscribers, total views, and video count.
+  Choose rotating statistics (one card every five seconds) or subscriber focus.
+  Enable YouTube Data API v3 in Google Cloud and save a key on the panel. Website
+  referrer restrictions do not work with direct ESP32 requests. You may restrict
+  API access to YouTube Data API v3. A key in gitignored `config.conf`
+  (`youtube_api_key=...`) seeds the device only when no key is already saved.
+- **Animation:** Full, Subtle (default), or Off for each live mode. Off stops
+  decorative motion and label scrolling, while measurements, time, and rotating
+  statistic cards still update. Browser reduced-motion preference disables
+  preview animation without changing the panel setting.
+- **Startup and refresh:** restores the last selected live mode, including an
+  explicit stopped mode, and all appearance settings. Weather and configured
+  YouTube data load once Wi-Fi connects, even while the clock is showing. Refresh
+  happens every ten minutes, with one-minute retries and manual refresh buttons.
+  A background worker keeps the display, BOOT button, and web controls responsive.
+- **Service status:** loading, ready, stale, unconfigured, or error, with the age of
+  the last successful update and a useful error message. A small amber corner dot
+  marks stale LED data. Failed refreshes retain the last successful values in RAM;
+  after power loss, data must load again. Missing data shows `LOADING`, `ADD KEY`,
+  or `CHECK WEB`, rather than invented zeroes.
 - **Send to display:** commits the preview. Editing alone does not update the panel.
 - **Clear:** clears the preview; then press Send to clear the physical panel.
 - **Brightness:** changes the physical panel immediately; initial value is 30/255.
@@ -110,7 +144,8 @@ by device and network. Guest Wi-Fi/client isolation may block access.
   Keep the browser page visible and awake. It stops if you leave the tab or close it.
 
 The last sent frame remains while the ESP32 is powered, even if the browser closes.
-Display content and brightness are **not** restored after power loss; Wi-Fi settings are.
+Uploaded pixel frames and brightness are **not** restored after power loss. Wi-Fi,
+live mode, location, API key, and appearance settings are restored.
 Videos, saved playlists, and remote control from outside your network
 are extension points, not included features. This interface has no user login;
 clients on the same LAN or password-protected setup network can control it.
@@ -157,6 +192,31 @@ the included Python image sender without changing how the panel is wired.
 | `/api/frame` | POST | One multipart file named `frame` | Atomically replace all pixels |
 | `/api/brightness` | POST | URL-encoded `value=0..255` | Set brightness |
 | `/api/wifi` | POST | URL-encoded `ssid` and `password` | Save credentials and connect |
+| `/api/live` | POST | URL-encoded fields below | Live modes, saved appearance, and refresh |
+
+Live control fields (all optional, validated before applying):
+
+- `mode=clock|weather|youtube|off|save`: select a mode, freeze the current frame,
+  or save settings without switching. Omitting mode also leaves it unchanged.
+- `theme=classic|amber|neon|ocean|mint|sunset`: global palette. The legacy `theme`
+  field remains supported. The previous saved numeric theme migrates automatically.
+- `target=clock|weather|youtube` with `palette=global|<palette>`,
+  `layout=large|date` (clock), `icon|detail` (weather), or `rotate|subscribers`
+  (YouTube), and/or `motion=off|subtle|full`: independent per-mode appearance.
+- `city=<name>` or `locate=1`: queue location lookup and weather refresh. Lookup
+  completion and errors appear in status; HTTP success means accepted, not fetched.
+- `key=<YouTube API key>`: persist a key and load statistics; keys are never returned.
+- `refresh=weather|youtube`: request a refresh without changing the display mode.
+
+`/api/status` keeps existing fields and adds `appearance` (`global`, plus a
+`palette`, `layout`, and `motion` object per live mode), `savedMode`, `clockSynced`,
+`liveTick` (milliseconds since mode selection), and `services.weather` /
+`services.youtube`. Each service reports `state`, `refreshing`, `ageSeconds`
+(null before first success), and `message`. Existing `temp`, `kind`, `channel`,
+`subs`, `views`, and `videos` appear only after successful validated responses.
+`weatherCode` contains the validated WMO code. Counts remain formatted strings;
+hidden subscribers use `--`. `youtube` means a key is configured, not that a fetch
+has succeeded. `live` reports `off` when manual frame uploads hold live rendering.
 
 All POST requests require the header `X-Matrix-Control: 1`. It limits accidental
 cross-site browser requests; it is **not** an authentication credential. CORS is
@@ -180,7 +240,7 @@ python3 tools/send_image.py http://192.168.1.42 photo.png
 ```
 
 To edit the embedded interface, modify `web/interface.html`, `web/codec.mjs`,
-`web/gif.mjs`, or `web/gif-player.js`,
+`web/gif.mjs`, `web/gif-player.js`, `web/weather.mjs`, `web/clock.mjs`, or `web/youtube.mjs`,
 then build and upload the firmware again. PlatformIO regenerates the embedded UI
 automatically; you can also run `python3 tools/build_ui.py` manually.
 `web/preview.html` is the generated UI for local inspection; a normal local preview
@@ -188,7 +248,12 @@ does not control hardware because it has no ESP32 server behind it.
 
 ## Verification and troubleshooting
 
-Run `node tests/codec_test.mjs` and compile/run `tests/frame_protocol_test.cpp` with
+After `pio run` installs pinned dependencies, run `npm run test:firmware` for
+actual firmware JSON parsing, scheduling, settings migration, pixel renderer
+parity (972 cases), frame protocol, and colour-table checks. Run `npm test` for
+the browser and JavaScript checks.
+
+Run `node tests/codec_test.mjs`, `node tests/modules_test.mjs`, and compile/run `tests/frame_protocol_test.cpp` with
 a standard C++ compiler. `tests/browser_test.cjs` runs the browser interface
 against simulated endpoints using Playwright. These do not replace hardware testing.
 The small MIT-licensed omggif decoder is bundled locally with its license retained
@@ -327,4 +392,4 @@ describes startup profile N and is not updated by temporary sweep overrides.
 - Waveshare panel: https://docs.waveshare.com/RGB-Matrix-Px-64x32
 - GIF decoder (MIT): https://github.com/deanm/omggif
 
-Prepared 2026-10-03. No real Wi-Fi credentials are included.
+Updated 2026-10-04. No real Wi-Fi credentials are included.

@@ -1,0 +1,65 @@
+{
+  "source": "https://files.waveshare.com/wiki/RGB-Matrix-P2.5-64x32/RGB-Matrix-P2.5-64x32-2D.dwg",
+  "coordinate_origin": "panel centre",
+  "units": "mm",
+  "m3_callout_centres": [
+    [
+      -62.5,
+      32.5
+    ],
+    [
+      12.5,
+      32.5
+    ],
+    [
+      62.5,
+      32.5
+    ],
+    [
+      -62.5,
+      -32.5
+    ],
+    [
+      -12.5,
+      -32.5
+    ],
+    [
+      62.5,
+      -32.5
+    ]
+  ],
+  "recommended_outer_four": [
+    [
+      -62.5,
+      -32.5
+    ],
+    [
+      -62.5,
+      32.5
+    ],
+    [
+      62.5,
+      -32.5
+    ],
+    [
+      62.5,
+      32.5
+    ]
+  ],
+  "side_circles_thread_unverified": [
+    [
+      72.5,
+      15.5
+    ],
+    [
+      -72.5,
+      -15.5
+    ]
+  ],
+  "dwg_outline_mm": [
+    159.7,
+    79.7
+  ],
+  "outline_tolerance_mm": 0.3,
+  "screw_engagement_depth": "not verified"
+}

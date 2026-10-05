@@ -1,0 +1,11 @@
+{
+  "name": "matrix-studio-esp32",
+  "private": true,
+  "scripts": {
+    "test": "node tests/codec_test.mjs && node tests/modules_test.mjs && node tests/browser_test.cjs && node tests/gift_browser_test.cjs",
+    "test:firmware": "sh tools/test_live.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

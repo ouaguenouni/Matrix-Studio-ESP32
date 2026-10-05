@@ -1,0 +1,97 @@
+{
+  "units": "mm",
+  "hardware_fit_verified": false,
+  "acrylic_thickness_mm": 1,
+  "variants": [
+    {
+      "id": 1,
+      "name": "01-line",
+      "width": 190,
+      "height": 110,
+      "body_depth": 82,
+      "overall_depth": 94.5,
+      "radius": 5,
+      "lens": [
+        164,
+        84,
+        1
+      ],
+      "cassette_height": 14
+    },
+    {
+      "id": 2,
+      "name": "02-orbit",
+      "width": 202,
+      "height": 122,
+      "body_depth": 84,
+      "overall_depth": 96.5,
+      "radius": 16,
+      "lens": [
+        164,
+        84,
+        1
+      ],
+      "cassette_height": 20
+    },
+    {
+      "id": 3,
+      "name": "03-gallery",
+      "width": 206,
+      "height": 156,
+      "body_depth": 84,
+      "overall_depth": 96.5,
+      "radius": 8,
+      "lens": [
+        180,
+        130,
+        1
+      ],
+      "cassette_height": 20
+    },
+    {
+      "id": 4,
+      "name": "04-vault",
+      "width": 206,
+      "height": 156,
+      "body_depth": 110,
+      "overall_depth": 122.5,
+      "radius": 8,
+      "lens": [
+        180,
+        130,
+        1
+      ],
+      "cassette_height": 40
+    },
+    {
+      "id": 5,
+      "name": "05-console",
+      "width": 202,
+      "height": 122,
+      "body_depth": 96,
+      "overall_depth": 108.5,
+      "radius": 7,
+      "lens": [
+        164,
+        84,
+        1
+      ],
+      "cassette_height": 30
+    }
+  ],
+  "quantities": {
+    "bezel": 1,
+    "body": 1,
+    "lid": 1,
+    "keeper": 1,
+    "bridge": 2,
+    "carrier": 1,
+    "rail": 2,
+    "spacer": 4,
+    "ports": 1,
+    "cassette": 1,
+    "feet": 2,
+    "coupon": 1,
+    "ports_usb_c": 0
+  }
+}

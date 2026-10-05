@@ -11,6 +11,8 @@
 #include <soc/gpio_sig_map.h>
 #include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>
 #include "FrameProtocol.h"
+#include "live.h"
+#include "GiftState.h"
 #include "web_ui.h"
 
 static_assert(PIXEL_COLOR_DEPTH_BITS == 6,
@@ -141,6 +143,7 @@ void showMessage(const char* text) {
 }
 
 void showHardwareColorTest() {
+  liveHold();
   // Drive RGB888 directly to isolate panel/wiring faults from browser encoding.
   for (int16_t y = 0; y < 32; ++y) {
     for (int16_t x = 0; x < 64; ++x) {
@@ -158,6 +161,7 @@ void showHardwareColorTest() {
 }
 
 void showHardwareWhiteTest() {
+  liveHold();
   panel->fillScreenRGB888(255, 255, 255);
   panel->flipDMABuffer();
   receivedContent = true;
@@ -165,6 +169,7 @@ void showHardwareWhiteTest() {
 }
 
 void showHardwarePaletteTest() {
+  liveHold();
   const uint8_t grays[] = {0, 32, 64, 96, 128, 180, 220, 255};
   const uint8_t pastels[][3] = {{240, 230, 220}, {255, 240, 200}, {240, 200, 200},
                               {200, 240, 200}, {200, 200, 240}, {200, 240, 240},
@@ -182,6 +187,7 @@ void showHardwarePaletteTest() {
 }
 
 void showHardwareTextTest() {
+  liveHold();
   panel->clearScreen();
   panel->setTextWrap(false);
   panel->setTextSize(1);
@@ -194,6 +200,7 @@ void showHardwareTextTest() {
 }
 
 void showHardwarePurpleTest() {
+  liveHold();
   const uint8_t colors[][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 0, 255},
                              {128, 0, 192}, {64, 0, 96}, {176, 144, 224}, {255, 255, 255}};
   for (int16_t y = 0; y < 32; ++y) {
@@ -251,6 +258,7 @@ void showTimingProfile() {
 }
 
 void startTimingSweep(bool focused = false) {
+  liveHold();
   if (!timingSweepActive) {
     timingBeforeSweep = {'-', runtimeClockPhase, panel->getCfg().latch_blanking,
                          clockDrive, uint8_t(getDev()->clkm_conf.clkm_div_num), signalDriveMode};
@@ -349,7 +357,9 @@ void statusRoute() {
   out += ",\"ap\":" + jsonString(apRunning ? apName : "");
   out += ",\"brightness\":" + String(brightness);
   out += ",\"frames\":" + String(framesReceived);
-  out += ",\"freeHeap\":" + String(ESP.getFreeHeap()) + "}";
+  out += ",\"freeHeap\":" + String(ESP.getFreeHeap());
+  out += liveStatusJson();
+  out += "}";
   sendJSON(200, out);
 }
 
@@ -378,6 +388,7 @@ void finishFrame() {
     return;
   }
   stopTimingSweep();
+  liveHold();
   for (size_t y = 0; y < MatrixProtocol::HEIGHT; ++y)
     for (size_t x = 0; x < MatrixProtocol::WIDTH; ++x)
       panel->drawPixel(x, y, incomingFrame.pixel(y * MatrixProtocol::WIDTH + x));
@@ -397,7 +408,7 @@ void brightnessRoute() {
   if (!valid || number > 255) { sendJSON(400, "{\"error\":\"Brightness must be 0 to 255\"}"); return; }
   stopTimingSweep();
   brightness = uint8_t(number);
-  panel->setBrightness8(brightness);
+  liveSetBrightness(brightness);
   sendJSON(200, "{\"ok\":true}");
 }
 
@@ -417,6 +428,22 @@ void wifiRoute() {
   changeWiFiPending = true;
   changeWiFiAt = millis() + 500;
   sendJSON(200, "{\"ok\":true,\"message\":\"Saved; connecting now. Watch the connection status.\"}");
+}
+
+void liveRoute() {
+  if (!requireControlRequest()) return;
+  String error;
+  LiveRequest request;
+  request.mode = server.arg("mode"); request.theme = server.arg("theme");
+  request.target = server.arg("target"); request.palette = server.arg("palette");
+  request.layout = server.arg("layout"); request.motion = server.arg("motion");
+  request.city = server.arg("city"); request.key = server.arg("key");
+  request.refresh = server.arg("refresh"); request.locate = server.hasArg("locate");
+  if (!liveConfigure(request, error)) {
+    sendJSON(400, "{\"error\":" + jsonString(error) + "}");
+    return;
+  }
+  sendJSON(200, "{\"ok\":true}");
 }
 
 void setup() {
@@ -484,6 +511,7 @@ void setup() {
   }
   savedSSID = settings.getString("ssid", "");
   savedPassword = settings.getString("password", "");
+  liveBegin(settings, panel);
   WiFi.setHostname(hostname.c_str()); // Must precede WiFi.mode().
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
@@ -501,11 +529,33 @@ void setup() {
   server.on("/api/frame", HTTP_POST, finishFrame, uploadFrame);
   server.on("/api/brightness", HTTP_POST, brightnessRoute);
   server.on("/api/wifi", HTTP_POST, wifiRoute);
+  server.on("/api/live", HTTP_POST, liveRoute);
+  server.on("/api/gift", HTTP_POST, [](){
+    if(!requireControlRequest())return;
+    DynamicJsonDocument doc(2048);
+    const String body=server.arg("plain");
+    if(body.length()>1800 || deserializeJson(doc,body) || !doc.is<JsonObject>()){
+      sendJSON(400,"{\"error\":\"Invalid gift settings JSON.\"}");return;
+    }
+    String error;
+    if(!liveGiftConfigure(doc.as<JsonObjectConst>(),error)){sendJSON(400,"{\"error\":"+jsonString(error)+"}");return;}
+    sendJSON(200,"{\"ok\":true}");
+  });
   server.onNotFound([]() { sendJSON(404, "{\"error\":\"Not found\"}"); });
   server.begin();
   Serial.println("Matrix web server started.");
   Serial.println("Send T for RGB, W for full-panel white, G for grayscale/pastels, V for purple comparison, H for white Hello, or C to toggle clock drive.");
   Serial.println("Send F for slow-clock tests N,Q,R,S or S for all A-S; P=pause/resume N=next X=stop.");
+  // BOOT on a classic ESP32 dev board is GPIO0, active low, and unused by the panel.
+  pinMode(0, INPUT_PULLUP);
+}
+
+void pollModeButton() {
+  static Gift::Button button;
+  const int event=button.update(digitalRead(0)==LOW,millis());
+  if(!event)return;
+  stopTimingSweep();
+  if(event==2)liveSurprise();else liveNextMode();
 }
 
 void loop() {
@@ -534,5 +584,7 @@ void loop() {
   server.handleClient();
   updateWiFi();
   updateTimingSweep();
+  pollModeButton();
+  liveTick(timingSweepActive);
   delay(1);
 }

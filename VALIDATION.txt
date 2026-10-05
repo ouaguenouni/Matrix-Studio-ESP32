@@ -117,3 +117,40 @@ NOT RUN: Actual HTTP multipart processing validation on physical hardware.
 
 The provided browser test uses simulated endpoints and would not, by itself,
 validate the ESP32 WebServer implementation. Hardware validation steps are in README.md.
+
+
+Validation performed on 2026-10-04 — live display redesign
+
+PASS: Six live layouts (two per mode), six palettes, and independent motion.
+      972 host-rendered firmware/browser pixel comparisons covering all layouts,
+      palettes, motion settings, loading/error/unconfigured states, stale data,
+      negative/zero temperatures, weather icons, and long accented labels.
+PASS: Actual ArduinoJson firmware parsers tested on host: Open-Meteo units before
+      current values, formatted YouTube JSON, zero and hidden counts, missing and
+      malformed values, overflow, empty results, geocoding and API failures.
+PASS: Palette inheritance/override isolation, legacy theme migration, saved/off
+      mode restoration, retry intervals, timer rollover, reconnect invalidation,
+      and discarding superseded worker results.
+PASS: Existing frame protocol, RGB565 codec, panel colour-table regressions.
+PASS: Browser interactions, saved appearance reload, palette isolation, six layout
+      controls, motion settings, refresh requests, loading/error/stale UI, and
+      390-pixel mobile layout. These browser endpoints are simulated.
+PASS: PlatformIO firmware build and USB upload to /dev/cu.usbserial-0001.
+      Pinned ArduinoJson 6.21.5. Background network worker uses bounded request
+      and result queues; panel rendering/preferences remain on the main loop.
+PASS: On real hardware, weather reports Toulouse at 20 C. YouTube returns channel
+      Cosmic Hippo, 27.5K subscribers, 10.7M views, and 119 videos. These are observed
+      values at validation time, not fixed expectations.
+PASS: Real /api/live theme isolation and rejected invalid request without partial
+      setting changes; mode switching through weather, YouTube, and clock.
+PASS: Real simultaneous service refresh requests with responsive /api/status;
+      max latency 0.220 seconds across ten requests while refresh was in flight.
+PASS: USB reset restores stopped mode and appearance; a second reset restores
+      YouTube mode and both services reach ready. Original mode and appearance
+      restored after the test. Free heap after successful requests: 174,696 bytes.
+PASS: Startup serial output retains profile N, 4 MHz, 105 Hz calculated refresh,
+      and matching six-bit colour depth.
+PENDING: Human visual assessment of the physical layouts/animation and remaining
+         ghosting. Preview images are not measurements of the physical LEDs.
+NOT RUN: Physical network outage/recovery test or direct BOOT-button press in this
+         session; scheduling/reconnect state transitions have host-test coverage.

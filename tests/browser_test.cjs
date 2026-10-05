@@ -9,13 +9,16 @@ const html=fs.readFileSync(path.join(root,'web/preview.html'),'utf8');
   const browser=await chromium.launch({headless:true, ...(process.env.MATRIX_TEST_CHROMIUM ? {executablePath:process.env.MATRIX_TEST_CHROMIUM} : {})});
   const page=await browser.newPage({viewport:{width:1280,height:960}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  let frame=null, frames=0, brightness=30, wifi=null, rejectNext=false;
+  let frame=null, frames=0, brightness=30, wifi=null, rejectNext=false, liveState={mode:'',theme:'neon'};
+  const appearance={global:'neon',clock:{palette:'global',layout:'large',motion:'subtle'},weather:{palette:'global',layout:'icon',motion:'subtle'},youtube:{palette:'global',layout:'rotate',motion:'subtle'}};
+  const services={weather:{state:'loading',message:'Loading from the service.',ageSeconds:null},youtube:{state:'unconfigured',message:'Add a YouTube Data API key.',ageSeconds:null}};
+  const payload={};const refreshes=[];
   await page.route('http://matrix.test/**',async route=>{
     const req=route.request(),url=new URL(req.url());
     if(url.pathname==='/')return route.fulfill({contentType:'text/html',body:html});
     let result={ok:true},status=200;
     if(req.method()==='POST')assert.equal(req.headers()['x-matrix-control'],'1');
-    if(url.pathname==='/api/status')result={width:64,height:32,connected:!!wifi,ip:wifi?'192.168.1.42':'',hostname:'matrix-test.local',ssid:wifi?.ssid||'',ap:'Matrix-test',brightness,frames,freeHeap:120000};
+    if(url.pathname==='/api/status')result={width:64,height:32,connected:!!wifi,ip:wifi?'192.168.1.42':'',hostname:'matrix-test.local',ssid:wifi?.ssid||'',ap:'Matrix-test',brightness,frames,freeHeap:120000,live:liveState.mode,theme:liveState.theme,appearance,services,...payload};
     else if(url.pathname==='/api/frame'){
       const body=req.postDataBuffer();
       const boundary=req.headers()['content-type'].split('boundary=')[1];
@@ -26,6 +29,7 @@ const html=fs.readFileSync(path.join(root,'web/preview.html'),'utf8');
       else{frame=Buffer.from(body.subarray(start,end));frames++;result={ok:true,frames};}
     }else if(url.pathname==='/api/brightness')brightness=Number(new URLSearchParams(req.postData()).get('value'));
     else if(url.pathname==='/api/wifi'){wifi=Object.fromEntries(new URLSearchParams(req.postData()));result={ok:true,message:'Saved; connecting now.'};}
+    else if(url.pathname==='/api/live'){const body=Object.fromEntries(new URLSearchParams(req.postData()));if(body.mode==='off')liveState.mode='';else if(body.mode&&body.mode!=='save')liveState.mode=body.mode;if(body.theme){liveState.theme=body.theme;appearance.global=body.theme;}if(body.target)for(const key of ['palette','layout','motion'])if(body[key])appearance[body.target][key]=body[key];if(body.refresh)refreshes.push(body.refresh);result={ok:true};}
     else{status=404;result={error:'Not found'};}
     await route.fulfill({status,contentType:'application/json',body:JSON.stringify(result)});
   });
@@ -74,6 +78,52 @@ const html=fs.readFileSync(path.join(root,'web/preview.html'),'utf8');
     await page.waitForTimeout(450);assert(frames>before);
     assert(words().every(pixel=>pixel===0||pixel===0xffff));
     await page.locator('#scroll').click();await page.waitForFunction(()=>!document.querySelector('#send').disabled);before=frames;await page.waitForTimeout(300);assert.equal(frames,before);
+    await page.locator('#tab-weather').click();
+    await page.getByRole('button',{name:'Use my location',exact:true}).waitFor();
+    await page.locator('#tab-youtube').click();
+    await page.getByLabel('YouTube Data API key').waitFor();
+    await page.getByText('Enable YouTube Data API v3.').waitFor();
+    await page.locator('#tab-clock').click();
+    await page.locator('#clockTheme').selectOption('neon');
+    await page.waitForFunction(()=>document.querySelector('#message').textContent==='Appearance saved on the panel.');
+    assert.equal(appearance.clock.palette,'neon');
+    assert(await page.evaluate(()=>{
+      const data=document.querySelector('#canvas').getContext('2d').getImageData(0,0,64,32).data;
+      let cyan=false, magenta=false;
+      for(let i=0;i<data.length;i+=4){
+        if(data[i]<40&&data[i+1]>200&&data[i+2]>200) cyan=true;
+        if(data[i]>200&&data[i+1]<80&&data[i+2]>=200) magenta=true;
+      }
+      return cyan&&magenta;
+    }));
+    await page.locator('#clockPlay').click();
+    await page.waitForFunction(()=>document.querySelector('#clockPlay').textContent==='Stop clock');
+    assert.equal(liveState.mode,'clock');
+    assert.equal(appearance.clock.palette,'neon');
+    await page.locator('#globalTheme').selectOption('sunset');
+    await page.waitForFunction(()=>document.querySelector('#globalTheme').value==='sunset');
+    await page.evaluate(()=>deviceRequests);assert.equal(appearance.global,'sunset');assert.equal(appearance.clock.palette,'neon');assert.equal(appearance.weather.palette,'global');
+    await page.locator('#clockLayout').selectOption('date');await page.evaluate(()=>deviceRequests);assert.equal(appearance.clock.layout,'date');assert.equal(liveState.mode,'clock');
+    await page.locator('#clockMotion').selectOption('off');await page.evaluate(()=>deviceRequests);assert.equal(appearance.clock.motion,'off');
+    await page.locator('#tab-weather').click();assert(await page.locator('#editorActions').isHidden());
+    await page.locator('#weatherRefresh').click();await page.evaluate(()=>deviceRequests);assert(refreshes.includes('weather'));
+    payload.temp=0;payload.kind='snow';payload.place='Saint-Étienne';services.weather={state:'ready',message:'Up to date.',ageSeconds:3};
+    await page.evaluate(()=>refreshStatus());assert((await page.locator('#weatherStatus').textContent()).includes('3s'));
+    services.weather={state:'stale',message:'Network request failed.',ageSeconds:650};await page.evaluate(()=>refreshStatus());
+    assert((await page.locator('#weatherStatus').textContent()).includes('Stale'));
+    await page.locator('#weatherLayout').selectOption('detail');await page.evaluate(()=>deviceRequests);assert.equal(appearance.weather.layout,'detail');
+    await page.locator('#tab-youtube').click();assert((await page.locator('#youtubeStatus').textContent()).includes('Add a YouTube'));
+    services.youtube={state:'error',message:'YouTube rejected the key.',ageSeconds:null};await page.evaluate(()=>refreshStatus());
+    assert((await page.locator('#youtubeStatus').textContent()).includes('rejected'));
+    payload.channel='Cosmic Hippo Sounds';payload.subs='0';payload.views='123.4M';payload.videos='42';services.youtube={state:'ready',message:'Up to date.',ageSeconds:0};
+    await page.locator('#youtubeLayout').selectOption('subscribers');await page.evaluate(()=>deviceRequests);assert.equal(appearance.youtube.layout,'subscribers');
+    await page.locator('#youtubeRefresh').click();await page.evaluate(()=>deviceRequests);assert(refreshes.includes('youtube'));
+    await page.reload();await page.waitForFunction(()=>document.querySelector('#globalTheme').value==='sunset');
+    await page.locator('#tab-clock').click();assert.equal(await page.locator('#clockTheme').inputValue(),'neon');assert.equal(await page.locator('#clockLayout').inputValue(),'date');
+    assert.equal(await page.locator('#clockMotion').inputValue(),'off');
+    await page.locator('#clockPlay').click();
+    await page.waitForFunction(()=>document.querySelector('#clockPlay').textContent==='Show clock on panel');
+    await page.locator('#tab-text').click();
     await page.locator('#wifiDetails').evaluate(e=>e.open=false);
     await page.screenshot({path:'/tmp/matrix-studio-desktop.png',fullPage:true});
     await page.setViewportSize({width:390,height:844});

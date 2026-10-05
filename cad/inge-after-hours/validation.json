@@ -1,0 +1,116 @@
+{
+  "status": "prototype_geometry_only",
+  "units": "mm",
+  "hardware_fit_verified": false,
+  "printer_bed_assumption": [
+    220,
+    220,
+    250
+  ],
+  "parts": {
+    "carrier": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        80.0,
+        45.0,
+        8.4
+      ],
+      "volume_mm3": 8820.9,
+      "triangles": 2876,
+      "fits_220mm_bed": true
+    },
+    "clip": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        16.0,
+        8.0,
+        2.4
+      ],
+      "volume_mm3": 282.66,
+      "triangles": 336,
+      "fits_220mm_bed": true
+    },
+    "coupon": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        92.0,
+        42.0,
+        3.0
+      ],
+      "volume_mm3": 11050.01,
+      "triangles": 1172,
+      "fits_220mm_bed": true
+    },
+    "front_spacer": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        164.0,
+        84.0,
+        1.5
+      ],
+      "volume_mm3": 1893.17,
+      "triangles": 352,
+      "fits_220mm_bed": true
+    },
+    "lid": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        182.8,
+        102.8,
+        3.0
+      ],
+      "volume_mm3": 49440.05,
+      "triangles": 5832,
+      "fits_220mm_bed": true
+    },
+    "ports": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        92.0,
+        34.0,
+        3.0
+      ],
+      "volume_mm3": 8801.24,
+      "triangles": 2548,
+      "fits_220mm_bed": true
+    },
+    "shell": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        182.8,
+        102.8,
+        60.0
+      ],
+      "volume_mm3": 105368.47,
+      "triangles": 4112,
+      "fits_220mm_bed": true
+    },
+    "stand": {
+      "watertight": true,
+      "consistent_winding": true,
+      "connected_bodies": 1,
+      "dimensions_mm": [
+        30.0,
+        75.0,
+        16.225
+      ],
+      "volume_mm3": 22278.78,
+      "triangles": 32,
+      "fits_220mm_bed": true
+    }
+  }
+}

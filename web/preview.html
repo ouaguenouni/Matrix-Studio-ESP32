@@ -4,25 +4,55 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Matrix Studio</title>
 <style>
-:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#182a29;background:#f4f5ee;font-size:15px;--green:#176b57;--border:#d8dfd6}
-*{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:30px 22px 55px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:34px}.logo{display:flex;gap:12px;align-items:center}.mark{font-size:24px;letter-spacing:2px;color:var(--green)}h1{font-size:23px;letter-spacing:-.8px;margin:0}h2{font-size:18px;margin:0 0 15px}p{line-height:1.6}.muted{color:#657470;font-size:13px}.badge{padding:8px 12px;border:1px solid var(--border);border-radius:30px;font-size:12px;background:#fff}.lead{font-size:36px;letter-spacing:-1.5px;font-weight:600;margin:0 0 7px}.sub{margin:0 0 28px;color:#657470}.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,1fr);gap:22px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}.preview{background:#0a1110;border-radius:12px;padding:18px;margin:18px 0;color:#95ada4}.preview canvas{display:block;width:100%;height:auto;aspect-ratio:2;background:#000;image-rendering:pixelated;touch-action:none;cursor:crosshair}.caps{text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:#64756c;display:flex;justify-content:space-between;gap:10px}label{display:block;font-size:13px;font-weight:600;margin:15px 0 6px}input:not([type=color]):not([type=range]),textarea,select{font:inherit;width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:#182a29}textarea{resize:vertical;min-height:88px}input[type=color]{width:100%;height:41px;border:1px solid var(--border);border-radius:8px;padding:4px;background:#fff}input[type=range]{width:100%;accent-color:var(--green)}button{font:inherit;cursor:pointer;border:1px solid var(--border);border-radius:9px;padding:10px 14px;background:#fff;color:#182a29;font-weight:600}button:hover{background:#edf4ee}button:disabled{opacity:.55;cursor:wait}.primary{background:var(--green);color:#fff;border-color:var(--green)}.primary:hover{background:#105642}.wide{width:100%}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.tabs{display:flex;gap:5px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}.tab{flex:1;font-size:13px;padding:8px}.tab[aria-selected=true]{background:#e8f2eb;color:#125944;border-color:#91b5a5}.pane[hidden]{display:none}.message{min-height:24px;font-size:13px;line-height:1.5;margin-top:12px}.error{color:#a33028}.success{color:var(--green)}.connection{margin-top:22px}summary{cursor:pointer;font-size:15px;font-weight:600}details[open] summary{margin-bottom:15px}a{color:var(--green);overflow-wrap:anywhere}footer{font-size:12px;color:#657470;margin-top:25px}.hint{background:#f0f5ef;border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.5}.selected{background:#e8f2eb!important;border-color:#91b5a5!important}small{font-size:12px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e6a558;outline-offset:2px}@media(max-width:730px){main{padding:22px 15px}.layout{grid-template-columns:1fr}.lead{font-size:29px}header{margin-bottom:25px}.card{padding:18px}.preview{padding:10px}}
+:root{font-family:system-ui,-apple-system,sans-serif;color:#e9edf4;background:#0d1017;font-size:14px;--border:#303746;--muted:#9aa6b9;--accent:#9bbcff}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}main{max-width:1080px;margin:auto;padding:26px 22px 44px}header,.logo,.row,.caps{display:flex;align-items:center;gap:12px}header{justify-content:space-between;margin-bottom:24px}.mark{color:var(--accent);font-size:24px}h1{font-size:21px;margin:0}p{line-height:1.6}.lead{font-size:30px;letter-spacing:-1px;margin:0 0 8px}.kicker{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:2px}.sub,.muted,footer{color:var(--muted)}.sub{margin:0 0 24px}.muted,footer{font-size:12px}.badge{font-size:12px;border:1px solid var(--border);border-radius:20px;padding:8px 12px}.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start}.card{background:#151a24;border:1px solid var(--border);border-radius:14px;padding:20px}.stage{position:sticky;top:20px}.preview{padding:16px;background:#06080c;border:1px solid #272e3c;border-radius:10px;margin:16px 0 20px}.preview canvas{display:block;width:100%;aspect-ratio:2;height:auto;image-rendering:pixelated;touch-action:none;cursor:crosshair}.caps{justify-content:space-between;text-transform:uppercase;font-size:10px;letter-spacing:1px;color:var(--muted)}label{display:block;margin:15px 0 6px;font-weight:500;font-size:12px}input:not([type=color]):not([type=range]):not([type=checkbox]),textarea,select{width:100%;font:inherit;background:#0e131c;color:#e9edf4;border:1px solid var(--border);border-radius:7px;padding:10px;min-width:0}textarea{min-height:88px;resize:vertical}input[type=color]{width:100%;height:40px;background:#0e131c;border:1px solid var(--border);border-radius:7px}input[type=range]{width:100%;accent-color:var(--accent)}button{font:inherit;color:#e9edf4;border:1px solid var(--border);background:#202838;border-radius:7px;padding:10px 12px;cursor:pointer}button:hover{background:#2a354a}button:disabled{opacity:.5;cursor:wait}.primary,.tab[aria-selected=true]{background:#9bbcff;color:#111a2b;border-color:#9bbcff}.primary:hover{background:#b9cfff}.row>*{flex:1;min-width:0}.wide{width:100%}.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:20px}#tab-studio{grid-column:1/-1}.tab{font-size:12px;padding:9px 4px}.pane[hidden]{display:none}.message{font-size:12px;min-height:24px;margin:12px 0;line-height:1.5}.success{color:#a6d9be}.error,[data-state=error]{color:#ffaaaa}[data-state=stale]{color:#ffcd84}.connection{margin-top:20px}summary{cursor:pointer;font-weight:500}details[open] summary{margin-bottom:12px}.hint{background:#0e131c;padding:10px;border-radius:8px}a{color:var(--accent);overflow-wrap:anywhere}.selected{border-color:var(--accent);background:#2a354a}footer{margin-top:20px}.appearance{border-top:1px solid var(--border);margin-top:18px;padding-top:4px}.appearance .row{align-items:flex-end}.appearance select{font-size:12px}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(max-width:730px){main{padding:18px 14px}.layout{grid-template-columns:1fr}.stage{position:static}.card{padding:16px}.lead{font-size:26px}.preview{padding:10px}.appearance .row{flex-wrap:wrap}.appearance .row>div{flex-basis:100px}}
 </style>
 </head>
 <body><main>
 <header><div class="logo"><span class="mark" aria-hidden="true">▦</span><h1>Matrix Studio</h1></div><span class="badge" id="connectionBadge">Connecting…</span></header>
-<p class="lead">Your 64 × 32 canvas.</p><p class="sub">Make something here. Send it to your display.</p>
+<p class="kicker">Your display</p><p class="lead">Small display. Clear information.</p><p class="sub">Clock, weather, and the channel keep running on the panel after this page is closed.</p>
 <div class="layout">
-<section class="card" aria-label="Display preview">
+<section class="card stage" aria-label="Display preview">
 <div class="caps"><span>Preview</span><span>2,048 pixels · RGB</span></div>
 <div class="preview"><canvas id="canvas" width="64" height="32" aria-label="64 by 32 pixel preview"></canvas></div>
-<div class="row"><button class="primary" id="send">Send to display</button><button id="clear">Clear</button></div>
+<div class="row" id="editorActions"><button class="primary" id="send">Send to display</button><button id="clear">Clear</button></div>
 <div class="message" id="message" role="status" aria-live="polite">Edits stay in the preview until you send them.</div>
 <label for="brightness">Panel brightness <span class="muted" id="brightnessValue">12%</span></label>
 <input type="range" id="brightness" min="0" max="255" value="30">
-<p class="muted">Brightness changes apply directly to the panel.</p>
+<p class="muted">Brightness changes apply directly to the panel.</p><div class="appearance"><label for="globalTheme">Global display palette</label><select id="globalTheme"><option value="classic">Classic</option><option value="amber">Amber</option><option value="neon">Neon</option><option value="ocean">Ocean</option><option value="mint">Mint</option><option value="sunset">Sunset</option></select><p class="muted">Applies to Clock, Weather, and YouTube when they follow global. Saved on the ESP32.</p></div>
 </section>
 <section class="card" aria-label="Canvas tools">
-<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button></div>
+<div class="tabs" role="tablist" aria-label="Content type"><button class="tab" role="tab" id="tab-text" aria-controls="pane-text" aria-selected="true" data-tab="text">Text</button><button class="tab" role="tab" id="tab-image" aria-controls="pane-image" aria-selected="false" data-tab="image">Image</button><button class="tab" role="tab" id="tab-draw" aria-controls="pane-draw" aria-selected="false" data-tab="draw">Draw</button><button class="tab" role="tab" id="tab-weather" aria-controls="pane-weather" aria-selected="false" data-tab="weather">Weather</button><button class="tab" role="tab" id="tab-clock" aria-controls="pane-clock" aria-selected="false" data-tab="clock">Clock</button><button class="tab" role="tab" id="tab-youtube" aria-controls="pane-youtube" aria-selected="false" data-tab="youtube">YouTube</button><button class="tab" role="tab" id="tab-studio" aria-controls="pane-studio" aria-selected="false" data-tab="studio">For Inge</button></div>
+<div class="pane" id="pane-studio" role="tabpanel" aria-labelledby="tab-studio" hidden>
+<p class="kicker">Inge / After Hours</p><p>Architecture, music, and a little birthday magic. Everything runs on the panel.</p>
+<label for="giftPreview">Preview artwork</label><select id="giftPreview"><option value="0">Skyline / wireframe</option><option value="2">Birthday sequence</option><option value="3">Personal message</option></select>
+<div class="row" style="margin-top:12px"><button id="giftArt">Show artwork</button><button id="giftSurprise">Surprise me</button></div>
+<p class="muted">Hold BOOT for a surprise. A short press switches modes.</p>
+<p id="giftStatus" class="muted" role="status">Loading saved gift settings…</p>
+<form id="giftForm">
+<label for="giftName">Made for</label><input id="giftName" maxlength="32" value="Inge" required>
+<label for="giftMessage">Birthday message</label><input id="giftMessage" maxlength="120" value="ADHD future millionaire" required>
+<div class="row"><div><label for="giftBirthday">Birthday (MM-DD)</label><input id="giftBirthday" value="10-09" placeholder="10-09" pattern="[0-9]{2}-[0-9]{2}"></div><div><label for="giftBirthYear">Birth year</label><input id="giftBirthYear" type="number" min="1900" max="2100" value="1994" required></div></div>
+<p class="muted">Plays once on the birthday after network time is set, outside night hours. Clear the date to disable.</p>
+<button type="button" id="giftBirthdayPlay" class="wide">Play birthday sequence now</button>
+<label for="giftSurprises">Surprises / inside jokes — one per line</label><textarea id="giftSurprises" maxlength="480">ONE MORE TRACK
+BUILD SOMETHING BEAUTIFUL
+YOUR IDEAS DESERVE TO EXIST</textarea>
+<label><input type="checkbox" id="giftStudio"> Studio rotation</label>
+<label for="giftSeconds">Seconds per screen</label><input id="giftSeconds" type="number" min="5" max="120" value="15" required>
+<p class="muted">Clock → art → weather → art → YouTube → art. YouTube is skipped until a key is configured. Choosing a mode manually stops rotation.</p>
+<button type="button" id="giftStart" class="wide">Start studio rotation</button>
+<label for="giftFocusMinutes">Focus timer — minutes</label><input id="giftFocusMinutes" type="number" min="1" max="180" value="25" required>
+<div class="row" style="margin-top:12px"><button type="button" id="giftFocusStart">Start focus</button><button type="button" id="giftFocusPause">Pause</button><button type="button" id="giftFocusResume">Resume</button></div>
+<p class="muted">A quiet countdown, then a breathing break. Timers do not resume after power loss.</p>
+<label><input type="checkbox" id="giftNight"> Automatic night dimming</label>
+<div class="row"><div><label for="giftNightStart">From</label><input id="giftNightStart" type="time" value="22:00" required></div><div><label for="giftNightEnd">Until</label><input id="giftNightEnd" type="time" value="08:00" required></div></div>
+<label for="giftNightDim">Night brightness (0 turns the LEDs off)</label><input id="giftNightDim" type="number" min="0" max="30" value="8" required>
+<p class="muted">Uses French time. BOOT wakes the display for one minute. Your daytime brightness stays unchanged.</p>
+<button class="primary wide" type="submit" style="margin-top:14px">Save gift settings</button>
+</form>
+<button class="wide" id="giftDismiss" style="margin-top:12px">End artwork / surprise / timer</button>
+</div>
 <div class="pane" id="pane-text" role="tabpanel" aria-labelledby="tab-text">
 <label for="text">Message</label><textarea id="text" maxlength="500">Hello!</textarea>
 <div class="row"><div><label for="textColor">Text colour</label><input id="textColor" type="color" value="#ffffff"></div><div><label for="background">Background</label><input id="background" type="color" value="#000000"></div></div>
@@ -47,6 +77,36 @@
 <div class="row" style="margin-top:18px"><button id="pencil" class="selected">Pencil</button><button id="eraser">Eraser</button></div>
 <p class="muted">Choose “Send to display” when your drawing is ready.</p>
 </div>
+<div class="pane" id="pane-weather" role="tabpanel" aria-labelledby="tab-weather" hidden><div class="appearance"><div class="row"><div><label for="weatherTheme">Palette</label><select id="weatherTheme"><option value="global">Follow global</option><option value="classic">Classic</option><option value="amber">Amber</option><option value="neon">Neon</option><option value="ocean">Ocean</option><option value="mint">Mint</option><option value="sunset">Sunset</option></select></div><div><label for="weatherLayout">Layout</label><select id="weatherLayout"><option value="icon">Icon and temperature</option><option value="detail">Compact detail</option></select></div></div><label for="weatherMotion">Animation</label><select id="weatherMotion"><option value="subtle">Subtle</option><option value="full">Full</option><option value="off">Off</option></select></div>
+<p>The panel asks the network where it is, then keeps a moving weather card. Rain, snow, and the sun animate on the LEDs.</p>
+<button id="weatherLocate" class="wide">Use my location</button>
+<form id="weatherSearch">
+<label for="weatherCity">Or search for a city</label>
+<div class="row"><input id="weatherCity" type="search" maxlength="80" placeholder="City name"><button type="submit">Search</button></div>
+</form>
+<p id="weatherStatus" class="muted" role="status">Saved on the ESP32. It refreshes about every 10 minutes with this page closed.</p>
+<button id="weatherRefresh" class="wide">Refresh weather</button>
+<button id="weatherPlay" class="wide" style="margin-top:12px">Show weather on panel</button>
+</div>
+<div class="pane" id="pane-clock" role="tabpanel" aria-labelledby="tab-clock" hidden><div class="appearance"><div class="row"><div><label for="clockTheme">Palette</label><select id="clockTheme"><option value="global">Follow global</option><option value="classic">Classic</option><option value="amber">Amber</option><option value="neon">Neon</option><option value="ocean">Ocean</option><option value="mint">Mint</option><option value="sunset">Sunset</option></select></div><div><label for="clockLayout">Layout</label><select id="clockLayout"><option value="large">Large digits</option><option value="date">Time and date</option></select></div></div><label for="clockMotion">Animation</label><select id="clockMotion"><option value="subtle">Subtle</option><option value="full">Full</option><option value="off">Off</option></select></div>
+<p class="muted">French network time. Palette, layout, and animation are independent. The clock keeps running with this page closed.</p>
+<button id="clockPlay" class="wide" style="margin-top:12px">Show clock on panel</button>
+</div>
+<div class="pane" id="pane-youtube" role="tabpanel" aria-labelledby="tab-youtube" hidden><div class="appearance"><div class="row"><div><label for="youtubeTheme">Palette</label><select id="youtubeTheme"><option value="global">Follow global</option><option value="classic">Classic</option><option value="amber">Amber</option><option value="neon">Neon</option><option value="ocean">Ocean</option><option value="mint">Mint</option><option value="sunset">Sunset</option></select></div><div><label for="youtubeLayout">Layout</label><select id="youtubeLayout"><option value="rotate">Rotating statistics</option><option value="subscribers">Subscriber focus</option></select></div></div><label for="youtubeMotion">Animation</label><select id="youtubeMotion"><option value="subtle">Subtle</option><option value="full">Full</option><option value="off">Off</option></select></div>
+<p>Cosmic Hippo Sounds. The panel cycles subscribers, total views, and video count.</p>
+<ol>
+<li>In Google Cloud Console, create a project.</li>
+<li>Enable <strong>YouTube Data API v3</strong>.</li>
+<li>Create an API key and paste it below.</li>
+</ol>
+<p class="muted">Enable access to YouTube Data API v3. The panel calls Google directly, so browser referrer restrictions are incompatible. The key is stored on the ESP32, not in this project.</p>
+<label for="youtubeKey">YouTube Data API key</label>
+<input id="youtubeKey" type="password" autocomplete="off" spellcheck="false">
+<button id="youtubeSave" class="wide" style="margin-top:10px">Save key on the panel</button>
+<p id="youtubeStatus" class="muted" role="status">Statistics refresh every 10 minutes; the rotating layout changes card every 5 seconds.</p>
+<button id="youtubeRefresh" class="wide">Refresh statistics</button>
+<button id="youtubePlay" class="wide" style="margin-top:12px">Show channel on panel</button>
+</div>
 </section>
 </div>
 <details class="card connection" id="wifiDetails"><summary>Wi-Fi connection</summary>
@@ -55,7 +115,7 @@
 <button type="submit" id="saveWiFi" style="margin-top:15px">Save and connect</button></form>
 <p class="muted">The credentials are saved on the ESP32. If joining fails, its setup network stays available.</p><div id="wifiMessage" class="message" role="status"></div>
 </details>
-<footer>Local display control · The last image stays until you replace it or restart the ESP32.</footer>
+<footer>Text, images, and GIFs still stream from this page. Clock, weather, and YouTube do not.</footer>
 </main><script>
 function rgbaTo565(rgba, width = 64, height = 32) {
   if (rgba.length !== width * height * 4) throw new Error('Unexpected canvas dimensions');
@@ -965,6 +1025,252 @@ function decodeGIF(buffer) {
   }
   return {width,height,frames,bounds:bounds||{x:0,y:0,w:width,h:height}};
 }
+function weatherKind(code) {
+  const value = Number(code);
+  if (!Number.isInteger(value) || value < 0) throw new Error('Unexpected weather code');
+  if (value === 0) return 'sun';
+  if (value <= 3) return 'cloud';
+  if (value === 45 || value === 48) return 'fog';
+  if ((value >= 51 && value <= 67) || (value >= 80 && value <= 82)) return 'rain';
+  if ((value >= 71 && value <= 77) || value === 85 || value === 86) return 'snow';
+  if (value >= 95 && value <= 99) return 'storm';
+  return 'cloud';
+}
+
+function weatherLabel(kind) {
+  return {sun: 'Clear', cloud: 'Cloud', fog: 'Fog', rain: 'Rain', snow: 'Snow', storm: 'Storm'}[kind] || 'Cloud';
+}
+
+function formatTemperature(celsius) {
+  if (!Number.isFinite(celsius)) throw new Error('Unexpected temperature');
+  return String(Math.round(celsius));
+}
+
+function readForecast(data) {
+  const current = data?.current;
+  if (!current || !Number.isFinite(current.temperature_2m) || !Number.isInteger(current.weather_code))
+    throw new Error('Weather service returned an unexpected response.');
+  const kind = weatherKind(current.weather_code);
+  return {temperature: current.temperature_2m, code: current.weather_code, kind};
+}
+
+function readSearchPlace(data) {
+  const hit = data?.results?.[0];
+  if (!hit || !hit.name || !Number.isFinite(hit.latitude) || !Number.isFinite(hit.longitude))
+    throw new Error('No matching city.');
+  return {name: String(hit.name), latitude: hit.latitude, longitude: hit.longitude};
+}
+
+function readReversePlace(data) {
+  const name = data?.city || data?.locality || data?.principalSubdivision;
+  if (!name) throw new Error('Could not name this location.');
+  return String(name);
+}
+const CLOCK_THEMES = {
+  classic: {background: '#000000', foreground: '#ffffff', accent: '#ffffff', blink: true},
+  amber: {background: '#2a1408', foreground: '#ffb040', accent: '#ffb040', blink: false},
+  neon: {background: '#000000', foreground: '#00ffff', accent: '#ff00ff', blink: false},
+};
+
+const DIGITS = {
+  '0': ['111', '101', '101', '101', '111'],
+  '1': ['010', '110', '010', '010', '111'],
+  '2': ['111', '001', '111', '100', '111'],
+  '3': ['111', '001', '111', '001', '111'],
+  '4': ['101', '101', '111', '001', '001'],
+  '5': ['111', '100', '111', '001', '111'],
+  '6': ['111', '100', '111', '101', '111'],
+  '7': ['111', '001', '001', '001', '001'],
+  '8': ['111', '101', '111', '101', '111'],
+  '9': ['111', '101', '111', '001', '111'],
+  ':': ['0', '1', '0', '1', '0'],
+  '-': ['000', '000', '111', '000', '000'],
+  ' ': ['000', '000', '000', '000', '000'],
+};
+
+function clockFace(date) {
+  const second = date.getSeconds();
+  return {
+    text: `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`,
+    showColon: second % 2 === 0,
+    second,
+    bar: Math.max(1, Math.round(((second + 1) / 60) * 64)),
+  };
+}
+
+function digitWidth(text, scale) {
+  let width = 0;
+  for (const char of text) {
+    const rows = DIGITS[char] || DIGITS[' '];
+    width += rows[0].length * scale + scale;
+  }
+  return text.length ? width - scale : 0;
+}
+const YOUTUBE_HANDLE = 'CosmicHippoSounds';
+
+function abbreviateCount(value) {
+  const rounded = Math.round(Number(value));
+  if (!Number.isFinite(rounded) || rounded < 0) throw new Error('Invalid count');
+  const units = ['', 'K', 'M', 'B'];
+  let number = rounded;
+  let unit = 0;
+  while (number >= 999.5 && unit < units.length - 1) {
+    number /= 1000;
+    unit += 1;
+  }
+  const digits = unit === 0 || number >= 100 || Number.isInteger(number)
+    ? number.toFixed(0)
+    : number.toFixed(1);
+  return digits.replace(/\.0$/, '') + units[unit];
+}
+
+function parseYoutubeChannel(data) {
+  const item = data?.items?.[0];
+  const stats = item?.statistics;
+  if (!item || !stats) throw new Error('That channel could not be found.');
+  const views = Number(stats.viewCount);
+  const videos = Number(stats.videoCount);
+  if (!Number.isFinite(views) || !Number.isFinite(videos)) throw new Error('YouTube returned an unexpected response.');
+  const hidden = stats.hiddenSubscriberCount === true;
+  const subscribers = hidden ? null : Number(stats.subscriberCount);
+  if (!hidden && !Number.isFinite(subscribers)) throw new Error('YouTube returned an unexpected response.');
+  return {
+    title: String(item.snippet?.title || 'Cosmic Hippo Sounds'),
+    subscribers,
+    views,
+    videos,
+  };
+}
+
+function youtubeSlide(channel, index) {
+  const slides = [
+    ['SUBS', channel.subscribers],
+    ['VIEWS', channel.views],
+    ['VIDS', channel.videos],
+  ];
+  const [label, value] = slides[((index % slides.length) + slides.length) % slides.length];
+  return {title: channel.title, label, value: value === null ? '--' : abbreviateCount(value)};
+}
+
+function youtubeChannelUrl(key) {
+  const trimmed = String(key || '').trim();
+  if (!trimmed) throw new Error('Add a YouTube Data API key first.');
+  const params = new URLSearchParams({
+    part: 'statistics,snippet',
+    forHandle: YOUTUBE_HANDLE,
+    key: trimmed,
+  });
+  return `https://www.googleapis.com/youtube/v3/channels?${params}`;
+}
+// Generated by tools/build_display.py
+const DISPLAY_DATA = {"font":{"0":["111","101","101","101","111"],"1":["010","110","010","010","111"],"2":["111","001","111","100","111"],"3":["111","001","111","001","111"],"4":["101","101","111","001","001"],"5":["111","100","111","001","111"],"6":["111","100","111","101","111"],"7":["111","001","001","001","001"],"8":["111","101","111","101","111"],"9":["111","101","111","001","111"],"A":["010","101","111","101","101"],"B":["110","101","110","101","110"],"C":["111","100","100","100","111"],"D":["110","101","101","101","110"],"E":["111","100","110","100","111"],"F":["111","100","110","100","100"],"G":["111","100","101","101","111"],"H":["101","101","111","101","101"],"I":["111","010","010","010","111"],"J":["001","001","001","101","111"],"K":["101","101","110","101","101"],"L":["100","100","100","100","111"],"M":["101","111","111","101","101"],"N":["101","111","111","111","101"],"O":["111","101","101","101","111"],"P":["111","101","111","100","100"],"Q":["111","101","101","111","001"],"R":["110","101","110","101","101"],"S":["111","100","111","001","111"],"T":["111","010","010","010","010"],"U":["101","101","101","101","111"],"V":["101","101","101","101","010"],"W":["101","101","111","111","101"],"X":["101","101","010","101","101"],"Y":["101","101","010","010","010"],"Z":["111","001","010","100","111"]," ":["000","000","000","000","000"],"-":["000","000","111","000","000"],".":["0","0","0","0","1"],":":["0","1","0","1","0"],"/":["001","001","010","100","100"],"?":["110","001","010","000","010"],"'":["1","1","0","0","0"],"+":["000","010","111","010","000"],"\u00b0":["11","11","00","00","00"]},"palettes":{"classic":["#000000","#ffffff","#a8b8cc"],"amber":["#000000","#ffb040","#ffe0a0"],"neon":["#000000","#00ffff","#ff40c8"],"ocean":["#000000","#74c8ff","#4776ff"],"mint":["#000000","#83ffd0","#36b995"],"sunset":["#000000","#ffb38a","#ed668d"]}};
+const PALETTES = Object.keys(DISPLAY_DATA.palettes);
+const LAYOUTS = {clock: ['large', 'date'], weather: ['icon', 'detail'], youtube: ['rotate', 'subscribers']};
+function pixelLabel(input) {
+  return String(input).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^\x00-\x7f]/gu,'?');
+}
+function pixelWidth(text, scale=1) {
+  return [...text].reduce((w,c)=>w+((DISPLAY_DATA.font[c]||DISPLAY_DATA.font['?'])[0].length+1)*scale,0)-(text.length?scale:0);
+}
+function defaultAppearance() {
+  return {global:'neon',clock:{palette:'global',layout:'large',motion:'subtle'},weather:{palette:'global',layout:'icon',motion:'subtle'},youtube:{palette:'global',layout:'rotate',motion:'subtle'}};
+}
+function effectivePalette(appearance, mode) {
+  return appearance[mode].palette === 'global' ? appearance.global : appearance[mode].palette;
+}
+function frenchTime(date) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'2-digit',hourCycle:'h23'}).formatToParts(date).map(p=>[p.type,p.value]));
+  return {hour:+parts.hour,minute:+parts.minute,second:+parts.second,day:+parts.day,month:+parts.month};
+}
+function renderDisplay(c, m) {
+  const palette = DISPLAY_DATA.palettes[m.palette] || DISPLAY_DATA.palettes.neon;
+  const [bg,fg,accent] = palette;
+  const rect=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);};
+  const text=(t,x,y,scale,col)=>{
+    for(const ch of t){const rows=DISPLAY_DATA.font[ch]||DISPLAY_DATA.font['?'];
+      rows.forEach((row,dy)=>[...row].forEach((bit,dx)=>{if(bit==='1')rect(x+dx*scale,y+dy*scale,scale,scale,col);}));
+      x+=(rows[0].length+1)*scale;
+    }
+  };
+  const centre=(t,y,scale,col)=>text(t,Math.trunc((64-pixelWidth(t,scale))/2),y,scale,col);
+  const ticker=(input,y,col)=>{
+    const t=pixelLabel(input),w=pixelWidth(t);
+    if(w<=60){centre(t,y,1,col);return;}
+    if(!m.motion){text(t.slice(0,15),2,y,1,col);return;}
+    const offset=Math.max(0,Math.floor(m.tick/(m.motion===2?110:180))%(w+32)-12);
+    text(t,2-offset,y,1,col);text(t,2-offset+w+20,y,1,col);
+  };
+  const icon=(name,x,y)=>{
+    const p=m.motion?Math.floor(m.tick/(m.motion===2?150:300))%8:0;
+    if(name==='SUN'){
+      rect(x+5,y+5,7,7,accent);rect(x+7,y+1,3,2,accent);rect(x+7,y+14,3,2,accent);
+      rect(x+1,y+7,2,3,accent);rect(x+14,y+7,2,3,accent);
+      if(m.motion===2 && p%2){rect(x+2,y+2,2,2,accent);rect(x+13,y+13,2,2,accent);}return;
+    }
+    if(name==='FOG'){for(let r=0;r<3;r++)rect(x+2+(p+r)%2,y+4+r*4,12,1,fg);return;}
+    rect(x+5,y+3,7,5,fg);rect(x+2,y+6,14,5,fg);
+    if(name==='RAIN'||name==='STORM'){
+      for(let r=0;r<3;r++)rect(x+3+r*5,y+12+(p+r*2)%4,1,2,accent);
+      if(name==='STORM'){rect(x+9,y+10,2,4,accent);rect(x+7,y+13,3,2,accent);}
+    }else if(name==='SNOW'){for(let r=0;r<3;r++)rect(x+3+r*5,y+12+(p+r)%4,2,2,accent);}
+  };
+  rect(0,0,64,32,bg);
+  if(m.mode==='clock'){
+    const time=m.hour<0?'--:--':`${String(m.hour).padStart(2,'0')}:${String(m.minute).padStart(2,'0')}`;
+    const y=m.layout?3:8;centre(time,y,3,fg);
+    if(m.hour>=0 && m.motion && m.second%2)rect(Math.trunc((64-pixelWidth(time,3))/2)+24,y,3,15,bg);
+    if(m.layout)centre(m.hour<0?'SYNC':`${String(m.day).padStart(2,'0')}/${String(m.month).padStart(2,'0')}`,25,1,accent);
+    else {rect(2,28,60,1,'#18202a');if(m.hour>=0)rect(2,28,m.second+1,1,accent);}
+    if(m.motion===2 && m.hour>=0)rect(Math.floor(m.tick/120)%64,0,1,1,accent);
+    return;
+  }
+  if(!m.valid){
+    centre(m.mode==='weather'?'WEATHER':'YOUTUBE',3,1,accent);centre('--',11,2,fg);
+    centre(m.state==='unconfigured'?'ADD KEY':m.state==='error'?'CHECK WEB':'LOADING',25,1,accent);return;
+  }
+  if(m.mode==='weather'){
+    const temp=String(m.temperature),kind=m.kind.toUpperCase();
+    if(!m.layout){icon(kind,1,2);const scale=pixelWidth(temp,3)<=35?3:2;const w=pixelWidth(temp,scale);text(temp,22+Math.trunc((36-w)/2),3,scale,fg);rect(60,3,2,2,accent);}
+    else {centre(temp,1,3,fg);centre(kind,19,1,accent);}
+    ticker(m.city,26,fg);
+  }else{
+    const slide=m.layout?0:Math.floor(m.tick/5000)%3;
+    const value=[m.subs,m.views,m.videos][slide];
+    centre(['SUBSCRIBERS','VIEWS','VIDEOS'][slide],1,1,accent);
+    centre(value,10,pixelWidth(value,3)<=60?3:2,fg);ticker(m.title,27,accent);
+    if(!m.layout)for(let i=0;i<3;i++)rect(26+i*5,7,3,1,i===slide?accent:'#18202a');
+  }
+  if(m.stale)rect(62,0,2,2,'#ffb040');
+}
+function renderGift(c,m){
+  const [bg,fg,accent]=DISPLAY_DATA.palettes[m.palette]||DISPLAY_DATA.palettes.neon;
+  const rect=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);};
+  const text=(t,x,y,s,col)=>{for(const ch of t){const rows=DISPLAY_DATA.font[ch]||DISPLAY_DATA.font['?'];rows.forEach((row,dy)=>[...row].forEach((v,dx)=>{if(v==='1')rect(x+dx*s,y+dy*s,s,s,col);}));x+=(rows[0].length+1)*s;}};
+  const centre=(t,y,s,col)=>text(t,Math.trunc((64-pixelWidth(t,s))/2),y,s,col);
+  const ticker=(input,y,col,tick=m.tick)=>{const t=pixelLabel(input),w=pixelWidth(t);if(w<=60){centre(t,y,1,col);return;}if(!m.motion){text(t.slice(0,15),2,y,1,col);return;}const offset=Math.max(0,Math.floor(tick/180)%(w+32)-12);text(t,2-offset,y,1,col);text(t,2-offset+w+20,y,1,col);};
+  rect(0,0,64,32,bg);const tick=m.motion?m.tick:0;
+  if(m.scene===0){
+    [9,15,11,20,13,17,10,14].forEach((h,i)=>{const x=i*8;rect(x,25-h,6,1,accent);rect(x,25-h,1,h,accent);rect(x+5,25-h,1,h,accent);for(let row=0;row<Math.trunc((h-3)/4);row++)if((i+row+Math.floor(tick/1300))%4!==0)rect(x+2,28-h+row*4,2,1,fg);});
+    rect(0,25,64,1,accent);ticker(m.name+' / AFTER HOURS',27,fg);
+  }else if(m.scene===1){
+    for(let i=0;i<6;i++){const y=8+i*4,inset=12-i*2;rect(inset,y,64-inset*2,1,accent);}
+    for(let i=0;i<7;i++)for(let y=8;y<28;y++){const x=32+Math.trunc((i-3)*(y+4)/3);if(x>=0&&x<64)rect(x,y,1,1,accent);}
+    rect(0,8+Math.floor(tick/350)%20,64,1,fg);centre('AFTER HOURS',1,1,fg);
+  }else if(m.scene===2){
+    if(m.tick<6500){
+      centre('FOR '+pixelLabel(m.name),0,1,fg);rect(19,20,26,8,accent);rect(17,27,30,2,fg);rect(19,19,26,2,fg);
+      for(let i=0;i<3;i++){const x=24+i*7;rect(x,13,1,6,fg);rect(x,10-(Math.floor(tick/250)+i)%2,1,2,accent);}
+      for(let i=0;i<6;i++)rect((i*13+3)%64,7+(Math.floor(tick/240)+i*3)%18,1,1,accent);
+    }else if(m.tick<13000){centre('HAPPY BIRTHDAY',2,1,accent);centre(String(m.age),12,3,fg);}
+    else if(m.tick<19000){ticker(m.name,6,fg);centre('MAKE SOME NOISE',22,1,accent);}
+    else{centre('FOR YOU',4,1,accent);ticker(m.message,15,fg,m.tick-19000);rect(28,27,8,1,accent);}
+  }else if(m.scene===3){
+    centre('HEY '+pixelLabel(m.name),2,1,accent);ticker(m.message,14,fg);rect(5+Math.floor(tick/160)%54,27,3,1,accent);
+  }else if(m.scene===4){
+    centre(m.paused?'PAUSED':'IN THE FLOW',1,1,accent);const seconds=Math.ceil(m.left/1000);const time=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+    centre(time,10,pixelWidth(time,3)<=60?3:2,fg);rect(2,29,60,1,'#18202a');rect(2,29,m.total?Math.trunc(m.left*60/m.total):0,1,accent);
+  }else{centre('NICE WORK',5,1,accent);centre('BREATHE',16,2,fg);}
+}
 const $ = id => document.getElementById(id);
 const canvas = $('canvas'), ctx = canvas.getContext('2d', {willReadFrequently:true});
 const textMask = document.createElement('canvas'); textMask.width=64; textMask.height=32;
@@ -1021,9 +1327,15 @@ function renderImage() {
 }
 function setTab(next) {
   stopScroll(); tab=next;
+  $('editorActions').hidden=['clock','weather','youtube','studio'].includes(next);
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===next)));
   document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!==`pane-${next}`);
-  if(next==='text')renderText(); else if(next==='image')renderImage();
+  if(next==='text')renderText();
+  else if(next==='image')renderImage();
+  else if(next==='weather')renderWeather();
+  else if(next==='clock')renderClock();
+  else if(next==='youtube')renderYoutube();
+  else if(next==='studio')renderGiftPreview();
 }
 function updateSendButton() { $('send').disabled=busy||gifLoading; }
 document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>setTab(button.dataset.tab));
@@ -1123,8 +1435,11 @@ $('wifiForm').onsubmit=async event=>{
 async function refreshStatus(){
   if(busy||statusRefreshing||document.hidden)return;
   statusRefreshing=true;
+  const epoch=typeof liveEpoch==='number'?liveEpoch:0;
   try{
-    const data=await request('/api/status');lastStatus=data;
+    const data=await request('/api/status');
+    if(typeof liveEpoch==='number'&&epoch!==liveEpoch)return;
+    lastStatus=data;
     $('connectionBadge').textContent=data.connected?'On your Wi-Fi':'Setup network';
     $('networkInfo').replaceChildren();
     if(data.connected){
@@ -1132,7 +1447,9 @@ async function refreshStatus(){
       const link=document.createElement('a');link.href='http://'+data.ip;link.textContent=link.href;$('networkInfo').append(link);
       $('networkInfo').append(document.createTextNode(`. You can also try http://${data.hostname}.`));
     }else{$('networkInfo').textContent='Enter your home Wi-Fi details below, or use the display directly through this setup network.';}
+    if (typeof syncLive === 'function') syncLive(data);
     if(!initialized){
+      if(['clock','weather','youtube'].includes(data.live))setTab(data.live);
       $('brightness').value=data.brightness;$('brightness').oninput();
       if(!wifiWasEdited)$('ssid').value=data.ssid;
       if(!data.connected)$('wifiDetails').open=true;
@@ -1228,6 +1545,145 @@ function playCurrentGif() {
 }
 
 $('imageGifPlay').onclick = () => playCurrentGif();
+
+let deviceLive = '';
+let liveReport = {};
+let liveEpoch = 0;
+let liveAppearance = defaultAppearance();
+let reportAt = performance.now();
+let appearancePending = 0;
+
+function serviceDescription(service) {
+  if (!service) return 'Waiting for the panel…';
+  const age=service.ageSeconds;
+  const updated=age==null?'':` Last updated ${age<60?`${age}s`:`${Math.floor(age/60)}m`} ago.`;
+  return `${service.state[0].toUpperCase()+service.state.slice(1)} · ${service.message}${updated}${service.refreshing?' Refreshing…':''}`;
+}
+function syncLive(data) {
+  liveReport=data||{};reportAt=performance.now();deviceLive=data.live||'';
+  if(!appearancePending){
+    if(data.appearance)liveAppearance=data.appearance;
+    else if(PALETTES.includes(data.theme))liveAppearance.global=data.theme;
+    $('globalTheme').value=liveAppearance.global;
+    for(const name of ['clock','weather','youtube']) {
+      $(name+'Theme').value=liveAppearance[name].palette;
+      $(name+'Layout').value=liveAppearance[name].layout;
+      $(name+'Motion').value=liveAppearance[name].motion;
+    }
+  }
+  for(const name of ['clock','weather','youtube'])$(name+'Play').textContent=deviceLive===name?`Stop ${name==='youtube'?'channel':name}`:`Show ${name==='youtube'?'channel':name} on panel`;
+  $('weatherStatus').textContent=serviceDescription(data.services?.weather);
+  $('youtubeStatus').textContent=serviceDescription(data.services?.youtube);
+  if(data.services?.weather)$('weatherStatus').dataset.state=data.services.weather.state;
+  if(data.services?.youtube)$('youtubeStatus').dataset.state=data.services.youtube.state;
+  syncGift(data);
+  renderLivePreview();
+}
+function postLive(fields) {
+  liveEpoch++;
+  return request('/api/live',{method:'POST',body:new URLSearchParams(fields)});
+}
+async function applyAppearance(fields) {
+  appearancePending++;
+  try {await postLive({mode:'save',...fields});message('Appearance saved on the panel.');}
+  catch(error){message(error.message,true);}
+  finally {appearancePending--;await refreshStatus();renderLivePreview();}
+}
+$('globalTheme').onchange=()=>{
+  liveAppearance.global=$('globalTheme').value;renderLivePreview();applyAppearance({theme:liveAppearance.global});
+};
+for(const name of ['clock','weather','youtube'])for(const [suffix,key] of [['Theme','palette'],['Layout','layout'],['Motion','motion']]){
+  $(name+suffix).onchange=()=>{liveAppearance[name][key]=$(name+suffix).value;renderLivePreview();applyAppearance({target:name,[key]:liveAppearance[name][key]});};
+}
+function renderLivePreview() {
+  if(tab==='studio'){renderGiftPreview();return;}
+  if(!['clock','weather','youtube'].includes(tab))return;
+  const a=liveAppearance[tab],service=liveReport.services?.[tab];
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const m={mode:tab,palette:effectivePalette(liveAppearance,tab),layout:LAYOUTS[tab].indexOf(a.layout),motion:reduced?0:['off','subtle','full'].indexOf(a.motion),
+    tick:(liveReport.liveTick||0)+Math.max(0,performance.now()-reportAt),...frenchTime(new Date()),
+    valid:tab==='weather'?liveReport.temp!=null:!!liveReport.channel,state:service?.state||'loading',stale:service?.state==='stale',
+    temperature:liveReport.temp??0,kind:liveReport.kind||'cloud',city:liveReport.place||'',title:liveReport.channel||'',
+    subs:liveReport.subs??'--',views:liveReport.views??'--',videos:liveReport.videos??'--'};
+  if(liveReport.clockSynced===false)m.hour=-1;
+  renderDisplay(ctx,m);
+}
+function renderWeather(){renderLivePreview();}
+async function liveAction(fields,success) {
+  try {await postLive(fields);message(success);await refreshStatus();}
+  catch(error){message(error.message,true);}
+}
+$('weatherLocate').onclick=()=>liveAction({mode:'weather',locate:'1'},'Finding the network location.');
+$('weatherSearch').onsubmit=event=>{
+  event.preventDefault();const city=$('weatherCity').value.trim();
+  if(!city){message('Enter a city name.',true);return;}
+  liveAction({mode:'weather',city},'Looking up the city and its weather.');
+};
+$('weatherRefresh').onclick=()=>liveAction({refresh:'weather'},'Weather refresh requested.');
+$('weatherPlay').onclick=()=>liveAction({mode:deviceLive==='weather'?'off':'weather'},'Display mode updated.');
+
+function renderClock(){renderLivePreview();}
+$('clockPlay').onclick=()=>liveAction({mode:deviceLive==='clock'?'off':'clock'},'Display mode updated.');
+
+function renderYoutube(){renderLivePreview();}
+$('youtubeSave').onclick=async()=>{
+  const key=$('youtubeKey').value.trim();
+  if(!key){message('Paste an API key first.',true);return;}
+  try{await postLive({mode:'save',key});$('youtubeKey').value='';message('Key saved. Loading channel statistics.');await refreshStatus();}
+  catch(error){message(error.message,true);}
+};
+$('youtubePlay').onclick=async()=>{
+  const fields={mode:deviceLive==='youtube'?'off':'youtube'};
+  const key=$('youtubeKey').value.trim();if(key)fields.key=key;
+  try{await postLive(fields);$('youtubeKey').value='';message('Display mode updated.');await refreshStatus();}
+  catch(error){message(error.message,true);}
+};
+$('youtubeRefresh').onclick=()=>liveAction({refresh:'youtube'},'YouTube refresh requested.');
+setInterval(()=>{if(!document.hidden)renderLivePreview();},50);
+
+let giftDirty=false;
+let giftPreviewScene=0;
+let giftPreviewAt=performance.now();
+const giftForm=$('giftForm');
+const giftTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
+function syncGift(data){
+  const g=data.gift;if(!g)return;
+  if(!giftDirty){
+    $('giftName').value=g.name;$('giftMessage').value=g.message;$('giftSurprises').value=g.surprises;
+    $('giftBirthday').value=g.month?`${String(g.month).padStart(2,'0')}-${String(g.day).padStart(2,'0')}`:'';
+    $('giftBirthYear').value=g.birthYear;$('giftSeconds').value=g.seconds;$('giftStudio').checked=g.studio;
+    $('giftNight').checked=g.nightEnabled;$('giftNightStart').value=giftTime(g.nightStart);$('giftNightEnd').value=giftTime(g.nightEnd);$('giftNightDim').value=g.nightDim;$('giftFocusMinutes').value=g.focusMinutes;
+  }
+  const focus=g.timer?.running?(g.timer.paused?'Focus paused.':'Focus timer running.'):'';
+  $('giftStatus').textContent=[g.studio?'Studio rotation on.':'Studio rotation off.',focus,g.nightActive?'Night schedule active.':'',g.month?`Birthday: ${g.day}/${g.month}.`:'Birthday disabled.'].filter(Boolean).join(' ');
+}
+giftForm.addEventListener('input',()=>{giftDirty=true;});
+function giftFields(){
+  const date=$('giftBirthday').value.trim();
+  if(date&&!/^\d{2}-\d{2}$/.test(date))throw new Error('Use MM-DD for the birthday, or leave it empty.');
+  const [month=0,day=0]=date?date.split('-').map(Number):[];
+  const minutes=id=>{const [h,m]=$(id).value.split(':').map(Number);return h*60+m;};
+  return {name:$('giftName').value.trim(),message:$('giftMessage').value.trim(),surprises:$('giftSurprises').value,month,day,birthYear:Number($('giftBirthYear').value),seconds:Number($('giftSeconds').value),studio:$('giftStudio').checked,nightEnabled:$('giftNight').checked,nightStart:minutes('giftNightStart'),nightEnd:minutes('giftNightEnd'),nightDim:Number($('giftNightDim').value),focusMinutes:Number($('giftFocusMinutes').value)};
+}
+async function giftAction(action,save=false){
+  try{
+    const fields=save?giftFields():{};liveEpoch++;
+    await request('/api/gift',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,action})});
+    if(save)giftDirty=false;
+    message(action==='save'?'Inge’s settings saved.':'Display updated.');await refreshStatus();
+  }catch(error){message(error.message,true);}
+}
+giftForm.onsubmit=event=>{event.preventDefault();giftAction('save',true);};
+for(const [id,action]of [['giftStart','studio'],['giftArt','art'],['giftSurprise','surprise'],['giftBirthdayPlay','birthday'],['giftFocusStart','focus_start'],['giftFocusPause','focus_pause'],['giftFocusResume','focus_resume'],['giftDismiss','dismiss']]){
+  $(id).onclick=()=>giftAction(action,['studio','birthday','focus_start'].includes(action));
+}
+$('giftPreview').onchange=()=>{giftPreviewScene=Number($('giftPreview').value);giftPreviewAt=performance.now();renderGiftPreview();};
+function renderGiftPreview(){
+  const g=liveReport.gift||{name:'Inge',message:'ADHD future millionaire',age:32,tick:0,timer:{}};
+  const delta=Math.max(0,performance.now()-reportAt);const scene=g.overlay>=0?g.overlay:giftPreviewScene;
+  const tick=g.overlay>=0?(g.tick||0)+delta:performance.now()-giftPreviewAt;
+  renderGift(ctx,{scene:scene===0?Math.floor(tick/12000)%2:scene,tick,palette:liveAppearance.global,name:g.name,message:scene===3?(g.selectedMessage||g.message):g.message,age:g.age??32,motion:!window.matchMedia('(prefers-reduced-motion: reduce)').matches,paused:!!g.timer?.paused,left:Math.max(0,(g.timer?.leftMs||0)-(g.timer?.running&&!g.timer.paused?delta:0)),total:g.timer?.totalMs||1});
+}
 
 renderText();refreshStatus();setInterval(refreshStatus,4000);
 </script></body></html>
